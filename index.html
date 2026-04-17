@@ -51,6 +51,13 @@ body{margin:0;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;backgr
 .btn-cancel { background: #e0e0e0; color: #333; padding: 12px; border: none; border-radius: 8px; flex: 1; font-weight: bold; cursor: pointer; }
 .btn-submit { background: #4CAF50; color: white; padding: 12px; border: none; border-radius: 8px; flex: 1; font-weight: bold; cursor: pointer; }
 .motivation-banner { background: #e8f5e9; border: 2px solid #4CAF50; color: #2e7d32; padding: 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; text-align: center; font-size: 18px;}
+
+/* 📢 Channel Promo Banner */
+.promo-banner { background: linear-gradient(135deg, #673ab7, #512da8); color: white; padding: 20px; border-radius: 12px; text-align: center; margin-top: 25px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(103,58,183,0.4); }
+.promo-banner h3 { margin-top: 0; font-size: 20px; }
+.promo-banner p { font-size: 14px; margin-bottom: 15px; color: #e1bee7;}
+.promo-btn { display: inline-block; background: #ff9800; color: white; text-decoration: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 10px rgba(255,152,0,0.4); transition: 0.3s;}
+.promo-btn:active { transform: scale(0.95); }
 </style>
 </head>
 <body>
@@ -113,18 +120,6 @@ const API_BASE_URL = "https://mock-bot-l091.onrender.com";
 window.onload = async function() {
     if (window.Telegram && window.Telegram.WebApp) {
         window.Telegram.WebApp.ready();
-        if (window.Telegram.WebApp.platform === "unknown" || window.Telegram.WebApp.platform === "") {
-            document.body.innerHTML = `
-                <div style="text-align:center; padding:50px; font-family:sans-serif; background:white; height:100vh;">
-                    <h1 style="color:#e53935; font-size:40px;">🚫 Access Denied</h1>
-                    <h3 style="color:#333;">यह टेस्ट लिंक सुरक्षित (Secured) है।</h3>
-                    <p style="color:#666;">इसे बाहरी ब्राउज़र में नहीं खोला जा सकता। कृपया हमारे आधिकारिक टेलीग्राम बॉट के अंदर जाकर ही टेस्ट दें।</p>
-                </div>`;
-            return;
-        }
-    } else {
-        document.body.innerHTML = "<h3 style='text-align:center;color:red;padding:20px;'>🚫 केवल टेलीग्राम में खोलें!</h3>";
-        return;
     }
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -158,7 +153,7 @@ window.onload = async function() {
                 loadQuestion();
             }
         } catch (error) {
-            document.getElementById("exam").innerHTML = "<h3 style='text-align:center;color:red;padding:20px;'>⚠️ टेस्ट लोड करने में त्रुटि।</h3>";
+            document.getElementById("exam").innerHTML = "<h3 style='text-align:center;color:red;padding:20px;'>⚠️ टेस्ट लोड करने में त्रुटि। कृपया सुनिश्चित करें कि यह टेस्ट डिलीट नहीं हुआ है।</h3>";
         }
     } else {
         document.getElementById("exam").innerHTML = "<h3 style='text-align:center;padding:20px;'>⚠️ अमान्य टेस्ट लिंक!</h3>";
@@ -288,11 +283,18 @@ function generateResultScreen(score, maxScore, correct, incorrect, unattempted, 
         else{ boxClass+=" wrong-box"; statusText = "<span class='wrong'>Incorrect ( -"+negativeMark+" )</span>"; }
 
         html+="<div class='"+boxClass+"'><div style='display:flex; justify-content:space-between;'><b>Q"+(i+1)+".</b> "+statusText+"</div><br>";
-        
         if(q.img && q.img !== "") html += "<img src='"+q.img+"' style='max-width:100%; border-radius:8px;'><br>";
-        
         html += "<b>"+q.question+"</b><br><br>Your Answer: "+(userAns!=null ? "<b>"+q.options[userAns]+"</b>" : "--")+"<br>Correct Answer: <span class='correct'>"+q.answer+"</span><hr style='border:0;border-top:1px dashed #ccc;'><b>Explanation:</b> "+(q.explanation ? q.explanation : "No explanation provided.")+"</div>";
     });
+    
+    // 📢 यहाँ अपना चैनल लिंक डालें
+    html += `
+        <div class="promo-banner">
+            <h3>🚀 और नए मॉक टेस्ट चाहिए?</h3>
+            <p>हमारे आधिकारिक टेलीग्राम चैनल से जुड़ें और हर दिन नए टेस्ट, स्टडी मटेरियल और अपडेट्स पाएं!</p>
+            <a href="https://t.me/+bmzuj2Y68nFmYTc9" class="promo-btn">📢 अभी चैनल ज्वाइन करें</a>
+        </div>
+    `;
     
     document.getElementById("result").innerHTML=html;
     new Chart(document.getElementById("chart"),{ type:"doughnut", data:{labels:["Correct","Incorrect","Unattempted"], datasets:[{data:[correct,incorrect,unattempted], backgroundColor:["#4CAF50","#e53935","#9e9e9e"]}]} });
