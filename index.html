@@ -111,14 +111,19 @@ let testCutoff = 35.0;
 const API_BASE_URL = "https://mock-bot-l091.onrender.com"; 
 
 window.onload = async function() {
-    // 🛡️ ANTI-THEFT SECURITY CHECK (लिंक चोरी से बचाना)
-    if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initData) {
-        document.body.innerHTML = `
-            <div style="text-align:center; padding:50px; font-family:sans-serif; background:white; height:100vh;">
-                <h1 style="color:#e53935; font-size:40px;">🚫 Access Denied</h1>
-                <h3 style="color:#333;">यह टेस्ट लिंक सुरक्षित (Secured) है।</h3>
-                <p style="color:#666;">इसे कॉपी करके बाहर ब्राउज़र में नहीं खोला जा सकता। कृपया हमारे आधिकारिक टेलीग्राम बॉट के अंदर जाकर ही टेस्ट दें।</p>
-            </div>`;
+    if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.ready();
+        if (window.Telegram.WebApp.platform === "unknown" || window.Telegram.WebApp.platform === "") {
+            document.body.innerHTML = `
+                <div style="text-align:center; padding:50px; font-family:sans-serif; background:white; height:100vh;">
+                    <h1 style="color:#e53935; font-size:40px;">🚫 Access Denied</h1>
+                    <h3 style="color:#333;">यह टेस्ट लिंक सुरक्षित (Secured) है।</h3>
+                    <p style="color:#666;">इसे बाहरी ब्राउज़र में नहीं खोला जा सकता। कृपया हमारे आधिकारिक टेलीग्राम बॉट के अंदर जाकर ही टेस्ट दें।</p>
+                </div>`;
+            return;
+        }
+    } else {
+        document.body.innerHTML = "<h3 style='text-align:center;color:red;padding:20px;'>🚫 केवल टेलीग्राम में खोलें!</h3>";
         return;
     }
 
@@ -153,7 +158,7 @@ window.onload = async function() {
                 loadQuestion();
             }
         } catch (error) {
-            document.getElementById("exam").innerHTML = "<h3 style='text-align:center;color:red;padding:20px;'>⚠️ टेस्ट लोड करने में त्रुटि। कृपया लिंक जांचें।</h3>";
+            document.getElementById("exam").innerHTML = "<h3 style='text-align:center;color:red;padding:20px;'>⚠️ टेस्ट लोड करने में त्रुटि।</h3>";
         }
     } else {
         document.getElementById("exam").innerHTML = "<h3 style='text-align:center;padding:20px;'>⚠️ अमान्य टेस्ट लिंक!</h3>";
@@ -265,7 +270,7 @@ function generateResultScreen(score, maxScore, correct, incorrect, unattempted, 
     let html = "";
     
     if(score >= testCutoff) {
-        html += "<div class='motivation-banner'>🎉 शाबाश! आपने कट-ऑफ ("+testCutoff+") पार कर ली है, वर्दी अब दूर नहीं! 🇮🇳</div><br>";
+        html += "<div class='motivation-banner'>🎉 शाबाश! आपने कट-ऑफ ("+testCutoff+") पार कर ली है! 🇮🇳</div><br>";
     } else {
         html += "<div class='motivation-banner' style='background:#ffebee; border-color:#e53935; color:#c62828;'>⚠️ आपका स्कोर कट-ऑफ ("+testCutoff+") से कम है। और अभ्यास करें! 💪</div><br>";
     }
@@ -290,7 +295,6 @@ function generateResultScreen(score, maxScore, correct, incorrect, unattempted, 
     });
     
     document.getElementById("result").innerHTML=html;
-
     new Chart(document.getElementById("chart"),{ type:"doughnut", data:{labels:["Correct","Incorrect","Unattempted"], datasets:[{data:[correct,incorrect,unattempted], backgroundColor:["#4CAF50","#e53935","#9e9e9e"]}]} });
     window.scrollTo(0, 0);
 }
