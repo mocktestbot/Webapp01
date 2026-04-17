@@ -6,7 +6,7 @@
 <meta name="google" content="notranslate">
 <title>Premium Practice Mock</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 body{margin:0;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f4f7f6}
 .topbar{background:linear-gradient(135deg, #00bfff, #008ccc);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;font-weight:bold;box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
@@ -43,7 +43,6 @@ body{margin:0;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;backgr
 .wrong{color:#e53935;font-weight:bold}
 .float-btn{position:fixed;bottom:25px;right:25px;width:60px;height:60px;background:#00bfff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:28px; box-shadow: 0 4px 15px rgba(0, 191, 255, 0.4); z-index: 999; cursor: pointer;}
 .close-palette { position: absolute; right: 20px; top: 20px; background: red; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-weight: bold; cursor: pointer;}
-.reattempt-btn { background: #673ab7; color: white; border: none; width: 100%; padding: 15px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(103, 58, 183, 0.3); transition: 0.3s; }
 .custom-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
 .custom-modal-box { background: white; padding: 25px; border-radius: 15px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
 .custom-modal-box h3 { margin-top: 0; color: #4CAF50; font-size: 22px; margin-bottom: 10px; }
@@ -51,8 +50,7 @@ body{margin:0;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;backgr
 .custom-modal-btns { display: flex; justify-content: space-around; gap: 15px; }
 .btn-cancel { background: #e0e0e0; color: #333; padding: 12px; border: none; border-radius: 8px; flex: 1; font-weight: bold; cursor: pointer; }
 .btn-submit { background: #4CAF50; color: white; padding: 12px; border: none; border-radius: 8px; flex: 1; font-weight: bold; cursor: pointer; }
-.motivation-banner { background: #e8f5e9; border: 2px solid #4CAF50; color: #2e7d32; padding: 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; text-align: center; font-size: 18px; animation: pop 0.5s ease-in-out;}
-@keyframes pop { 0% {transform: scale(0.9);} 100% {transform: scale(1);} }
+.motivation-banner { background: #e8f5e9; border: 2px solid #4CAF50; color: #2e7d32; padding: 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; text-align: center; font-size: 18px;}
 </style>
 </head>
 <body>
@@ -110,27 +108,35 @@ let positiveMark = 2.0;
 let negativeMark = 0.25;
 let testCutoff = 35.0;
 
-// अपना रेंडर API URL यहाँ डालें
 const API_BASE_URL = "https://mock-bot-l091.onrender.com"; 
 
 window.onload = async function() {
+    // 🛡️ ANTI-THEFT SECURITY CHECK (लिंक चोरी से बचाना)
+    if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initData) {
+        document.body.innerHTML = `
+            <div style="text-align:center; padding:50px; font-family:sans-serif; background:white; height:100vh;">
+                <h1 style="color:#e53935; font-size:40px;">🚫 Access Denied</h1>
+                <h3 style="color:#333;">यह टेस्ट लिंक सुरक्षित (Secured) है।</h3>
+                <p style="color:#666;">इसे कॉपी करके बाहर ब्राउज़र में नहीं खोला जा सकता। कृपया हमारे आधिकारिक टेलीग्राम बॉट के अंदर जाकर ही टेस्ट दें।</p>
+            </div>`;
+        return;
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get('test_id');
     const savedAnswers = urlParams.get('answers');
 
     if(testId) {
         try {
-            // यहाँ API कॉल में /get_test/ का उपयोग किया गया है, जो api.py के राउट से मेल खाता है।
             let response = await fetch(`${API_BASE_URL}/get_test/${testId}`);
             if(!response.ok) throw new Error("Test not found");
             let testData = await response.json();
             
-            // डेटाबेस से प्राप्त डेटा के अनुसार वेरिएबल सेट करें
             questions = testData.questions;
             positiveMark = testData.positive_mark || 2.0;
             negativeMark = testData.negative_mark || 0.25;
             testCutoff = testData.cutoff || 35.0;
-            time = (testData.time_limit || 15) * 60; // डिफ़ॉल्ट रूप से 15 मिनट
+            time = (testData.time_limit || 15) * 60;
             
             document.getElementById("totalq").innerText = questions.length;
             answers = new Array(questions.length).fill(null);
@@ -147,7 +153,6 @@ window.onload = async function() {
                 loadQuestion();
             }
         } catch (error) {
-            console.error("Error fetching test:", error); // डीबगिंग के लिए कंसोल लॉग
             document.getElementById("exam").innerHTML = "<h3 style='text-align:center;color:red;padding:20px;'>⚠️ टेस्ट लोड करने में त्रुटि। कृपया लिंक जांचें।</h3>";
         }
     } else {
@@ -169,13 +174,13 @@ function startTimer() {
 function loadQuestion(){
     if (questions.length === 0) return;
     let q = questions[current]; 
-    let html = "<div class='qcard'><div class='qtitle'>Q"+(current+1)+". "+q.question+"</div>"; // यहाँ q.q की जगह q.question किया गया है, आपकी JSON के अनुसार
+    let html = "<div class='qcard'><div class='qtitle'>Q"+(current+1)+". "+q.question+"</div>";
     
     if(q.img && q.img !== "") {
         html += "<div style='text-align:center; padding:10px;'><img src='"+q.img+"' style='max-width:100%; border-radius:8px; border: 1px solid #ddd;'></div>";
     }
 
-    q.options.forEach((opt,i)=>{ // यहाँ q.o की जगह q.options किया गया है
+    q.options.forEach((opt,i)=>{ 
         let isSelected = answers[current] === i ? "selected" : ""; 
         html+="<div class='option "+isSelected+"' onclick='selectOption(this,"+i+")'><div class='circle'></div>"+opt+"</div>"; 
     });
@@ -212,7 +217,6 @@ function executeSubmit(isFromHistory = false){
 
     let correct=0,incorrect=0,unattempted=0;
     questions.forEach((q,i)=>{ 
-        // answer इंडेक्स खोजने के लिए
         let correctIndex = q.options.indexOf(q.answer);
         if(answers[i]==null) unattempted++; 
         else if(answers[i] === correctIndex) correct++; 
@@ -223,14 +227,27 @@ function executeSubmit(isFromHistory = false){
     let maxScore = questions.length * positiveMark; 
     let accuracy = ((correct/(correct+incorrect||1))*100).toFixed(2);
 
-    if(!isReviewMode && window.Telegram && window.Telegram.WebApp) {
-        let tgData = {
-            type: "TEST_RESULT",
-            score: score.toFixed(2),
-            accuracy: accuracy,
-            answers: answers
-        };
-        window.Telegram.WebApp.sendData(JSON.stringify(tgData));
+    if(!isReviewMode) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const uid = urlParams.get('uid');
+        const name = urlParams.get('name');
+        const testId = urlParams.get('test_id');
+        const testName = document.querySelector('.qtitle') ? "Mock Test" : "Test";
+        
+        if(uid && name) {
+            fetch(`${API_BASE_URL}/submit_score`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    user_id: parseInt(uid),
+                    first_name: name,
+                    test_id: testId,
+                    test_name: testName,
+                    score: parseFloat(score),
+                    accuracy: accuracy
+                })
+            }).catch(err => console.log(err));
+        }
     }
 
     generateResultScreen(score, maxScore, correct, incorrect, unattempted, accuracy);
@@ -278,6 +295,5 @@ function generateResultScreen(score, maxScore, correct, incorrect, unattempted, 
     window.scrollTo(0, 0);
 }
 </script>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
 </body>
 </html>
