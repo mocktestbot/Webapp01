@@ -8,7 +8,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-/* आपका दिया हुआ पूरा CSS कोड यहाँ रहेगा, इसमें कोई बदलाव नहीं है */
 body{margin:0;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f4f7f6}
 .topbar{background:linear-gradient(135deg, #00bfff, #008ccc);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;font-weight:bold;box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
 .timer-box{background:#fff;color:#e53935;padding:5px 12px;border-radius:20px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
@@ -98,7 +97,6 @@ body{margin:0;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;backgr
 <div class="float-btn" id="menu-float-btn" onclick="togglePalette()">≡</div>
 
 <script>
-// 🌟 डायनामिक वेरिएबल्स 🌟
 let questions = []; 
 let current = 0; 
 let answers = []; 
@@ -108,47 +106,48 @@ let time = 0;
 let timerInterval;
 let isReviewMode = false;
 
-// एडमिन द्वारा सेट की गई वैल्यूज़
 let positiveMark = 2.0;
 let negativeMark = 0.25;
 let testCutoff = 35.0;
 
-// अपना रेंडर API URL यहाँ डालें जब वह लाइव हो जाए
+// अपना रेंडर API URL यहाँ डालें
 const API_BASE_URL = "https://mock-bot-l091.onrender.com"; 
 
 window.onload = async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get('test_id');
-    const savedAnswers = urlParams.get('answers'); // अगर हिस्ट्री से आ रहा है
+    const savedAnswers = urlParams.get('answers');
 
     if(testId) {
         try {
-            let response = await fetch(`${API_BASE_URL}/api/test/${testId}`);
+            // यहाँ API कॉल में /get_test/ का उपयोग किया गया है, जो api.py के राउट से मेल खाता है।
+            let response = await fetch(`${API_BASE_URL}/get_test/${testId}`);
             if(!response.ok) throw new Error("Test not found");
             let testData = await response.json();
             
+            // डेटाबेस से प्राप्त डेटा के अनुसार वेरिएबल सेट करें
             questions = testData.questions;
-            positiveMark = testData.positive_mark;
-            negativeMark = testData.negative_mark;
-            testCutoff = testData.cutoff;
-            time = testData.time_limit * 60; 
+            positiveMark = testData.positive_mark || 2.0;
+            negativeMark = testData.negative_mark || 0.25;
+            testCutoff = testData.cutoff || 35.0;
+            time = (testData.time_limit || 15) * 60; // डिफ़ॉल्ट रूप से 15 मिनट
             
             document.getElementById("totalq").innerText = questions.length;
             answers = new Array(questions.length).fill(null);
             status = new Array(questions.length).fill("notvisited");
 
             if(savedAnswers) {
-                // रिव्यू मोड (डिटेल एनालिसिस)
                 isReviewMode = true;
                 submitted = true;
                 answers = JSON.parse(savedAnswers);
                 document.getElementById("top-title").innerText = "📊 Test Analysis";
-                executeSubmit(true); // सीधे रिज़ल्ट स्क्रीन दिखाएं
+                executeSubmit(true);
             } else {
                 startTimer();
                 loadQuestion();
             }
         } catch (error) {
+            console.error("Error fetching test:", error); // डीबगिंग के लिए कंसोल लॉग
             document.getElementById("exam").innerHTML = "<h3 style='text-align:center;color:red;padding:20px;'>⚠️ टेस्ट लोड करने में त्रुटि। कृपया लिंक जांचें।</h3>";
         }
     } else {
@@ -168,15 +167,15 @@ function startTimer() {
 }
 
 function loadQuestion(){
+    if (questions.length === 0) return;
     let q = questions[current]; 
-    let html = "<div class='qcard'><div class='qtitle'>Q"+(current+1)+". "+q.q+"</div>";
+    let html = "<div class='qcard'><div class='qtitle'>Q"+(current+1)+". "+q.question+"</div>"; // यहाँ q.q की जगह q.question किया गया है, आपकी JSON के अनुसार
     
-    // इमेज सपोर्ट
     if(q.img && q.img !== "") {
         html += "<div style='text-align:center; padding:10px;'><img src='"+q.img+"' style='max-width:100%; border-radius:8px; border: 1px solid #ddd;'></div>";
     }
 
-    q.o.forEach((opt,i)=>{ 
+    q.options.forEach((opt,i)=>{ // यहाँ q.o की जगह q.options किया गया है
         let isSelected = answers[current] === i ? "selected" : ""; 
         html+="<div class='option "+isSelected+"' onclick='selectOption(this,"+i+")'><div class='circle'></div>"+opt+"</div>"; 
     });
@@ -212,14 +211,18 @@ function executeSubmit(isFromHistory = false){
     clearInterval(timerInterval);
 
     let correct=0,incorrect=0,unattempted=0;
-    questions.forEach((q,i)=>{ if(answers[i]==null)unattempted++; else if(answers[i]==q.a)correct++; else incorrect++; });
+    questions.forEach((q,i)=>{ 
+        // answer इंडेक्स खोजने के लिए
+        let correctIndex = q.options.indexOf(q.answer);
+        if(answers[i]==null) unattempted++; 
+        else if(answers[i] === correctIndex) correct++; 
+        else incorrect++; 
+    });
     
-    // डायनामिक मार्किंग से स्कोर
     let score = (correct * positiveMark) - (incorrect * negativeMark); 
     let maxScore = questions.length * positiveMark; 
     let accuracy = ((correct/(correct+incorrect||1))*100).toFixed(2);
 
-    // बॉट को रिज़ल्ट भेजना (सिर्फ नए टेस्ट के लिए)
     if(!isReviewMode && window.Telegram && window.Telegram.WebApp) {
         let tgData = {
             type: "TEST_RESULT",
@@ -244,7 +247,6 @@ function generateResultScreen(score, maxScore, correct, incorrect, unattempted, 
 
     let html = "";
     
-    // कट-ऑफ मोटिवेशन लाइन
     if(score >= testCutoff) {
         html += "<div class='motivation-banner'>🎉 शाबाश! आपने कट-ऑफ ("+testCutoff+") पार कर ली है, वर्दी अब दूर नहीं! 🇮🇳</div><br>";
     } else {
@@ -254,16 +256,20 @@ function generateResultScreen(score, maxScore, correct, incorrect, unattempted, 
     html += "<div class='result-card'><b>Your Score: "+score.toFixed(2)+" / "+maxScore+"</b><hr style='border:0;border-top:1px solid #eee;margin:15px 0;'><div style='display:flex; justify-content:space-around; text-align:center;'><div><span style='color:#4CAF50;font-size:24px;font-weight:bold;'>"+correct+"</span><br><small>Correct</small></div><div><span style='color:#e53935;font-size:24px;font-weight:bold;'>"+incorrect+"</span><br><small>Wrong</small></div><div><span style='color:#9e9e9e;font-size:24px;font-weight:bold;'>"+unattempted+"</span><br><small>Skipped</small></div></div><br><b>Accuracy: "+accuracy+"%</b></div><div style='max-width:300px; margin:0 auto;'><canvas id='chart'></canvas></div><h3 style='margin-top:30px; border-bottom:2px solid #ccc; padding-bottom:5px;'>Full Analysis</h3>";
 
     questions.forEach((q,i)=>{
-        let userAns=answers[i]; let boxClass="analysis-box"; let statusText = "";
+        let userAns=answers[i]; 
+        let boxClass="analysis-box"; 
+        let statusText = "";
+        let correctIndex = q.options.indexOf(q.answer);
+
         if(userAns==null){ boxClass+=" unattempted-box"; statusText = "<span style='color:gray;'>Not Attempted</span>"; }
-        else if(userAns==q.a){ boxClass+=" correct-box"; statusText = "<span class='correct'>Correct ( +"+positiveMark+" )</span>"; }
+        else if(userAns === correctIndex){ boxClass+=" correct-box"; statusText = "<span class='correct'>Correct ( +"+positiveMark+" )</span>"; }
         else{ boxClass+=" wrong-box"; statusText = "<span class='wrong'>Incorrect ( -"+negativeMark+" )</span>"; }
 
         html+="<div class='"+boxClass+"'><div style='display:flex; justify-content:space-between;'><b>Q"+(i+1)+".</b> "+statusText+"</div><br>";
         
         if(q.img && q.img !== "") html += "<img src='"+q.img+"' style='max-width:100%; border-radius:8px;'><br>";
         
-        html += "<b>"+q.q+"</b><br><br>Your Answer: "+(userAns!=null ? "<b>"+q.o[userAns]+"</b>" : "--")+"<br>Correct Answer: <span class='correct'>"+q.o[q.a]+"</span><hr style='border:0;border-top:1px dashed #ccc;'><b>Explanation:</b> "+(q.e ? q.e : "No explanation provided.")+"</div>";
+        html += "<b>"+q.question+"</b><br><br>Your Answer: "+(userAns!=null ? "<b>"+q.options[userAns]+"</b>" : "--")+"<br>Correct Answer: <span class='correct'>"+q.answer+"</span><hr style='border:0;border-top:1px dashed #ccc;'><b>Explanation:</b> "+(q.explanation ? q.explanation : "No explanation provided.")+"</div>";
     });
     
     document.getElementById("result").innerHTML=html;
