@@ -282,9 +282,8 @@ function generateResultScreen(score, maxScore, correct, incorrect, unattempted, 
         else if(userAns === correctIndex){ boxClass+=" correct-box"; statusText = "<span class='correct'>Correct ( +"+positiveMark+" )</span>"; }
         else{ boxClass+=" wrong-box"; statusText = "<span class='wrong'>Incorrect ( -"+negativeMark+" )</span>"; }
 
-        html+="<div class='"+boxClass+"'><div style='display:flex; justify-content:space-between;'><b>Q"+(i+1)+".</b> "+statusText+"</div><br>";
-        if(q.img && q.img !== "") html += "<img src='"+q.img+"' style='max-width:100%; border-radius:8px;'><br>";
-        html += "<b>"+q.question+"</b><br><br>Your Answer: "+(userAns!=null ? "<b>"+q.options[userAns]+"</b>" : "--")+"<br>Correct Answer: <span class='correct'>"+q.answer+"</span><hr style='border:0;border-top:1px dashed #ccc;'><b>Explanation:</b> "+(q.explanation ? q.explanation : "No explanation provided.")+"</div>";
+        html += "<b>"+q.question+"</b><br><br>Your Answer: "+(userAns!=null ? "<b>"+q.options[userAns]+"</b>" : "--")+"<br>Correct Answer: <span class='correct'>"+q.answer+"</span><hr style='border:0;border-top:1px dashed #ccc;'><div style='white-space: pre-wrap; line-height: 1.6;'><b>Explanation:</b><br>"+(q.explanation ? q.explanation : "No explanation provided.")+"</div></div>";
+
     });
     
     // 📢 यहाँ अपना चैनल लिंक डालें
