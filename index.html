@@ -206,9 +206,7 @@ body{
     border:1px solid #e1e7eb;
 }
 
-/* =========================
-   BOTTOM NAVIGATION
-========================= */
+/* BOTTOM BUTTONS */
 
 .button-row{
     position:fixed;
@@ -271,9 +269,7 @@ body{
     cursor:pointer;
 }
 
-/* =========================
-   PALETTE
-========================= */
+/* PALETTE */
 
 .palette{
     position:fixed;
@@ -342,9 +338,7 @@ body{
     color:#fff;
 }
 
-/* =========================
-   LOADING / ERROR
-========================= */
+/* LOADING / ERROR */
 
 .loading-card,
 .error-card{
@@ -381,9 +375,7 @@ body{
     font-weight:800;
 }
 
-/* =========================
-   SUBMIT MODAL
-========================= */
+/* SUBMIT MODAL */
 
 .modal-overlay{
     position:fixed;
@@ -440,9 +432,7 @@ body{
     color:#fff;
 }
 
-/* =========================
-   RESULT
-========================= */
+/* RESULT */
 
 .result{
     display:none;
@@ -534,12 +524,30 @@ body{
     font-weight:800;
 }
 
-/* =========================
-   SOLUTION NAVIGATOR
-========================= */
+/* FULL SOLUTION BUTTON */
+
+.full-solution-btn{
+    width:100%;
+    margin-top:18px;
+    border:0;
+    border-radius:14px;
+    padding:15px 18px;
+    background:linear-gradient(135deg,#00bff3,#008fd1);
+    color:#fff;
+    font-size:16px;
+    font-weight:900;
+    box-shadow:0 6px 18px rgba(0,150,210,.22);
+    cursor:pointer;
+}
+
+.full-solution-btn:active{
+    transform:scale(.98);
+}
+
+/* SOLUTION */
 
 .solution-section{
-    margin-top:20px;
+    margin-top:5px;
 }
 
 .solution-heading{
@@ -702,9 +710,7 @@ body{
     word-break:break-word;
 }
 
-/* =========================
-   SOLUTION PREVIOUS / NEXT
-========================= */
+/* SOLUTION NAVIGATION */
 
 .solution-navigation{
     display:flex;
@@ -738,6 +744,24 @@ body{
     font-weight:800;
 }
 
+/* BACK TO SCORECARD */
+
+.back-scorecard-btn{
+    width:100%;
+    margin-bottom:15px;
+    border:0;
+    border-radius:13px;
+    padding:14px 18px;
+    background:#fff;
+    color:#008dcc;
+    border:2px solid #08b6e6;
+    font-size:15px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+/* PROMO */
+
 .promo-banner{
     margin-top:22px;
     padding:20px 16px;
@@ -769,9 +793,7 @@ body{
     font-weight:900;
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:420px){
 
@@ -808,9 +830,9 @@ body{
 <body>
 
 <div class="topbar">
+
     <div
         class="top-title"
-        id="top-title"
         onclick="togglePalette()"
     >
         ☰ Practice Mock
@@ -822,12 +844,15 @@ body{
     >
         00:00
     </div>
+
 </div>
+
 
 <div
     class="qheader"
     id="question-header"
 >
+
     <div>
         Question :
         <span id="qno">1</span>
@@ -841,18 +866,26 @@ body{
     >
         --
     </div>
+
 </div>
 
+
 <div id="exam">
+
     <div class="loading-card">
         ⏳ टेस्ट लोड हो रहा है...
     </div>
+
 </div>
+
+
+<!-- FIXED BOTTOM BUTTONS -->
 
 <div
     class="button-row"
     id="top-btn-row"
 >
+
     <button
         class="action-btn"
         onclick="previousQuestion()"
@@ -880,7 +913,9 @@ body{
     >
         Submit
     </button>
+
 </div>
+
 
 <div
     class="float-btn"
@@ -890,10 +925,14 @@ body{
     ≡
 </div>
 
+
+<!-- QUESTION PALETTE -->
+
 <div
     class="palette"
     id="palette"
 >
+
     <button
         class="close-palette"
         onclick="togglePalette()"
@@ -906,12 +945,17 @@ body{
     </h3>
 
     <div id="palette-buttons"></div>
+
 </div>
+
+
+<!-- SUBMIT CONFIRM -->
 
 <div
     class="modal-overlay"
     id="submit-confirm-modal"
 >
+
     <div class="modal-box">
 
         <h3>
@@ -939,8 +983,13 @@ body{
             </button>
 
         </div>
+
     </div>
+
 </div>
+
+
+<!-- RESULT -->
 
 <div
     class="result"
@@ -963,7 +1012,6 @@ let answers = [];
 let status = [];
 
 let submitted = false;
-let isReviewMode = false;
 
 let time = 0;
 let timerInterval = null;
@@ -985,7 +1033,7 @@ const API_BASE_URL =
 
 
 /* ============================================================
-   HELPERS
+   HELPER
 ============================================================ */
 
 function $(id){
@@ -993,7 +1041,7 @@ function $(id){
 }
 
 
-function firstValue(obj, keys){
+function firstValue(obj,keys){
 
     if(
         !obj ||
@@ -1015,6 +1063,7 @@ function firstValue(obj, keys){
             obj[key] !== undefined &&
             String(obj[key]).trim() !== ""
         ){
+
             return obj[key];
         }
     }
@@ -1046,7 +1095,7 @@ function escapeAttribute(value){
 
 
 /* ============================================================
-   CURRENT TEST ID
+   TEST ID
 ============================================================ */
 
 function getCurrentTestId(){
@@ -1064,6 +1113,7 @@ function getCurrentTestId(){
             ""
         ).trim();
 
+
     if(id){
 
         sessionStorage.setItem(
@@ -1073,6 +1123,7 @@ function getCurrentTestId(){
 
         return id;
     }
+
 
     return (
         sessionStorage.getItem(
@@ -1155,7 +1206,7 @@ function getQuestionImage(q){
 
 function getSectionName(
     q,
-    parentSection = ""
+    parentSection=""
 ){
 
     return firstValue(
@@ -1188,6 +1239,7 @@ function getOptions(q){
     if(
         Array.isArray(q.options)
     ){
+
         return q.options;
     }
 
@@ -1208,32 +1260,39 @@ function getOptions(q){
         if(
             Array.isArray(q[key])
         ){
+
             return q[key];
         }
     }
 
 
     const keySets = [
+
         ["A","B","C","D"],
+
         ["a","b","c","d"],
+
         [
             "optionA",
             "optionB",
             "optionC",
             "optionD"
         ],
+
         [
             "option_a",
             "option_b",
             "option_c",
             "option_d"
         ],
+
         [
             "option1",
             "option2",
             "option3",
             "option4"
         ]
+
     ];
 
 
@@ -1277,7 +1336,7 @@ function getOptions(q){
 
 
 /* ============================================================
-   CORRECT ANSWER INDEX
+   CORRECT ANSWER
 ============================================================ */
 
 function normalizeCorrectIndex(
@@ -1289,6 +1348,7 @@ function normalizeCorrectIndex(
         !q ||
         !options.length
     ){
+
         return -1;
     }
 
@@ -1321,6 +1381,7 @@ function normalizeCorrectIndex(
             n >= 0 &&
             n < options.length
         ){
+
             return n;
         }
 
@@ -1329,6 +1390,7 @@ function normalizeCorrectIndex(
             n >= 1 &&
             n <= options.length
         ){
+
             return n - 1;
         }
     }
@@ -1361,6 +1423,7 @@ function normalizeCorrectIndex(
                 index >= 0 &&
                 index < options.length
             ){
+
                 return index;
             }
         }
@@ -1378,6 +1441,7 @@ function normalizeCorrectIndex(
                 numeric >= 0 &&
                 numeric < options.length
             ){
+
                 return numeric;
             }
 
@@ -1386,6 +1450,7 @@ function normalizeCorrectIndex(
                 numeric >= 1 &&
                 numeric <= options.length
             ){
+
                 return numeric - 1;
             }
         }
@@ -1428,6 +1493,7 @@ function normalizeCorrectIndex(
 
 
         if(index >= 0){
+
             return index;
         }
     }
@@ -1448,6 +1514,7 @@ function isQuestionRecord(obj){
         typeof obj !== "object" ||
         Array.isArray(obj)
     ){
+
         return false;
     }
 
@@ -1467,14 +1534,15 @@ function isQuestionRecord(obj){
 
 function collectQuestions(
     node,
-    output = [],
-    parentSection = ""
+    output=[],
+    parentSection=""
 ){
 
     if(
         node === null ||
         node === undefined
     ){
+
         return output;
     }
 
@@ -1495,6 +1563,7 @@ function collectQuestions(
 
 
     if(typeof node !== "object"){
+
         return output;
     }
 
@@ -1502,12 +1571,15 @@ function collectQuestions(
     if(isQuestionRecord(node)){
 
         output.push({
-            raw: node,
+
+            raw:node,
+
             sectionName:
                 getSectionName(
                     node,
                     parentSection
                 )
+
         });
 
         return output;
@@ -1539,6 +1611,7 @@ function collectQuestions(
                     currentSection
                 );
             }
+
         }
     );
 
@@ -1594,7 +1667,7 @@ function normalizeQuestions(
                                 "number"
                             ]
                         ) ||
-                        index + 1,
+                        index+1,
 
                     question:
                         getQuestionText(q),
@@ -1605,9 +1678,7 @@ function normalizeQuestions(
 
                     answer:
                         correctIndex >= 0
-                            ? options[
-                                correctIndex
-                              ]
+                            ? options[correctIndex]
                             : firstValue(
                                 q,
                                 [
@@ -1647,6 +1718,7 @@ function plainText(value){
         value === null ||
         value === undefined
     ){
+
         return "";
     }
 
@@ -1656,6 +1728,7 @@ function plainText(value){
 
 
     if(!source.trim()){
+
         return "";
     }
 
@@ -1707,6 +1780,7 @@ function rich(value){
         value === null ||
         value === undefined
     ){
+
         return "";
     }
 
@@ -1716,6 +1790,7 @@ function rich(value){
 
 
     if(!source.trim()){
+
         return "";
     }
 
@@ -1836,8 +1911,10 @@ function rich(value){
                                 );
                             }
                         }
+
                     }
                 );
+
             }
         );
 
@@ -1860,7 +1937,7 @@ function rich(value){
 
 
 /* ============================================================
-   JSON LOAD
+   LOCAL JSON
 ============================================================ */
 
 async function loadJSONFile(){
@@ -1892,13 +1969,20 @@ async function loadJSONFile(){
 
 
 /* ============================================================
-   TEST LOAD
+   TEST DATA LOAD
 ============================================================ */
 
 async function loadTestData(){
 
     const errors = [];
 
+
+    /*
+       IMPORTANT:
+
+       User जिस Test ID से test open करता है,
+       वही ID MongoDB API को भेजी जाती है.
+    */
 
     if(currentTestId){
 
@@ -1930,7 +2014,7 @@ async function loadTestData(){
 
 
                 if(
-                    apiQuestions.length
+                    apiQuestions.length > 0
                 ){
 
                     return data;
@@ -1938,7 +2022,7 @@ async function loadTestData(){
 
 
                 errors.push(
-                    "MongoDB data में questions नहीं मिले"
+                    "MongoDB data में readable questions नहीं मिले"
                 );
 
             }else{
@@ -1953,8 +2037,10 @@ async function loadTestData(){
         }catch(error){
 
             console.error(
+                "MongoDB error:",
                 error
             );
+
 
             errors.push(
                 "MongoDB: "+
@@ -1963,6 +2049,11 @@ async function loadTestData(){
         }
     }
 
+
+    /*
+       MongoDB unavailable होने पर
+       same-folder 05.json fallback रहेगा.
+    */
 
     try{
 
@@ -1977,7 +2068,7 @@ async function loadTestData(){
 
 
         if(
-            localQuestions.length
+            localQuestions.length > 0
         ){
 
             return localData;
@@ -1985,15 +2076,17 @@ async function loadTestData(){
 
 
         errors.push(
-            "05.json में questions नहीं मिले"
+            "05.json में readable questions नहीं मिले"
         );
 
 
     }catch(error){
 
         console.error(
+            "05.json error:",
             error
         );
+
 
         errors.push(
             "05.json: "+
@@ -2148,7 +2241,11 @@ function showError(
 
 
     $("exam").innerHTML = `
-        <div class="error-card notranslate" translate="no">
+
+        <div
+            class="error-card notranslate"
+            translate="no"
+        >
 
             <div class="error-icon">
                 ⚠️
@@ -2170,12 +2267,13 @@ function showError(
             </button>
 
         </div>
+
     `;
 }
 
 
 /* ============================================================
-   PAGE LOAD
+   INITIALIZE
 ============================================================ */
 
 window.onload =
@@ -2206,7 +2304,9 @@ async function(){
             );
 
 
-        if(!questions.length){
+        if(
+            !questions.length
+        ){
 
             throw new Error(
                 "No readable questions found"
@@ -2266,6 +2366,13 @@ async function(){
         $("totalq").innerText =
             questions.length;
 
+
+        /*
+           IMPORTANT FIX:
+           सभी answers शुरुआत में null रहेंगे.
+           इसलिए Q1 का पहला option
+           automatically selected नहीं होगा.
+        */
 
         answers =
             new Array(
@@ -2330,6 +2437,7 @@ function startTimer(){
                         timerInterval
                     );
 
+
                     executeSubmit();
                 }
 
@@ -2385,14 +2493,14 @@ function updateTimerUI(){
 
 /* ============================================================
    LOAD QUESTION
-   IMPORTANT:
-   null को Number(null)=0 नहीं किया गया है.
-   इसलिए पहला option automatically SELECT नहीं होगा.
 ============================================================ */
 
 function loadQuestion(){
 
-    if(!questions.length){
+    if(
+        !questions.length
+    ){
+
         return;
     }
 
@@ -2412,7 +2520,12 @@ function loadQuestion(){
 
 
     let html = `
-        <div class="qcard notranslate" translate="no">
+
+        <div
+            class="qcard notranslate"
+            translate="no"
+        >
+
     `;
 
 
@@ -2424,14 +2537,17 @@ function loadQuestion(){
     ){
 
         html += `
+
             <div class="section-name">
                 📚 ${rich(q.sectionName)}
             </div>
+
         `;
     }
 
 
     html += `
+
         <div class="qtitle">
 
             <span class="qnumber">
@@ -2443,6 +2559,7 @@ function loadQuestion(){
             </span>
 
         </div>
+
     `;
 
 
@@ -2452,12 +2569,16 @@ function loadQuestion(){
     ){
 
         html += `
+
             <div class="question-image">
+
                 <img
                     src="${escapeAttribute(q.img)}"
                     alt="Question Image"
                 >
+
             </div>
+
         `;
     }
 
@@ -2466,13 +2587,10 @@ function loadQuestion(){
         (option,index) => {
 
             /*
-             * FIX:
-             * पहले code में Number(null) === 0
-             * होने के कारण Q1 का पहला option
-             * automatic selected दिख रहा था.
-             *
-             * अब explicit null/undefined check है.
-             */
+               IMPORTANT FIX:
+               null को Number(null)=0
+               नहीं बनाया जाएगा.
+            */
 
             const isSelected =
                 answers[current] !== null &&
@@ -2484,6 +2602,7 @@ function loadQuestion(){
 
 
             html += `
+
                 <div
                     class="option notranslate ${isSelected ? "selected" : ""}"
                     translate="no"
@@ -2497,6 +2616,7 @@ function loadQuestion(){
                     </div>
 
                 </div>
+
             `;
         }
     );
@@ -2535,6 +2655,7 @@ function selectOption(
 ){
 
     if(submitted){
+
         return;
     }
 
@@ -2569,7 +2690,7 @@ function selectOption(
 
 
 /* ============================================================
-   NAVIGATION
+   SAVE NEXT
 ============================================================ */
 
 function saveNext(){
@@ -2605,6 +2726,10 @@ function saveNext(){
 }
 
 
+/* ============================================================
+   PREVIOUS
+============================================================ */
+
 function previousQuestion(){
 
     if(
@@ -2617,6 +2742,10 @@ function previousQuestion(){
     }
 }
 
+
+/* ============================================================
+   REVIEW
+============================================================ */
 
 function markReview(){
 
@@ -2662,12 +2791,14 @@ function updatePalette(){
         (_,index) => {
 
             html += `
+
                 <button
                     class="question-btn ${status[index]}"
                     onclick="goQuestion(${index})"
                 >
                     ${index+1}
                 </button>
+
             `;
         }
     );
@@ -2689,6 +2820,7 @@ function goQuestion(index){
         index < 0 ||
         index >= questions.length
     ){
+
         return;
     }
 
@@ -2714,6 +2846,7 @@ function goQuestion(index){
 function showSubmitConfirm(){
 
     if(submitted){
+
         return;
     }
 
@@ -2733,12 +2866,13 @@ function hideSubmitConfirm(){
 
 
 /* ============================================================
-   SUBMIT
+   SUBMIT TEST
 ============================================================ */
 
 function executeSubmit(){
 
     if(submitted){
+
         return;
     }
 
@@ -2836,7 +2970,7 @@ function executeSubmit(){
 
 
 /* ============================================================
-   BACKEND SCORE
+   SUBMIT SCORE BACKEND
 ============================================================ */
 
 async function submitScoreToBackend(
@@ -2868,6 +3002,7 @@ async function submitScoreToBackend(
         !name ||
         !testId
     ){
+
         return;
     }
 
@@ -2905,6 +3040,7 @@ async function submitScoreToBackend(
 
 
     if(!testName){
+
         testName =
             "Mock Test";
     }
@@ -2916,10 +3052,12 @@ async function submitScoreToBackend(
             `${API_BASE_URL}/submit_score`,
             {
                 method:"POST",
+
                 headers:{
                     "Content-Type":
                         "application/json"
                 },
+
                 body:
                     JSON.stringify({
 
@@ -2947,6 +3085,7 @@ async function submitScoreToBackend(
                             parseFloat(
                                 accuracy
                             )
+
                     })
             }
         );
@@ -2963,6 +3102,9 @@ async function submitScoreToBackend(
 
 /* ============================================================
    RESULT SCREEN
+   पहले केवल SCORECARD दिखेगा.
+   Solution तभी खुलेगा जब user
+   Full Solution button दबाएगा.
 ============================================================ */
 
 function generateResultScreen(
@@ -3008,165 +3150,238 @@ function generateResultScreen(
 
     $("result").innerHTML = `
 
-        <div class="result-summary">
+        <!-- SCORECARD -->
 
-            <div class="score-title">
-                YOUR FINAL SCORE
-            </div>
+        <div
+            id="scorecard-view"
+            class="notranslate"
+            translate="no"
+        >
 
-            <div class="score-value">
-                ${score.toFixed(2)}
-                /
-                ${maxScore}
-            </div>
+            <div class="result-summary">
 
-            <div class="stats-grid">
-
-                <div class="stat correct-stat">
-                    <span class="stat-number">
-                        ${correct}
-                    </span>
-                    <span class="stat-label">
-                        Correct
-                    </span>
+                <div class="score-title">
+                    YOUR FINAL SCORE
                 </div>
 
-                <div class="stat wrong-stat">
-                    <span class="stat-number">
-                        ${incorrect}
-                    </span>
-                    <span class="stat-label">
-                        Wrong
-                    </span>
+
+                <div class="score-value">
+
+                    ${score.toFixed(2)}
+                    /
+                    ${maxScore}
+
                 </div>
 
-                <div class="stat skip-stat">
-                    <span class="stat-number">
-                        ${unattempted}
-                    </span>
-                    <span class="stat-label">
-                        Skipped
-                    </span>
+
+                <div class="stats-grid">
+
+                    <div class="stat correct-stat">
+
+                        <span class="stat-number">
+                            ${correct}
+                        </span>
+
+                        <span class="stat-label">
+                            Correct
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat wrong-stat">
+
+                        <span class="stat-number">
+                            ${incorrect}
+                        </span>
+
+                        <span class="stat-label">
+                            Wrong
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat skip-stat">
+
+                        <span class="stat-number">
+                            ${unattempted}
+                        </span>
+
+                        <span class="stat-label">
+                            Skipped
+                        </span>
+
+                    </div>
+
                 </div>
 
-            </div>
 
-            <div class="chart-wrap">
-                <canvas id="resultChart"></canvas>
-            </div>
+                <div class="chart-wrap">
 
-            ${
-                passed
-                    ? `
-                        <div class="pass-banner">
-                            🎉 शानदार! आपने ${testCutoff} की कट-ऑफ पार कर ली।
-                        </div>
+                    <canvas
+                        id="resultChart"
+                    ></canvas>
+
+                </div>
+
+
+                ${
+                    passed
+                    ?
                     `
-                    : `
-                        <div class="fail-banner">
-                            ⚠️ स्कोर ${testCutoff} की कट-ऑफ से कम है।
-                            फिर से अभ्यास करें।
-                        </div>
+                    <div class="pass-banner">
+                        🎉 शानदार! आपने ${testCutoff} की कट-ऑफ पार कर ली।
+                    </div>
                     `
-            }
+                    :
+                    `
+                    <div class="fail-banner">
+                        ⚠️ स्कोर ${testCutoff} की कट-ऑफ से कम है।
+                        फिर से अभ्यास करें।
+                    </div>
+                    `
+                }
 
-            <div
-                style="
-                    color:#777;
-                    font-size:13px;
-                    font-weight:700;
-                "
-            >
-                Accuracy :
-                <strong style="color:#008dcc">
-                    ${accuracy}%
-                </strong>
+
+                <div
+                    style="
+                        color:#777;
+                        font-size:13px;
+                        font-weight:700;
+                    "
+                >
+
+                    Accuracy :
+
+                    <strong
+                        style="color:#008dcc"
+                    >
+                        ${accuracy}%
+                    </strong>
+
+                </div>
+
+
+                <!-- FULL SOLUTION BUTTON -->
+
+                <button
+                    class="full-solution-btn"
+                    onclick="openFullSolution()"
+                >
+                    📖 Full Solution देखें
+                </button>
+
             </div>
 
-        </div>
 
-
-        <div class="solution-section">
-
-            <div class="solution-heading">
+            <div class="promo-banner">
 
                 <h3>
-                    📖 Complete Solution
+                    🚀 और नए Mock Tests चाहिए?
                 </h3>
 
-                <div
-                    class="solution-counter"
-                    id="solution-counter"
+                <p>
+                    नए टेस्ट, स्टडी मटेरियल और अपडेट्स के लिए हमारे Telegram Channel से जुड़ें।
+                </p>
+
+                <a
+                    href="https://t.me/+bmzuj2Y68nFmYTc9"
+                    class="promo-btn"
                 >
-                    1 / ${questions.length}
-                </div>
-
-            </div>
-
-
-            <div
-                id="solution-container"
-            ></div>
-
-
-            <div
-                class="solution-navigation"
-            >
-
-                <button
-                    class="solution-nav-btn"
-                    id="solution-prev"
-                    onclick="previousSolution()"
-                >
-                    ← Previous
-                </button>
-
-                <div
-                    class="solution-middle"
-                    id="solution-middle"
-                >
-                    1 / ${questions.length}
-                </div>
-
-                <button
-                    class="solution-nav-btn"
-                    id="solution-next"
-                    onclick="nextSolution()"
-                >
-                    Next →
-                </button>
+                    📢 अभी Channel Join करें
+                </a>
 
             </div>
 
         </div>
 
 
-        <div class="promo-banner">
+        <!-- FULL SOLUTION VIEW -->
 
-            <h3>
-                🚀 और नए Mock Tests चाहिए?
-            </h3>
+        <div
+            id="solution-view"
+            class="notranslate"
+            translate="no"
+            style="display:none"
+        >
 
-            <p>
-                नए टेस्ट, स्टडी मटेरियल और अपडेट्स के लिए हमारे Telegram Channel से जुड़ें।
-            </p>
-
-            <a
-                href="https://t.me/+bmzuj2Y68nFmYTc9"
-                class="promo-btn"
+            <button
+                class="back-scorecard-btn"
+                onclick="showScorecard()"
             >
-                📢 अभी Channel Join करें
-            </a>
+                ← Scorecard पर वापस जाएँ
+            </button>
+
+
+            <div class="solution-section">
+
+                <div class="solution-heading">
+
+                    <h3>
+                        📖 Complete Solution
+                    </h3>
+
+
+                    <div
+                        class="solution-counter"
+                        id="solution-counter"
+                    >
+                        1 / ${questions.length}
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="solution-container"
+                ></div>
+
+
+                <div
+                    class="solution-navigation"
+                >
+
+                    <button
+                        class="solution-nav-btn"
+                        id="solution-prev"
+                        onclick="previousSolution()"
+                    >
+                        ← Previous
+                    </button>
+
+
+                    <div
+                        class="solution-middle"
+                        id="solution-middle"
+                    >
+                        1 / ${questions.length}
+                    </div>
+
+
+                    <button
+                        class="solution-nav-btn"
+                        id="solution-next"
+                        onclick="nextSolution()"
+                    >
+                        Next →
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
+
     `;
 
 
     solutionCurrent = 0;
 
 
-    renderSolution();
-
+    /*
+       Chart केवल scorecard में बनाया जाएगा.
+    */
 
     const canvas =
         $("resultChart");
@@ -3199,6 +3414,7 @@ function generateResultScreen(
 
                 options:{
                     responsive:true,
+
                     plugins:{
                         legend:{
                             position:"bottom"
@@ -3218,8 +3434,89 @@ function generateResultScreen(
 
 
 /* ============================================================
-   SOLUTION RENDERER
-   ONE QUESTION AT A TIME
+   OPEN FULL SOLUTION
+============================================================ */
+
+function openFullSolution(){
+
+    const scorecard =
+        $("scorecard-view");
+
+
+    const solution =
+        $("solution-view");
+
+
+    if(
+        !scorecard ||
+        !solution
+    ){
+
+        return;
+    }
+
+
+    scorecard.style.display =
+        "none";
+
+
+    solution.style.display =
+        "block";
+
+
+    solutionCurrent = 0;
+
+
+    renderSolution();
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* ============================================================
+   BACK TO SCORECARD
+============================================================ */
+
+function showScorecard(){
+
+    const scorecard =
+        $("scorecard-view");
+
+
+    const solution =
+        $("solution-view");
+
+
+    if(
+        !scorecard ||
+        !solution
+    ){
+
+        return;
+    }
+
+
+    solution.style.display =
+        "none";
+
+
+    scorecard.style.display =
+        "block";
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* ============================================================
+   RENDER SOLUTION
 ============================================================ */
 
 function renderSolution(){
@@ -3227,6 +3524,7 @@ function renderSolution(){
     if(
         !questions.length
     ){
+
         return;
     }
 
@@ -3276,9 +3574,12 @@ function renderSolution(){
 
 
     if(isCorrect){
+
         statusText =
             "✅ Correct";
+
     }else if(!isSkipped){
+
         statusText =
             "❌ Wrong";
     }
@@ -3291,14 +3592,12 @@ function renderSolution(){
         (option,index) => {
 
             const isAnswer =
-                index ===
-                correctIndex;
+                index === correctIndex;
 
 
             const isUserWrong =
                 !isSkipped &&
-                Number(userAnswer) ===
-                index &&
+                Number(userAnswer) === index &&
                 !isAnswer;
 
 
@@ -3344,6 +3643,7 @@ function renderSolution(){
                     ${rich(option)}
 
                 </div>
+
             `;
         }
     );
@@ -3358,20 +3658,26 @@ function renderSolution(){
     ){
 
         answerHTML = `
+
             <div class="answer-label">
                 ✅ सही उत्तर
             </div>
 
-            <div class="answer-value notranslate" translate="no">
+            <div
+                class="answer-value notranslate"
+                translate="no"
+            >
                 ${rich(
                     q.options[correctIndex]
                 )}
             </div>
+
         `;
 
     }else{
 
         answerHTML = `
+
             <div class="answer-label">
                 ⚠️ सही उत्तर
             </div>
@@ -3379,6 +3685,7 @@ function renderSolution(){
             <div class="answer-value">
                 सही उत्तर उपलब्ध नहीं है।
             </div>
+
         `;
     }
 
@@ -3391,26 +3698,35 @@ function renderSolution(){
             ? rich(
                 q.explanation
               )
-            : `
+            :
+              `
                 <span style="color:#888">
                     इस प्रश्न की explanation JSON में उपलब्ध नहीं है।
                 </span>
-            `;
+              `;
 
 
     $("solution-container").innerHTML = `
 
-        <div class="solution-card notranslate" translate="no">
+        <div
+            class="solution-card notranslate"
+            translate="no"
+        >
 
             <div class="solution-top">
 
                 <div class="solution-top-row">
 
-                    <div class="solution-question-number">
+                    <div
+                        class="solution-question-number"
+                    >
                         Q${solutionCurrent+1}
                     </div>
 
-                    <div class="solution-status">
+
+                    <div
+                        class="solution-status"
+                    >
                         ${statusText}
                     </div>
 
@@ -3421,60 +3737,67 @@ function renderSolution(){
 
             <div class="solution-body">
 
+
                 ${
                     q.sectionName &&
                     String(
                         q.sectionName
                     ).trim()
-                    ? `
-                        <div
-                            style="
-                                display:inline-block;
-                                margin-bottom:12px;
-                                padding:6px 10px;
-                                border-radius:7px;
-                                background:#e9f8fd;
-                                color:#008dcc;
-                                font-size:11px;
-                                font-weight:900;
-                            "
-                        >
-                            📚 ${rich(q.sectionName)}
-                        </div>
+                    ?
                     `
-                    : ""
+                    <div
+                        style="
+                            display:inline-block;
+                            margin-bottom:12px;
+                            padding:6px 10px;
+                            border-radius:7px;
+                            background:#e9f8fd;
+                            color:#008dcc;
+                            font-size:11px;
+                            font-weight:900;
+                        "
+                    >
+                        📚 ${rich(q.sectionName)}
+                    </div>
+                    `
+                    :
+                    ""
                 }
 
 
-                <div class="solution-question">
-
+                <div
+                    class="solution-question"
+                >
                     ${rich(q.question)}
-
                 </div>
 
 
                 ${
                     q.img &&
                     String(q.img).trim()
-                    ? `
-                        <div
+                    ?
+                    `
+                    <div
+                        style="
+                            text-align:center;
+                            margin:15px 0;
+                        "
+                    >
+
+                        <img
+                            src="${escapeAttribute(q.img)}"
                             style="
-                                text-align:center;
-                                margin:15px 0;
+                                max-width:100%;
+                                height:auto;
+                                border-radius:12px;
+                                border:1px solid #ddd;
                             "
                         >
-                            <img
-                                src="${escapeAttribute(q.img)}"
-                                style="
-                                    max-width:100%;
-                                    height:auto;
-                                    border-radius:12px;
-                                    border:1px solid #ddd;
-                                "
-                            >
-                        </div>
+
+                    </div>
                     `
-                    : ""
+                    :
+                    ""
                 }
 
 
@@ -3506,6 +3829,7 @@ function renderSolution(){
                         💡 Explanation / Solution
                     </div>
 
+
                     <div
                         class="explanation-content notranslate"
                         translate="no"
@@ -3518,6 +3842,7 @@ function renderSolution(){
             </div>
 
         </div>
+
     `;
 
 
@@ -3554,6 +3879,7 @@ function previousSolution(){
     if(
         solutionCurrent <= 0
     ){
+
         return;
     }
 
@@ -3575,6 +3901,7 @@ function nextSolution(){
         solutionCurrent >=
         questions.length-1
     ){
+
         return;
     }
 
@@ -3587,7 +3914,7 @@ function nextSolution(){
 
 
 /* ============================================================
-   KEYBOARD SUPPORT
+   KEYBOARD
 ============================================================ */
 
 document.addEventListener(
@@ -3595,7 +3922,11 @@ document.addEventListener(
     function(event){
 
         if(
+            $("result") &&
             $("result").style.display ===
+            "block" &&
+            $("solution-view") &&
+            $("solution-view").style.display ===
             "block"
         ){
 
@@ -3614,6 +3945,7 @@ document.addEventListener(
                 nextSolution();
             }
         }
+
     }
 );
 </script>
