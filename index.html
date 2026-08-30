@@ -10,8 +10,8 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-body{margin:0;padding-bottom:90px;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f4f7f6}
 .notranslate{translate:none!important}
+body{margin:0;padding-bottom:90px;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f4f7f6}
 .topbar{background:linear-gradient(135deg,#00bfff,#008ccc);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,.1)}
 .timer-box{background:#fff;color:#e53935;padding:5px 12px;border-radius:20px;font-weight:900;box-shadow:0 2px 5px rgba(0,0,0,.1)}
 .button-row{display:flex;justify-content:space-around;align-items:center;gap:5px;padding:10px 5px;background:white;border-top:1px solid #ddd;position:fixed;left:0;right:0;bottom:0;z-index:1500;box-shadow:0 -3px 12px rgba(0,0,0,.08)}
@@ -21,12 +21,13 @@ body{margin:0;padding-bottom:90px;font-family:'Segoe UI',Tahoma,Geneva,Verdana,s
 .qheader{display:flex;justify-content:space-between;padding:15px;font-weight:bold;color:#333}
 .last{color:#e53935;background:#ffebee;padding:4px 8px;border-radius:5px;font-size:12px}
 .qcard{background:white;margin:10px 15px;border-radius:12px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,.05);border-top:4px solid #00bfff}
-.qtitle{padding:18px;background:#fafafa;font-size:17px;color:#333;font-weight:bold;border-bottom:1px solid #eee;overflow-wrap:anywhere}
+.section-name{padding:10px 18px;background:#eefaff;color:#008ccc;font-size:13px;font-weight:bold;border-bottom:1px solid #d9f4ff}
+.qtitle{padding:18px;background:#fafafa;font-size:17px;color:#333;font-weight:bold;border-bottom:1px solid #eee;overflow-wrap:anywhere;line-height:1.55}
 .qtitle img,.option img,.analysis-box img{max-width:100%!important;height:auto!important}
-.option{display:flex;align-items:center;padding:15px;background:white;border-bottom:1px solid #f1f1f1;cursor:pointer;transition:.2s;overflow-wrap:anywhere}
+.option{display:flex;align-items:flex-start;padding:15px;background:white;border-bottom:1px solid #f1f1f1;cursor:pointer;transition:.2s;overflow-wrap:anywhere;line-height:1.5}
 .option:last-child{border-bottom:none}
-.option p{margin:0}
-.circle{width:20px;height:20px;border:2px solid #00bfff;border-radius:50%;margin-right:15px;transition:.2s;flex-shrink:0}
+.option>div:last-child{flex:1;min-width:0}
+.circle{width:20px;height:20px;border:2px solid #00bfff;border-radius:50%;margin-right:15px;transition:.2s;flex-shrink:0;margin-top:1px}
 .option.selected{background:#e0faff;font-weight:bold}
 .option.selected .circle{background:#00bfff;border:4px solid white;box-shadow:0 0 0 2px #00bfff}
 .palette{position:fixed;right:-100%;top:0;width:75%;max-width:300px;height:100%;background:white;overflow:auto;transition:.3s;box-shadow:-5px 0 15px rgba(0,0,0,.1);padding:20px;z-index:1600}
@@ -73,13 +74,6 @@ body{margin:0;padding-bottom:90px;font-family:'Segoe UI',Tahoma,Geneva,Verdana,s
 <div class="timer-box" id="timer">00:00</div>
 </div>
 
-<div class="button-row" id="top-btn-row">
-<button class="action-btn" onclick="previousQuestion()">Back</button>
-<button class="action-btn" style="background:#ff9800" onclick="markReview()">Review</button>
-<button class="action-btn" onclick="saveNext()">Save & Next</button>
-<button class="action-btn submit-btn" onclick="showSubmitConfirm()">Submit</button>
-</div>
-
 <div class="qheader" id="question-header">
 <div>Question : <span id="qno">1</span> / <span id="totalq">0</span></div>
 <div class="last" id="lastMin">--</div>
@@ -87,6 +81,13 @@ body{margin:0;padding-bottom:90px;font-family:'Segoe UI',Tahoma,Geneva,Verdana,s
 
 <div id="exam">
 <h3 style="text-align:center;padding:20px">⏳ टेस्ट लोड हो रहा है...</h3>
+</div>
+
+<div class="button-row" id="top-btn-row">
+<button class="action-btn" onclick="previousQuestion()">Back</button>
+<button class="action-btn" style="background:#ff9800" onclick="markReview()">Review</button>
+<button class="action-btn" onclick="saveNext()">Save & Next</button>
+<button class="action-btn submit-btn" onclick="showSubmitConfirm()">Submit</button>
 </div>
 
 <div class="palette" id="palette">
@@ -129,7 +130,7 @@ const API_BASE_URL="https://mock-bot-l091.onrender.com";
 
 
 /* ============================================================
-   EXACT TEST ID FROM CLICKED TEST
+   TEST ID
    ============================================================ */
 
 function getCurrentTestId(){
@@ -164,31 +165,746 @@ function getCurrentTestId(){
 
 
 /* ============================================================
-   LOAD TEST DIRECTLY FROM MONGODB API
+   VALUE HELPERS
    ============================================================ */
 
-window.onload=async function(){
+function firstValue(obj,keys){
+
+    if(!obj || typeof obj!=="object"){
+        return "";
+    }
+
+    for(const key of keys){
+
+        if(
+            Object.prototype.hasOwnProperty.call(
+                obj,
+                key
+            ) &&
+            obj[key]!==null &&
+            obj[key]!==undefined &&
+            String(obj[key]).trim()!==""
+        ){
+
+            return obj[key];
+        }
+    }
+
+    return "";
+}
+
+
+function getQuestionText(q){
+
+    return firstValue(
+        q,
+        [
+            "question",
+            "question_text",
+            "questionText",
+            "question_title",
+            "text",
+            "questionName",
+            "title",
+            "q"
+        ]
+    );
+}
+
+
+function getExplanation(q){
+
+    return firstValue(
+        q,
+        [
+            "explanation",
+            "exp",
+            "solution",
+            "solution_text",
+            "solutionText",
+            "answer_explanation",
+            "description"
+        ]
+    );
+}
+
+
+function getImage(q){
+
+    return firstValue(
+        q,
+        [
+            "img",
+            "image",
+            "image_link",
+            "imageLink",
+            "image_url",
+            "imageUrl",
+            "question_image",
+            "questionImage"
+        ]
+    );
+}
+
+
+function getSectionName(q,parentSection=""){
+
+    return firstValue(
+        q,
+        [
+            "sectionName",
+            "section",
+            "subject",
+            "category",
+            "topic"
+        ]
+    ) || parentSection;
+}
+
+
+/* ============================================================
+   OPTIONS NORMALIZER
+   ============================================================ */
+
+function getOptions(q){
+
+    if(!q || typeof q!=="object"){
+        return [];
+    }
+
+
+    if(Array.isArray(q.options)){
+        return q.options;
+    }
+
+
+    const optionKeys=[
+        "option",
+        "choices",
+        "answers",
+        "optionsData"
+    ];
+
+
+    for(const key of optionKeys){
+
+        if(Array.isArray(q[key])){
+            return q[key];
+        }
+
+    }
+
+
+    const possibleKeys=[
+        ["A","B","C","D"],
+        ["a","b","c","d"],
+        ["optionA","optionB","optionC","optionD"],
+        ["option_a","option_b","option_c","option_d"]
+    ];
+
+
+    for(const keys of possibleKeys){
+
+        if(
+            keys.every(
+                key =>
+                    Object.prototype.hasOwnProperty.call(
+                        q,
+                        key
+                    )
+            )
+        ){
+
+            return keys.map(
+                key => q[key]
+            );
+        }
+
+    }
+
+
+    if(
+        q.options &&
+        typeof q.options==="object"
+    ){
+
+        return Object.keys(
+            q.options
+        ).map(
+            key => q.options[key]
+        );
+
+    }
+
+
+    return [];
+}
+
+
+/* ============================================================
+   CORRECT ANSWER NORMALIZER
+   ============================================================ */
+
+function normalizeCorrectIndex(
+    q,
+    options
+){
+
+    if(
+        !q ||
+        !options.length
+    ){
+        return -1;
+    }
+
+
+    const raw=
+        firstValue(
+            q,
+            [
+                "correct",
+                "correctIndex",
+                "correct_answer",
+                "correctAnswer",
+                "answerIndex",
+                "rightAnswer"
+            ]
+        );
+
+
+    /*
+     * Existing JSON format:
+     *
+     * correct: 0
+     * correct: 1
+     * correct: 2
+     * correct: 3
+     *
+     * इसलिए numeric value को 0-based ही रखा गया है.
+     */
+
+    if(
+        typeof raw==="number" &&
+        Number.isFinite(raw)
+    ){
+
+        const n=
+            Math.trunc(raw);
+
+        if(
+            n>=0 &&
+            n<options.length
+        ){
+
+            return n;
+        }
+
+    }
+
+
+    const answerRaw=
+        firstValue(
+            q,
+            [
+                "answer",
+                "correctAnswerText",
+                "correct_option",
+                "right_answer"
+            ]
+        );
+
+
+    if(
+        typeof answerRaw==="number" &&
+        Number.isFinite(answerRaw)
+    ){
+
+        const n=
+            Math.trunc(
+                answerRaw
+            );
+
+
+        if(
+            n>=0 &&
+            n<options.length
+        ){
+
+            return n;
+        }
+
+        if(
+            n>=1 &&
+            n<=options.length
+        ){
+
+            return n-1;
+        }
+    }
+
+
+    if(
+        typeof raw==="string"
+    ){
+
+        const value=
+            raw.trim();
+
+
+        const letter=
+            value
+                .toUpperCase()
+                .match(
+                    /^[A-D]$/
+                );
+
+
+        if(letter){
+
+            return (
+                "ABCD".indexOf(
+                    letter[0]
+                )
+            );
+        }
+
+
+        const numeric=
+            Number(
+                value
+            );
+
+
+        if(
+            Number.isInteger(
+                numeric
+            )
+        ){
+
+            if(
+                numeric>=0 &&
+                numeric<options.length
+            ){
+
+                return numeric;
+            }
+
+            if(
+                numeric>=1 &&
+                numeric<=options.length
+            ){
+
+                return numeric-1;
+            }
+        }
+
+    }
+
+
+    if(
+        answerRaw!==null &&
+        answerRaw!==undefined
+    ){
+
+        const target=
+            String(
+                answerRaw
+            )
+            .trim();
+
+
+        const index=
+            options.findIndex(
+                option =>
+                    String(option)
+                    .trim()===
+                    target
+            );
+
+
+        if(index>=0){
+            return index;
+        }
+
+
+        const normalizedTarget=
+            target
+                .replace(
+                    /^\s*\([A-D]\)\s*/i,
+                    ""
+                )
+                .trim()
+                .toLowerCase();
+
+
+        const normalizedIndex=
+            options.findIndex(
+                option =>
+                    String(option)
+                        .replace(
+                            /^\s*\([A-D]\)\s*/i,
+                            ""
+                        )
+                        .trim()
+                        .toLowerCase()===
+                    normalizedTarget
+            );
+
+
+        if(
+            normalizedIndex>=0
+        ){
+
+            return normalizedIndex;
+        }
+    }
+
+
+    return -1;
+}
+
+
+/* ============================================================
+   QUESTION RECORD DETECTION
+   ============================================================ */
+
+function isQuestionRecord(obj){
+
+    if(
+        !obj ||
+        typeof obj!=="object" ||
+        Array.isArray(obj)
+    ){
+
+        return false;
+    }
+
+
+    const options=
+        getOptions(
+            obj
+        );
+
+
+    const text=
+        getQuestionText(
+            obj
+        );
+
+
+    return (
+        options.length>0 &&
+        String(text).trim()!==""
+    );
+}
+
+
+/* ============================================================
+   RECURSIVE QUESTION EXTRACTION
+   ============================================================ */
+
+function collectQuestions(
+    node,
+    output=[],
+    parentSection=""
+){
+
+    if(
+        node===null ||
+        node===undefined
+    ){
+
+        return output;
+    }
+
+
+    if(Array.isArray(node)){
+
+        node.forEach(
+            item =>
+                collectQuestions(
+                    item,
+                    output,
+                    parentSection
+                )
+        );
+
+        return output;
+    }
+
+
+    if(
+        typeof node!=="object"
+    ){
+
+        return output;
+    }
+
+
+    /*
+     * अगर यह actual question record है
+     * तो सीधे add करो.
+     */
+    if(isQuestionRecord(node)){
+
+        output.push({
+            raw:node,
+            sectionName:
+                getSectionName(
+                    node,
+                    parentSection
+                )
+        });
+
+        return output;
+    }
+
+
+    /*
+     * Section name carry forward.
+     */
+    const currentSection=
+        firstValue(
+            node,
+            [
+                "section",
+                "sectionName",
+                "subject",
+                "category",
+                "topic"
+            ]
+        ) ||
+        parentSection;
+
+
+    /*
+     * किसी भी nested "questions" array को
+     * recursively process करो.
+     */
+    const nestedKeys=[
+        "questions",
+        "question",
+        "items",
+        "data",
+        "sections",
+        "subjects",
+        "questionList",
+        "allQuestions",
+        "questionsData"
+    ];
+
+
+    let foundNested=false;
+
+
+    for(
+        const key of nestedKeys
+    ){
+
+        if(
+            Object.prototype.hasOwnProperty.call(
+                node,
+                key
+            )
+        ){
+
+            const value=
+                node[key];
+
+
+            if(
+                Array.isArray(value) ||
+                (
+                    value &&
+                    typeof value==="object"
+                )
+            ){
+
+                foundNested=true;
+
+
+                collectQuestions(
+                    value,
+                    output,
+                    currentSection
+                );
+            }
+        }
+    }
+
+
+    /*
+     * कुछ MongoDB records में पूरा JSON
+     * किसी दूसरे object के अंदर हो सकता है.
+     */
+    if(!foundNested){
+
+        Object.keys(node)
+            .forEach(
+                key=>{
+
+                    const value=
+                        node[key];
+
+
+                    if(
+                        value &&
+                        typeof value==="object"
+                    ){
+
+                        collectQuestions(
+                            value,
+                            output,
+                            currentSection
+                        );
+                    }
+
+                }
+            );
+    }
+
+
+    return output;
+}
+
+
+/* ============================================================
+   FINAL QUESTION NORMALIZATION
+   ============================================================ */
+
+function normalizeQuestions(
+    testData
+){
+
+    const collected=
+        collectQuestions(
+            testData
+        );
+
+
+    return collected
+        .map(
+            (entry,index)=>{
+
+                const q=
+                    entry.raw;
+
+
+                const options=
+                    getOptions(
+                        q
+                    );
+
+
+                const text=
+                    getQuestionText(
+                        q
+                    );
+
+
+                const correctIndex=
+                    normalizeCorrectIndex(
+                        q,
+                        options
+                    );
+
+
+                return {
+
+                    ...q,
+
+                    id:
+                        firstValue(
+                            q,
+                            [
+                                "id",
+                                "qid",
+                                "questionId",
+                                "number"
+                            ]
+                        ) ||
+                        index+1,
+
+                    question:
+                        text,
+
+                    text:
+                        text,
+
+                    options:
+                        options,
+
+                    correctIndex:
+                        correctIndex,
+
+                    answer:
+                        correctIndex>=0
+                            ? options[
+                                correctIndex
+                              ]
+                            : firstValue(
+                                q,
+                                [
+                                    "answer",
+                                    "correctAnswer"
+                                ]
+                            ),
+
+                    explanation:
+                        getExplanation(
+                            q
+                        ),
+
+                    img:
+                        getImage(
+                            q
+                        ),
+
+                    sectionName:
+                        entry.sectionName
+
+                };
+
+            }
+        )
+        .filter(
+            q =>
+                String(
+                    q.question
+                ).trim()!=="" &&
+                q.options.length>0
+        );
+}
+
+
+/* ============================================================
+   LOAD TEST
+   ============================================================ */
+
+window.onload=
+async function(){
 
     if(
         window.Telegram &&
         window.Telegram.WebApp
     ){
+
         window.Telegram.WebApp.ready();
     }
+
+
+    const params=
+        new URLSearchParams(
+            window.location.search
+        );
 
 
     const testId=
         getCurrentTestId();
 
 
-    const urlParams=
-        new URLSearchParams(
-            window.location.search
-        );
-
-
     const savedAnswers=
-        urlParams.get(
+        params.get(
             "answers"
         );
 
@@ -207,18 +923,12 @@ window.onload=async function(){
     try{
 
         /*
-         * User जिस Test पर click करता है,
-         * उसी Test ID से backend call होगी.
+         * SAME MongoDB METHOD.
          *
-         * Example:
+         * User जिस Test पर click करेगा,
+         * वही Test ID यहाँ आएगी.
          *
-         * ?test_id=05
-         * ↓
-         * /get_test/05
-         *
-         * ?test_id=125
-         * ↓
-         * /get_test/125
+         * /get_test/<clicked_test_id>
          */
 
         const response=
@@ -237,9 +947,8 @@ window.onload=async function(){
         if(!response.ok){
 
             throw new Error(
-                "Test not found ("+
-                response.status+
-                ")"
+                "Test not found: "+
+                response.status
             );
         }
 
@@ -249,64 +958,114 @@ window.onload=async function(){
 
 
         /*
-         * MongoDB API का existing format:
+         * अब JSON चाहे:
          *
          * {
-         *   test_id:"...",
-         *   questions:[...],
-         *   positive_mark:2,
-         *   negative_mark:0.25,
-         *   cutoff:35,
-         *   time_limit:15
+         *   questions:[...]
          * }
+         *
+         * या:
+         *
+         * [
+         *   {
+         *     section:"GK",
+         *     questions:[...]
+         *   },
+         *   {
+         *     section:"Hindi",
+         *     questions:[...]
+         *   }
+         * ]
+         *
+         * या multiple nested sections हो,
+         * सभी questions recursively load होंगे.
          */
 
-        if(
-            !testData ||
-            !Array.isArray(
-                testData.questions
-            ) ||
-            !testData.questions.length
-        ){
+        questions=
+            normalizeQuestions(
+                testData
+            );
+
+
+        if(!questions.length){
 
             throw new Error(
-                "No questions found"
+                "Question records not found"
             );
         }
 
 
-        questions=
-            testData.questions;
+        /*
+         * Metadata किसी भी level से.
+         */
+        const metadataSources=
+            Array.isArray(
+                testData
+            )
+                ? testData
+                : [testData];
+
+
+        const metadata=
+            metadataSources.find(
+                x =>
+                    x &&
+                    typeof x==="object"
+            ) || {};
 
 
         positiveMark=
             Number(
-                testData.positive_mark ??
-                2.0
+                testData?.positive_mark ??
+                testData?.positive ??
+                testData?.pos ??
+                metadata.positive_mark ??
+                metadata.positive ??
+                metadata.pos ??
+                2
             );
 
 
         negativeMark=
             Number(
-                testData.negative_mark ??
-                0.25
+                testData?.negative_mark ??
+                testData?.negative ??
+                testData?.neg ??
+                metadata.negative_mark ??
+                metadata.negative ??
+                metadata.neg ??
+                .25
             );
 
 
         testCutoff=
             Number(
-                testData.cutoff ??
-                35.0
+                testData?.cutoff ??
+                metadata.cutoff ??
+                35
+            );
+
+
+        const timeLimit=
+            Number(
+                testData?.time_limit ??
+                testData?.time ??
+                metadata.time_limit ??
+                metadata.time ??
+                15
             );
 
 
         time=
-            Number(
-                testData.time_limit ??
-                15
+            Math.max(
+                1,
+                timeLimit
             )*60;
 
 
+        /*
+         * ALL QUESTIONS COUNT.
+         */
         document.getElementById(
             "totalq"
         ).innerText=
@@ -328,44 +1087,52 @@ window.onload=async function(){
 
 
         /*
-         * Submitted test / full solution.
+         * Submitted review.
          */
-
         if(savedAnswers){
 
-            isReviewMode=true;
+            isReviewMode=
+                true;
 
-            submitted=true;
+            submitted=
+                true;
+
+
+            let parsedAnswers=[];
 
 
             try{
 
-                const parsed=
+                parsedAnswers=
                     JSON.parse(
                         savedAnswers
                     );
 
-
-                answers=
-                    questions.map(
-                        (q,i)=>
-                            parsed[i]===
-                            null ||
-                            parsed[i]===
-                            undefined
-                                ? null
-                                : Number(
-                                    parsed[i]
-                                  )
-                    );
-
             }catch(e){
 
-                answers=
-                    new Array(
-                        questions.length
-                    ).fill(null);
+                parsedAnswers=[];
             }
+
+
+            answers=
+                questions.map(
+                    (q,i)=>{
+
+                        const value=
+                            parsedAnswers[i];
+
+
+                        return (
+                            value===null ||
+                            value===undefined ||
+                            value===""
+                        )
+                            ? null
+                            : Number(
+                                value
+                            );
+                    }
+                );
 
 
             document.getElementById(
@@ -374,7 +1141,9 @@ window.onload=async function(){
                 "📊 Test Analysis";
 
 
-            executeSubmit(true);
+            executeSubmit(
+                true
+            );
 
 
         }else{
@@ -396,12 +1165,16 @@ window.onload=async function(){
 
         showError(
             "⚠️ टेस्ट लोड नहीं हो सका",
-            "MongoDB से इस Test का data प्राप्त नहीं हुआ।"
+            "MongoDB से इस Test का पूरा question data प्राप्त नहीं हुआ।"
         );
     }
 
 };
 
+
+/* ============================================================
+   ERROR
+   ============================================================ */
 
 function showError(
     title,
@@ -481,87 +1254,42 @@ function escapeHTML(value){
         );
 
     div.textContent=
-        String(value??"");
+        String(
+            value ??
+            ""
+        );
 
     return div.innerHTML;
 }
 
 
 /* ============================================================
-   TIMER
+   HTML / JSON CONTENT
    ============================================================ */
 
-function startTimer(){
-
-    clearInterval(
-        timerInterval
-    );
-
-
-    timerInterval=
-        setInterval(()=>{
-
-            let m=
-                Math.floor(
-                    time/60
-                );
-
-
-            let s=
-                time%60;
-
-
-            document.getElementById(
-                "timer"
-            ).innerText=
-                (m<10?"0"+m:m)+
-                ":"+
-                (s<10?"0"+s:s);
-
-
-            document.getElementById(
-                "lastMin"
-            ).innerText=
-                "Last "+
-                (m<10?"0"+m:m)+
-                " Mins";
-
-
-            time--;
-
-
-            if(time<0){
-
-                clearInterval(
-                    timerInterval
-                );
-
-                executeSubmit();
-
-            }
-
-        },1000);
-}
-
-
-/* ============================================================
-   HTML CONTENT
-   ============================================================ */
-
-function renderSourceHTML(value){
+function renderSourceHTML(
+    value
+){
 
     if(
         value===null ||
         value===undefined
     ){
+
         return "";
     }
 
 
     const source=
-        String(value);
+        String(
+            value
+        );
 
 
+    /*
+     * Plain text को HTML की तरह
+     * safely render करो.
+     */
     const parser=
         new DOMParser();
 
@@ -570,6 +1298,62 @@ function renderSourceHTML(value){
         parser.parseFromString(
             source,
             "text/html"
+        );
+
+
+    /*
+     * JSON में आने वाली style tags
+     * भी preserve रहें.
+     */
+    doc
+        .querySelectorAll(
+            "style"
+        )
+        .forEach(
+            style=>{
+
+                const css=
+                    style.textContent ||
+                    "";
+
+
+                if(
+                    css.trim() &&
+                    ![
+                        ...document
+                            .head
+                            .querySelectorAll(
+                                "style[data-source-json-style]"
+                            )
+                    ]
+                    .some(
+                        existing =>
+                            existing.textContent===
+                            css
+                    )
+                ){
+
+                    const styleCopy=
+                        document.createElement(
+                            "style"
+                        );
+
+
+                    styleCopy.setAttribute(
+                        "data-source-json-style",
+                        "true"
+                    );
+
+
+                    styleCopy.textContent=
+                        css;
+
+
+                    document.head.appendChild(
+                        styleCopy
+                    );
+                }
+            }
         );
 
 
@@ -600,9 +1384,12 @@ function renderSourceHTML(value){
 
 
     wrapper
-        .querySelectorAll("*")
+        .querySelectorAll(
+            "*"
+        )
         .forEach(
             el=>{
+
                 el.setAttribute(
                     "translate",
                     "no"
@@ -611,6 +1398,7 @@ function renderSourceHTML(value){
                 el.classList.add(
                     "notranslate"
                 );
+
             }
         );
 
@@ -620,56 +1408,69 @@ function renderSourceHTML(value){
 
 
 /* ============================================================
-   QUESTION
+   QUESTION SCREEN
    ============================================================ */
 
 function loadQuestion(){
 
-    if(!questions.length){
+    if(
+        !questions.length
+    ){
+
         return;
     }
 
 
     const q=
-        questions[current];
+        questions[
+            current
+        ];
+
+
+    const section=
+        q.sectionName
+            ? `
+                <div class="section-name notranslate" translate="no">
+                    📚 ${renderSourceHTML(q.sectionName)}
+                </div>
+              `
+            : "";
 
 
     let html=
         "<div class='qcard notranslate' translate='no'>"+
+
+        section+
+
         "<div class='qtitle'>"+
         "Q"+
         (current+1)+
         ". "+
         renderSourceHTML(
-            q.question ??
-            q.text ??
-            ""
+            q.question
         )+
         "</div>";
 
 
     if(
         q.img &&
-        q.img!==""
+        String(
+            q.img
+        ).trim()!==""
     ){
 
         html+=
             "<div style='text-align:center;padding:10px;'>"+
-            "<img src='"+q.img+"' style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
+            "<img src='"+escapeAttribute(q.img)+"' "+
+            "style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
             "</div>";
     }
 
 
-    const options=
-        Array.isArray(q.options)
-            ? q.options
-            : [];
-
-
-    options.forEach(
+    q.options.forEach(
         (opt,i)=>{
 
-            const selected=
+            const isSelected=
                 Number(
                     answers[current]
                 )===
@@ -680,13 +1481,20 @@ function loadQuestion(){
 
             html+=
                 "<div class='option "+
-                selected+
+                isSelected+
                 " notranslate' translate='no' "+
                 "onclick='selectOption(this,"+
                 i+
                 ")'>"+
+
                 "<div class='circle'></div>"+
-                renderSourceHTML(opt)+
+
+                "<div>"+
+                renderSourceHTML(
+                    opt
+                )+
+                "</div>"+
+
                 "</div>";
         }
     );
@@ -716,6 +1524,36 @@ function loadQuestion(){
     );
 }
 
+
+function escapeAttribute(
+    value
+){
+
+    return String(
+        value
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    );
+}
+
+
+/* ============================================================
+   ANSWER
+   ============================================================ */
 
 function selectOption(
     el,
@@ -755,6 +1593,10 @@ function selectOption(
     updatePalette();
 }
 
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
 
 function saveNext(){
 
@@ -913,6 +1755,7 @@ function executeSubmit(
         submitted &&
         !isFromHistory
     ){
+
         return;
     }
 
@@ -933,33 +1776,16 @@ function executeSubmit(
     questions.forEach(
         (q,i)=>{
 
-            const options=
-                Array.isArray(
-                    q.options
-                )
-                    ? q.options
-                    : [];
-
-
-            /*
-             * Same answer system:
-             * q.answer अगर मौजूद है,
-             * वरना q.correct index.
-             */
-
-            let correctIndex=
-                Number.isInteger(
-                    q.correct
-                )
-                    ? Number(q.correct)
-                    : options.indexOf(
-                        q.answer
-                    );
+            const correctIndex=
+                Number(
+                    q.correctIndex
+                );
 
 
             if(
                 answers[i]===null ||
-                answers[i]===undefined
+                answers[i]===undefined ||
+                answers[i]===""
             ){
 
                 unattempted++;
@@ -968,9 +1794,7 @@ function executeSubmit(
                 Number(
                     answers[i]
                 )===
-                Number(
-                    correctIndex
-                )
+                correctIndex
             ){
 
                 correct++;
@@ -978,7 +1802,6 @@ function executeSubmit(
             }else{
 
                 incorrect++;
-
             }
 
         }
@@ -1014,7 +1837,7 @@ function executeSubmit(
 
 
     /*
-     * EXACT SAME CLICKED TEST ID.
+     * SAME clicked Test ID submit.
      */
     if(!isReviewMode){
 
@@ -1038,10 +1861,6 @@ function executeSubmit(
 
         const testId=
             getCurrentTestId();
-
-
-        const testName=
-            "Mock Test";
 
 
         if(
@@ -1075,7 +1894,7 @@ function executeSubmit(
                                 testId,
 
                             test_name:
-                                testName,
+                                "Mock Test",
 
                             score:
                                 parseFloat(
@@ -1089,7 +1908,8 @@ function executeSubmit(
 
                         })
                 }
-            ).catch(
+            )
+            .catch(
                 error =>
                     console.error(
                         "Score save error:",
@@ -1112,7 +1932,7 @@ function executeSubmit(
 
 
 /* ============================================================
-   SCORECARD + FULL SOLUTION
+   RESULT + FULL SOLUTION
    ============================================================ */
 
 function generateResultScreen(
@@ -1194,6 +2014,7 @@ function generateResultScreen(
 
     html+=
         "<div class='result-card'>"+
+
         "<b>Your Score: "+
         score.toFixed(2)+
         " / "+
@@ -1248,22 +2069,10 @@ function generateResultScreen(
                 answers[i];
 
 
-            const options=
-                Array.isArray(
-                    q.options
-                )
-                    ? q.options
-                    : [];
-
-
             const correctIndex=
-                Number.isInteger(
-                    q.correct
-                )
-                    ? Number(q.correct)
-                    : options.indexOf(
-                        q.answer
-                    );
+                Number(
+                    q.correctIndex
+                );
 
 
             let boxClass=
@@ -1289,7 +2098,7 @@ function generateResultScreen(
 
             }else if(
                 Number(userAns)===
-                Number(correctIndex)
+                correctIndex
             ){
 
                 boxClass+=
@@ -1324,17 +2133,29 @@ function generateResultScreen(
                 " notranslate' translate='no'>";
 
 
+            if(
+                q.sectionName
+            ){
+
+                html+=
+                    "<div style='display:inline-block;background:#eaf9ff;color:#008ccc;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:bold;margin-bottom:10px;'>"+
+                    "📚 "+
+                    renderSourceHTML(
+                        q.sectionName
+                    )+
+                    "</div>";
+            }
+
+
             html+=
                 "<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:15px;font-size:16px;'>"+
 
-                "<div style='flex:1;min-width:0;'>"+
+                "<div style='flex:1;min-width:0;line-height:1.55;'>"+
                 "<b>Q"+
                 (i+1)+
                 ". "+
                 renderSourceHTML(
-                    q.question ??
-                    q.text ??
-                    ""
+                    q.question
                 )+
                 "</b>"+
                 "</div>"+
@@ -1348,12 +2169,14 @@ function generateResultScreen(
 
             if(
                 q.img &&
-                q.img!==""
+                String(
+                    q.img
+                ).trim()!==""
             ){
 
                 html+=
                     "<div style='text-align:center;padding:10px;'>"+
-                    "<img src='"+q.img+"' style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
+                    "<img src='"+escapeAttribute(q.img)+"' style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
                     "</div>";
             }
 
@@ -1362,11 +2185,11 @@ function generateResultScreen(
                 "<div style='margin-top:10px;'>";
 
 
-            options.forEach(
+            q.options.forEach(
                 (opt,optIndex)=>{
 
                     let optStyle=
-                        "padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#333;";
+                        "padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#333;line-height:1.5;";
 
 
                     let icon="⚪";
@@ -1374,11 +2197,11 @@ function generateResultScreen(
 
                     if(
                         Number(optIndex)===
-                        Number(correctIndex)
+                        correctIndex
                     ){
 
                         optStyle=
-                            "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #4CAF50;background:#e8f5e9;font-weight:bold;color:#2e7d32;";
+                            "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #4CAF50;background:#e8f5e9;font-weight:bold;color:#2e7d32;line-height:1.5;";
 
                         icon="✅";
 
@@ -1390,7 +2213,7 @@ function generateResultScreen(
                     ){
 
                         optStyle=
-                            "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #e53935;background:#ffebee;font-weight:bold;color:#c62828;";
+                            "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #e53935;background:#ffebee;font-weight:bold;color:#c62828;line-height:1.5;";
 
                         icon="❌";
                     }
@@ -1416,7 +2239,7 @@ function generateResultScreen(
 
                 "<hr style='border:0;border-top:1px dashed #ccc;margin:20px 0 15px;'>"+
 
-                "<div style='background:#f4f9ff;padding:15px;border-radius:10px;border:1px solid #d0e3ff;'>"+
+                "<div style='background:#f4f9ff;padding:15px;border-radius:10px;border:1px solid #d0e3ff;box-shadow:inset 0 2px 4px rgba(0,0,0,.02);'>"+
 
                 "<div style='display:inline-block;background:linear-gradient(135deg,#00bfff,#007acc);color:white;padding:6px 14px;border-radius:6px;font-weight:bold;font-size:14px;margin-bottom:12px;'>"+
                 "💡 Explanation (व्याख्या)"+
@@ -1424,9 +2247,11 @@ function generateResultScreen(
 
                 "<div class='notranslate' translate='no' style='white-space:pre-wrap;line-height:1.6;font-size:14px;color:#444;'>"+
                 (
-                    q.explanation ??
-                    q.exp ??
-                    "इस प्रश्न के लिए कोई व्याख्या उपलब्ध नहीं है।"
+                    q.explanation
+                        ? renderSourceHTML(
+                            q.explanation
+                          )
+                        : "इस प्रश्न के लिए कोई व्याख्या उपलब्ध नहीं है।"
                 )+
                 "</div>"+
 
