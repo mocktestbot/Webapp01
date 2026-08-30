@@ -5,447 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google" content="notranslate">
 <title>Premium Practice Mock</title>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-body{
-    margin:0;
-    padding-bottom:90px;
-    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-    background:#f4f7f6;
-}
-
-*{
-    box-sizing:border-box;
-}
-
-.notranslate{
-    translate:none!important;
-}
-
-.topbar{
-    background:linear-gradient(135deg,#00bfff,#008ccc);
-    color:white;
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-weight:bold;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.timer-box{
-    background:#fff;
-    color:#e53935;
-    padding:5px 12px;
-    border-radius:20px;
-    font-weight:900;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
-
-/* Buttons permanently at bottom */
-.button-row{
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    gap:6px;
-    padding:10px 6px;
-    background:white;
-    border-top:1px solid #ddd;
-    position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
-    width:100%;
-    z-index:1500;
-    box-shadow:0 -4px 15px rgba(0,0,0,0.10);
-}
-
-.action-btn{
-    background:#00bfff;
-    color:white;
-    border:none;
-    padding:12px 13px;
-    border-radius:9px;
-    font-size:13px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.2s;
-    white-space:nowrap;
-}
-
-.action-btn:active{
-    transform:scale(0.95);
-}
-
-.submit-btn{
-    background:#4CAF50;
-}
-
-.qheader{
-    display:flex;
-    justify-content:space-between;
-    padding:15px;
-    font-weight:bold;
-    color:#333;
-}
-
-.last{
-    color:#e53935;
-    background:#ffebee;
-    padding:4px 8px;
-    border-radius:5px;
-    font-size:12px;
-}
-
-.qcard{
-    background:white;
-    margin:10px 15px;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 4px 10px rgba(0,0,0,0.05);
-    border-top:4px solid #00bfff;
-}
-
-.qtitle{
-    padding:18px;
-    background:#fafafa;
-    font-size:17px;
-    color:#333;
-    font-weight:bold;
-    border-bottom:1px solid #eee;
-    overflow-wrap:anywhere;
-}
-
-.qtitle p{
-    margin-top:0!important;
-}
-
-.qtitle img,
-.option img,
-.analysis-box img{
-    max-width:100%!important;
-    height:auto!important;
-}
-
-.option{
-    display:flex;
-    align-items:center;
-    padding:15px;
-    background:white;
-    border-bottom:1px solid #f1f1f1;
-    cursor:pointer;
-    transition:0.2s;
-    overflow-wrap:anywhere;
-}
-
-.option:last-child{
-    border-bottom:none;
-}
-
-.option p{
-    margin:0;
-}
-
-.circle{
-    width:20px;
-    height:20px;
-    border:2px solid #00bfff;
-    border-radius:50%;
-    margin-right:15px;
-    transition:0.2s;
-    flex-shrink:0;
-}
-
-.option.selected{
-    background:#e0faff;
-    font-weight:bold;
-}
-
-.option.selected .circle{
-    background:#00bfff;
-    border:4px solid white;
-    box-shadow:0 0 0 2px #00bfff;
-}
-
-.palette{
-    position:fixed;
-    right:-100%;
-    top:0;
-    width:75%;
-    max-width:300px;
-    height:100%;
-    background:white;
-    overflow:auto;
-    transition:0.3s;
-    box-shadow:-5px 0 15px rgba(0,0,0,0.1);
-    padding:20px;
-    z-index:1600;
-}
-
-.palette h3{
-    margin-top:0;
-    color:#333;
-    border-bottom:2px solid #eee;
-    padding-bottom:10px;
-}
-
-.palette.active{
-    right:0;
-}
-
-.palette button{
-    width:45px;
-    height:45px;
-    margin:6px;
-    border:none;
-    border-radius:8px;
-    font-weight:bold;
-    font-size:16px;
-    cursor:pointer;
-}
-
-.notvisited{
-    background:#e0e0e0;
-    color:#555;
-}
-
-.answered{
-    background:#4CAF50;
-    color:white;
-    box-shadow:0 2px 5px rgba(76,175,80,0.4);
-}
-
-.notanswered{
-    background:#e53935;
-    color:white;
-    box-shadow:0 2px 5px rgba(229,57,53,0.4);
-}
-
-.review{
-    background:#ff9800;
-    color:white;
-    box-shadow:0 2px 5px rgba(255,152,0,0.4);
-}
-
-.result{
-    display:none;
-    padding:15px 15px 110px;
-}
-
-.result-card{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    margin-bottom:15px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.05);
-    text-align:center;
-    font-size:16px;
-}
-
-.result-card b{
-    font-size:20px;
-    color:#008ccc;
-}
-
-.analysis-box{
-    background:white;
-    padding:15px;
-    margin-bottom:12px;
-    border-radius:8px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.05);
-    overflow-wrap:anywhere;
-}
-
-.analysis-box.correct-box{
-    border-left:5px solid #4CAF50;
-}
-
-.analysis-box.wrong-box{
-    border-left:5px solid #e53935;
-}
-
-.analysis-box.unattempted-box{
-    border-left:5px solid #ff9800;
-}
-
-.correct{
-    color:#4CAF50;
-    font-weight:bold;
-}
-
-.wrong{
-    color:#e53935;
-    font-weight:bold;
-}
-
-.float-btn{
-    position:fixed;
-    bottom:105px;
-    right:25px;
-    width:60px;
-    height:60px;
-    background:#00bfff;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-size:28px;
-    box-shadow:0 4px 15px rgba(0,191,255,0.4);
-    z-index:999;
-    cursor:pointer;
-}
-
-.close-palette{
-    position:absolute;
-    right:20px;
-    top:20px;
-    background:red;
-    color:white;
-    border:none;
-    border-radius:5px;
-    padding:5px 10px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.custom-modal-overlay{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.7);
-    z-index:2000;
-    justify-content:center;
-    align-items:center;
-}
-
-.custom-modal-box{
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    text-align:center;
-    width:85%;
-    max-width:350px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-}
-
-.custom-modal-box h3{
-    margin-top:0;
-    color:#4CAF50;
-    font-size:22px;
-    margin-bottom:10px;
-}
-
-.custom-modal-box p{
-    color:#555;
-    margin-bottom:20px;
-    font-size:15px;
-}
-
-.custom-modal-btns{
-    display:flex;
-    justify-content:space-around;
-    gap:15px;
-}
-
-.btn-cancel{
-    background:#e0e0e0;
-    color:#333;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    flex:1;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.btn-submit{
-    background:#4CAF50;
-    color:white;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    flex:1;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.motivation-banner{
-    background:#e8f5e9;
-    border:2px solid #4CAF50;
-    color:#2e7d32;
-    padding:15px;
-    border-radius:10px;
-    margin-top:15px;
-    font-weight:bold;
-    text-align:center;
-    font-size:18px;
-}
-
-.promo-banner{
-    background:linear-gradient(135deg,#673ab7,#512da8);
-    color:white;
-    padding:20px;
-    border-radius:12px;
-    text-align:center;
-    margin-top:25px;
-    margin-bottom:30px;
-    box-shadow:0 4px 15px rgba(103,58,183,0.4);
-}
-
-.promo-banner h3{
-    margin-top:0;
-    font-size:20px;
-}
-
-.promo-banner p{
-    font-size:14px;
-    margin-bottom:15px;
-    color:#e1bee7;
-}
-
-.promo-btn{
-    display:inline-block;
-    background:#ff9800;
-    color:white;
-    text-decoration:none;
-    padding:12px 25px;
-    border-radius:25px;
-    font-weight:bold;
-    font-size:16px;
-    box-shadow:0 4px 10px rgba(255,152,0,0.4);
-    transition:0.3s;
-}
-
-.promo-btn:active{
-    transform:scale(0.95);
-}
+.notranslate{translate:none!important;}
+body{margin:0;padding-bottom:90px;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f4f7f6}
+.topbar{background:linear-gradient(135deg,#00bfff,#008ccc);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,.1)}
+.timer-box{background:#fff;color:#e53935;padding:5px 12px;border-radius:20px;font-weight:900;box-shadow:0 2px 5px rgba(0,0,0,.1)}
+.button-row{display:flex;justify-content:space-around;padding:12px;background:white;border-top:1px solid #ddd;position:fixed;left:0;right:0;bottom:0;z-index:1500;box-shadow:0 -3px 12px rgba(0,0,0,.08)}
+.action-btn{background:#00bfff;color:white;border:none;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:bold;cursor:pointer;transition:.3s}
+.action-btn:active{transform:scale(.95)}
+.submit-btn{background:#4CAF50}
+.qheader{display:flex;justify-content:space-between;padding:15px;font-weight:bold;color:#333}
+.last{color:#e53935;background:#ffebee;padding:4px 8px;border-radius:5px;font-size:12px}
+.qcard{background:white;margin:10px 15px;border-radius:12px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,.05);border-top:4px solid #00bfff}
+.qtitle{padding:18px;background:#fafafa;font-size:17px;color:#333;font-weight:bold;border-bottom:1px solid #eee}
+.option{display:flex;align-items:center;padding:15px;background:white;border-bottom:1px solid #f1f1f1;cursor:pointer;transition:.2s}
+.option:last-child{border-bottom:none}
+.circle{width:20px;height:20px;border:2px solid #00bfff;border-radius:50%;margin-right:15px;transition:.2s;flex-shrink:0}
+.option.selected{background:#e0faff;font-weight:bold}
+.option.selected .circle{background:#00bfff;border:4px solid white;box-shadow:0 0 0 2px #00bfff}
+.palette{position:fixed;right:-100%;top:0;width:75%;max-width:300px;height:100%;background:white;overflow:auto;transition:.3s;box-shadow:-5px 0 15px rgba(0,0,0,.1);padding:20px;z-index:1600}
+.palette h3{margin-top:0;color:#333;border-bottom:2px solid #eee;padding-bottom:10px}
+.palette.active{right:0}
+.palette button{width:45px;height:45px;margin:6px;border:none;border-radius:8px;font-weight:bold;font-size:16px;cursor:pointer}
+.notvisited{background:#e0e0e0;color:#555}
+.answered{background:#4CAF50;color:white}
+.notanswered{background:#e53935;color:white}
+.review{background:#ff9800;color:white}
+.result{display:none;padding:15px 15px 110px}
+.result-card{background:white;padding:20px;border-radius:12px;margin-bottom:15px;box-shadow:0 4px 10px rgba(0,0,0,.05);text-align:center;font-size:16px}
+.result-card b{font-size:20px;color:#008ccc}
+.analysis-box{background:white;padding:15px;margin-bottom:12px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.analysis-box.correct-box{border-left:5px solid #4CAF50}
+.analysis-box.wrong-box{border-left:5px solid #e53935}
+.analysis-box.unattempted-box{border-left:5px solid #ff9800}
+.float-btn{position:fixed;bottom:105px;right:25px;width:60px;height:60px;background:#00bfff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:28px;box-shadow:0 4px 15px rgba(0,191,255,.4);z-index:999;cursor:pointer}
+.close-palette{position:absolute;right:20px;top:20px;background:red;color:white;border:none;border-radius:5px;padding:5px 10px;font-weight:bold;cursor:pointer}
+.custom-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:center}
+.custom-modal-box{background:white;padding:25px;border-radius:15px;text-align:center;width:85%;max-width:350px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.custom-modal-btns{display:flex;justify-content:space-around;gap:15px}
+.btn-cancel{background:#e0e0e0;color:#333;padding:12px;border:none;border-radius:8px;flex:1;font-weight:bold}
+.btn-submit{background:#4CAF50;color:white;padding:12px;border:none;border-radius:8px;flex:1;font-weight:bold}
+.motivation-banner{background:#e8f5e9;border:2px solid #4CAF50;color:#2e7d32;padding:15px;border-radius:10px;margin-top:15px;font-weight:bold;text-align:center;font-size:18px}
+.promo-banner{background:linear-gradient(135deg,#673ab7,#512da8);color:white;padding:20px;border-radius:12px;text-align:center;margin-top:25px;margin-bottom:30px}
+.promo-btn{display:inline-block;background:#ff9800;color:white;text-decoration:none;padding:12px 25px;border-radius:25px;font-weight:bold}
 
 @media(max-width:420px){
-
-    .button-row{
-        padding:9px 4px;
-        gap:4px;
-    }
-
-    .action-btn{
-        padding:11px 8px;
-        font-size:12px;
-    }
-
-    .qcard{
-        margin:10px 10px;
-    }
-
-    .qtitle{
-        font-size:16px;
-    }
+.button-row{padding:10px 5px;gap:5px}
+.action-btn{padding:11px 9px;font-size:12px}
 }
 </style>
 </head>
@@ -453,118 +62,47 @@ body{
 <body>
 
 <div class="topbar">
-    <span onclick="togglePalette()" style="cursor:pointer;" id="top-title">
-        ☰ Practice Mock
-    </span>
-
-    <div class="timer-box" id="timer">
-        00:00
-    </div>
+<span onclick="togglePalette()" style="cursor:pointer" id="top-title">☰ Practice Mock</span>
+<div class="timer-box" id="timer">00:00</div>
 </div>
 
 <div class="qheader" id="question-header">
-    <div>
-        Question :
-        <span id="qno">1</span> /
-        <span id="totalq">0</span>
-    </div>
-
-    <div class="last" id="lastMin">
-        --
-    </div>
+<div>Question : <span id="qno">1</span> / <span id="totalq">0</span></div>
+<div class="last" id="lastMin">--</div>
 </div>
 
 <div id="exam">
-    <h3 style="text-align:center;padding:20px;">
-        ⏳ टेस्ट लोड हो रहा है...
-    </h3>
+<h3 style="text-align:center;padding:20px">⏳ टेस्ट लोड हो रहा है...</h3>
 </div>
 
-<!-- Bottom Buttons -->
 <div class="button-row" id="top-btn-row">
-
-    <button class="action-btn"
-            onclick="previousQuestion()">
-        Back
-    </button>
-
-    <button class="action-btn"
-            style="background:#ff9800;"
-            onclick="markReview()">
-        Review
-    </button>
-
-    <button class="action-btn"
-            onclick="saveNext()">
-        Save & Next
-    </button>
-
-    <button class="action-btn submit-btn"
-            onclick="showSubmitConfirm()">
-        Submit
-    </button>
-
+<button class="action-btn" onclick="previousQuestion()">Back</button>
+<button class="action-btn" style="background:#ff9800" onclick="markReview()">Review</button>
+<button class="action-btn" onclick="saveNext()">Save & Next</button>
+<button class="action-btn submit-btn" onclick="showSubmitConfirm()">Submit</button>
 </div>
 
 <div class="palette" id="palette">
-
-    <button class="close-palette"
-            onclick="togglePalette()">
-        X
-    </button>
-
-    <h3>
-        Questions Palette
-    </h3>
-
-    <div id="palette-buttons"></div>
-
+<button class="close-palette" onclick="togglePalette()">X</button>
+<h3>Questions Palette</h3>
+<div id="palette-buttons"></div>
 </div>
 
-<div id="submit-confirm-modal"
-     class="custom-modal-overlay">
-
-    <div class="custom-modal-box">
-
-        <h3>
-            Submit Test?
-        </h3>
-
-        <p>
-            क्या आप सच में टेस्ट सबमिट करना चाहते हैं?
-        </p>
-
-        <div class="custom-modal-btns">
-
-            <button class="btn-cancel"
-                    onclick="hideSubmitConfirm()">
-                रद्द करें
-            </button>
-
-            <button class="btn-submit"
-                    onclick="executeSubmit()">
-                हाँ, सबमिट करें
-            </button>
-
-        </div>
-
-    </div>
-
+<div id="submit-confirm-modal" class="custom-modal-overlay">
+<div class="custom-modal-box">
+<h3>Submit Test?</h3>
+<p>क्या आप सच में टेस्ट सबमिट करना चाहते हैं?</p>
+<div class="custom-modal-btns">
+<button class="btn-cancel" onclick="hideSubmitConfirm()">रद्द करें</button>
+<button class="btn-submit" onclick="executeSubmit()">हाँ, सबमिट करें</button>
+</div>
+</div>
 </div>
 
-<div class="result notranslate"
-     id="result"
-     translate="no">
-</div>
-
-<div class="float-btn"
-     id="menu-float-btn"
-     onclick="togglePalette()">
-    ≡
-</div>
+<div class="result notranslate" id="result" translate="no"></div>
+<div class="float-btn" id="menu-float-btn" onclick="togglePalette()">≡</div>
 
 <script>
-
 let questions=[];
 let current=0;
 let answers=[];
@@ -574,18 +112,54 @@ let time=0;
 let timerInterval;
 let isReviewMode=false;
 
-let positiveMark=2.0;
-let negativeMark=0.25;
-let testCutoff=35.0;
+let positiveMark=2;
+let negativeMark=.25;
+let testCutoff=35;
 
 const API_BASE_URL="https://mock-bot-l091.onrender.com";
 
-/*
- * MongoDB में saved test का default ID.
- * Telegram/Test link में ?test_id=XXXX आने पर वही ID use होगी.
- */
-const DEFAULT_TEST_ID="05";
 
+/* ============================================================
+   EXACT CLICKED TEST ID
+   ============================================================ */
+
+function getCurrentTestId(){
+
+    const params=
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const urlTestId=
+        params.get("test_id");
+
+    if(
+        urlTestId!==null &&
+        String(urlTestId).trim()!==""
+    ){
+
+        const id=
+            String(urlTestId).trim();
+
+        sessionStorage.setItem(
+            "currentTestId",
+            id
+        );
+
+        return id;
+    }
+
+    return (
+        sessionStorage.getItem(
+            "currentTestId"
+        )||""
+    ).trim();
+}
+
+
+/* ============================================================
+   TEST LOAD
+   ============================================================ */
 
 window.onload=async function(){
 
@@ -596,25 +170,47 @@ window.onload=async function(){
         window.Telegram.WebApp.ready();
     }
 
-    const urlParams=
+    const testId=
+        getCurrentTestId();
+
+    const params=
         new URLSearchParams(
             window.location.search
         );
 
-    const testId=
-        urlParams.get("test_id") ||
-        DEFAULT_TEST_ID;
-
     const savedAnswers=
-        urlParams.get("answers");
+        params.get("answers");
+
+
+    if(!testId){
+
+        showLoadError(
+            "Test ID नहीं मिला",
+            "जिस Test पर आपने क्लिक किया है उसका Test ID URL में नहीं आया।"
+        );
+
+        return;
+    }
+
 
     try{
 
         /*
          * IMPORTANT:
-         * अब 05.json local file की जरूरत नहीं है.
-         * Test सीधे MongoDB backend से fetch होगा.
+         *
+         * अब 05.json hard-code नहीं है.
+         *
+         * User जिस test पर click करेगा:
+         *
+         * ?test_id=123
+         *
+         * तो:
+         *
+         * /get_test/123
+         *
+         * automatically call होगा.
          */
+
         const response=
             await fetch(
                 `${API_BASE_URL}/get_test/${encodeURIComponent(testId)}`,
@@ -627,195 +223,39 @@ window.onload=async function(){
                 }
             );
 
+
         if(!response.ok){
 
-            throw new Error(
-                "MongoDB test fetch failed: "+
-                response.status
-            );
+            let serverMessage="";
 
+            try{
+                const errorData=
+                    await response.json();
+
+                serverMessage=
+                    errorData.message ||
+                    errorData.error ||
+                    "";
+            }catch(e){}
+
+
+            throw new Error(
+                serverMessage ||
+                `Test fetch failed (${response.status})`
+            );
         }
+
 
         const testData=
             await response.json();
 
 
-        /*
-         * MongoDB में test दो formats में हो सकता है:
-         *
-         * 1. { questions:[...] }
-         *
-         * 2. [
-         *      {section,questions:[...]},
-         *      {section,questions:[...]}
-         *    ]
-         *
-         * दोनों को automatically merge किया जाएगा.
-         */
-        const rawQuestions=
-            Array.isArray(testData)
-
-                ? testData.flatMap(
-                    section =>
-                        Array.isArray(
-                            section.questions
-                        )
-                            ? section.questions
-                            : []
-                  )
-
-                : Array.isArray(
-                    testData.questions
-                  )
-
-                    ? testData.questions
-
-                    : [];
+        loadTestData(
+            testData,
+            testId
+        );
 
 
-        /*
-         * हर question को normalize करें.
-         * correct index सीधे MongoDB के "correct" field से लिया जाएगा.
-         */
-        questions=
-            rawQuestions
-                .map(q=>({
-
-                    ...q,
-
-                    question:
-                        q.question ??
-                        q.text ??
-                        "",
-
-                    options:
-                        Array.isArray(q.options)
-                            ? q.options
-                            : [],
-
-                    correctIndex:
-                        Number.isInteger(
-                            q.correct
-                        )
-                            ? q.correct
-                            : (
-                                Array.isArray(
-                                    q.options
-                                ) &&
-                                q.answer!==undefined
-
-                                    ? q.options.indexOf(
-                                        q.answer
-                                      )
-
-                                    : -1
-                              ),
-
-                    answer:
-                        typeof q.correct==="number" &&
-                        Array.isArray(q.options)
-
-                            ? q.options[
-                                q.correct
-                              ]
-
-                            : (
-                                q.answer ??
-                                ""
-                              ),
-
-                    explanation:
-                        q.explanation ??
-                        q.exp ??
-                        ""
-
-                }))
-
-                .filter(q =>
-                    q.question &&
-                    Array.isArray(q.options) &&
-                    q.options.length>0
-                );
-
-
-        if(!questions.length){
-
-            throw new Error(
-                "MongoDB से कोई question नहीं मिला"
-            );
-
-        }
-
-
-        const firstSection=
-            Array.isArray(testData)
-                ? testData[0]
-                : testData;
-
-
-        positiveMark=
-            Number(
-                testData.positive_mark ??
-                firstSection?.positive_mark ??
-                2
-            );
-
-
-        negativeMark=
-            Number(
-                testData.negative_mark ??
-                firstSection?.negative_mark ??
-                0.25
-            );
-
-
-        testCutoff=
-            Number(
-                testData.cutoff ??
-                firstSection?.cutoff ??
-                35
-            );
-
-
-        /*
-         * 05.json structure में "time" field है,
-         * इसलिए time_limit के साथ "time" भी support किया गया है.
-         */
-        const timeLimit=
-            Number(
-                testData.time_limit ??
-                testData.time ??
-                firstSection?.time_limit ??
-                firstSection?.time ??
-                60
-            );
-
-
-        time=
-            timeLimit*60;
-
-
-        document.getElementById(
-            "totalq"
-        ).innerText=
-            questions.length;
-
-
-        answers=
-            new Array(
-                questions.length
-            ).fill(null);
-
-
-        status=
-            new Array(
-                questions.length
-            ).fill("notvisited");
-
-
-        /*
-         * Existing submitted attempt खोलने के लिए.
-         */
         if(savedAnswers){
 
             isReviewMode=true;
@@ -823,24 +263,15 @@ window.onload=async function(){
 
             try{
 
-                const parsedAnswers=
+                answers=
                     JSON.parse(
                         savedAnswers
-                    );
-
-                answers=
-                    questions.map(
-                        (q,i)=>
-                            parsedAnswers[i]===
-                            null ||
-                            parsedAnswers[i]===
-                            undefined
-
+                    ).map(
+                        value =>
+                            value===null ||
+                            value===undefined
                                 ? null
-
-                                : Number(
-                                    parsedAnswers[i]
-                                  )
+                                : Number(value)
                     );
 
             }catch(e){
@@ -852,22 +283,16 @@ window.onload=async function(){
 
             }
 
-
             document.getElementById(
                 "top-title"
             ).innerText=
                 "📊 Test Analysis";
 
-
             executeSubmit(true);
 
         }else{
 
-            /*
-             * Test automatically start होगा.
-             */
             startTimer();
-
             loadQuestion();
 
         }
@@ -880,83 +305,277 @@ window.onload=async function(){
             error
         );
 
-
-        document.getElementById(
-            "timer"
-        ).innerText=
-            "ERR";
-
-
-        document.getElementById(
-            "totalq"
-        ).innerText=
-            "0";
-
-
-        document.getElementById(
-            "exam"
-        ).innerHTML=
-            `
-            <div style="
-                margin:25px 15px;
-                background:#fff;
-                border-radius:14px;
-                padding:25px 18px;
-                text-align:center;
-                box-shadow:0 4px 15px rgba(0,0,0,.08);
-            ">
-
-                <div style="
-                    font-size:45px;
-                    margin-bottom:15px;
-                ">
-                    ⚠️
-                </div>
-
-                <h3 style="
-                    color:#e53935;
-                    margin:0 0 10px;
-                ">
-                    टेस्ट लोड नहीं हो सका
-                </h3>
-
-                <p style="
-                    color:#555;
-                    line-height:1.6;
-                    margin:0;
-                ">
-                    MongoDB से टेस्ट डेटा प्राप्त नहीं हुआ।
-                </p>
-
-                <button
-                    onclick="location.reload()"
-                    style="
-                        margin-top:18px;
-                        background:#00bfff;
-                        color:#fff;
-                        border:0;
-                        padding:12px 22px;
-                        border-radius:8px;
-                        font-weight:bold;
-                    "
-                >
-                    🔄 Retry
-                </button>
-
-            </div>
-            `;
+        showLoadError(
+            "टेस्ट लोड नहीं हो सका",
+            "MongoDB से इस Test का data प्राप्त नहीं हुआ।"
+        );
 
     }
 
 };
 
 
+/* ============================================================
+   MONGODB DATA NORMALIZER
+   ============================================================ */
+
+function loadTestData(
+    testData,
+    testId
+){
+
+    /*
+     * MongoDB document:
+     *
+     * {
+     *   test_id: "...",
+     *   questions: [...]
+     * }
+     *
+     * या
+     *
+     * [
+     *   {section,questions:[...]},
+     *   {section,questions:[...]}
+     * ]
+     *
+     * दोनों formats support.
+     */
+
+    const rawQuestions=
+        Array.isArray(testData)
+
+            ? testData.flatMap(
+                section =>
+                    Array.isArray(
+                        section.questions
+                    )
+                        ? section.questions
+                        : []
+            )
+
+            : (
+                Array.isArray(
+                    testData.questions
+                )
+                    ? testData.questions
+                    : []
+            );
+
+
+    questions=
+        rawQuestions
+            .map(q=>({
+
+                ...q,
+
+                question:
+                    q.question ??
+                    q.text ??
+                    "",
+
+                options:
+                    Array.isArray(q.options)
+                        ? q.options
+                        : [],
+
+                correctIndex:
+                    Number.isInteger(
+                        q.correct
+                    )
+                        ? q.correct
+                        : (
+                            Array.isArray(q.options) &&
+                            q.answer!==undefined
+                                ? q.options.indexOf(
+                                    q.answer
+                                )
+                                : -1
+                        ),
+
+                answer:
+                    typeof q.correct==="number" &&
+                    Array.isArray(q.options)
+                        ? q.options[q.correct]
+                        : (
+                            q.answer ??
+                            ""
+                        ),
+
+                explanation:
+                    q.explanation ??
+                    q.exp ??
+                    ""
+
+            }))
+            .filter(
+                q =>
+                    q.question &&
+                    q.options.length>0
+            );
+
+
+    if(!questions.length){
+
+        throw new Error(
+            "MongoDB test में questions नहीं हैं"
+        );
+    }
+
+
+    const firstSection=
+        Array.isArray(testData)
+            ? testData[0]
+            : testData;
+
+
+    positiveMark=
+        Number(
+            testData.positive_mark ??
+            firstSection?.positive_mark ??
+            2
+        );
+
+
+    negativeMark=
+        Number(
+            testData.negative_mark ??
+            firstSection?.negative_mark ??
+            .25
+        );
+
+
+    testCutoff=
+        Number(
+            testData.cutoff ??
+            firstSection?.cutoff ??
+            35
+        );
+
+
+    const timeLimit=
+        Number(
+            testData.time_limit ??
+            testData.time ??
+            firstSection?.time_limit ??
+            firstSection?.time ??
+            60
+        );
+
+
+    time=
+        timeLimit*60;
+
+
+    window.currentTestId=
+        String(testId);
+
+
+    document.getElementById(
+        "totalq"
+    ).innerText=
+        questions.length;
+
+
+    answers=
+        new Array(
+            questions.length
+        ).fill(null);
+
+
+    status=
+        new Array(
+            questions.length
+        ).fill("notvisited");
+
+}
+
+
+/* ============================================================
+   LOAD ERROR
+   ============================================================ */
+
+function showLoadError(
+    title,
+    message
+){
+
+    document.getElementById(
+        "timer"
+    ).innerText=
+        "ERR";
+
+    document.getElementById(
+        "totalq"
+    ).innerText=
+        "0";
+
+
+    document.getElementById(
+        "exam"
+    ).innerHTML=
+        `
+        <div style="
+            margin:25px 15px;
+            background:#fff;
+            border-radius:14px;
+            padding:25px 18px;
+            text-align:center;
+            box-shadow:0 4px 15px rgba(0,0,0,.08);
+        ">
+
+            <div style="
+                font-size:55px;
+                margin-bottom:12px;
+            ">
+                ⚠️
+            </div>
+
+            <h2 style="
+                color:#d32f2f;
+                margin:0 0 12px;
+            ">
+                ${escapeHTML(title)}
+            </h2>
+
+            <p style="
+                color:#555;
+                line-height:1.6;
+                margin:0;
+            ">
+                ${escapeHTML(message)}
+            </p>
+
+            <button
+                onclick="location.reload()"
+                style="
+                    margin-top:20px;
+                    background:#00bfff;
+                    color:#fff;
+                    border:0;
+                    padding:12px 25px;
+                    border-radius:8px;
+                    font-weight:bold;
+                    font-size:15px;
+                "
+            >
+                🔄 Retry
+            </button>
+
+        </div>
+        `;
+}
+
+
+/* ============================================================
+   TIMER
+   ============================================================ */
+
 function startTimer(){
 
     clearInterval(
         timerInterval
     );
-
 
     timerInterval=
         setInterval(()=>{
@@ -970,7 +589,6 @@ function startTimer(){
                 executeSubmit();
 
                 return;
-
             }
 
 
@@ -978,7 +596,6 @@ function startTimer(){
                 Math.floor(
                     time/60
                 );
-
 
             let s=
                 time%60;
@@ -1003,14 +620,13 @@ function startTimer(){
             time--;
 
         },1000);
-
 }
 
 
-/*
- * MongoDB question HTML में <html><head><body>
- * मौजूद होने पर nested HTML problem को रोकता है.
- */
+/* ============================================================
+   SAFE HTML RENDER
+   ============================================================ */
+
 function renderSourceHTML(value){
 
     if(
@@ -1034,56 +650,6 @@ function renderSourceHTML(value){
             source,
             "text/html"
         );
-
-
-    /*
-     * JSON के अंदर मौजूद styles को page head में load करें.
-     */
-    doc
-        .querySelectorAll("style")
-        .forEach(style=>{
-
-            const css=
-                style.textContent ||
-                "";
-
-
-            if(
-                css.trim() &&
-                !Array.from(
-                    document.head.querySelectorAll(
-                        "style[data-json-source-style]"
-                    )
-                ).some(
-                    existing =>
-                        existing.textContent===
-                        css
-                )
-            ){
-
-                const styleCopy=
-                    document.createElement(
-                        "style"
-                    );
-
-
-                styleCopy.setAttribute(
-                    "data-json-source-style",
-                    "true"
-                );
-
-
-                styleCopy.textContent=
-                    css;
-
-
-                document.head.appendChild(
-                    styleCopy
-                );
-
-            }
-
-        });
 
 
     const content=
@@ -1114,24 +680,41 @@ function renderSourceHTML(value){
 
     wrapper
         .querySelectorAll("*")
-        .forEach(el=>{
+        .forEach(
+            el=>{
+                el.setAttribute(
+                    "translate",
+                    "no"
+                );
 
-            el.setAttribute(
-                "translate",
-                "no"
-            );
-
-            el.classList.add(
-                "notranslate"
-            );
-
-        });
+                el.classList.add(
+                    "notranslate"
+                );
+            }
+        );
 
 
     return wrapper.innerHTML;
-
 }
 
+
+function escapeHTML(value){
+
+    const div=
+        document.createElement(
+            "div"
+        );
+
+    div.textContent=
+        String(value??"");
+
+    return div.innerHTML;
+}
+
+
+/* ============================================================
+   QUESTION
+   ============================================================ */
 
 function loadQuestion(){
 
@@ -1140,7 +723,7 @@ function loadQuestion(){
     }
 
 
-    let q=
+    const q=
         questions[current];
 
 
@@ -1173,7 +756,7 @@ function loadQuestion(){
     q.options.forEach(
         (opt,i)=>{
 
-            let isSelected=
+            const selected=
                 answers[current]===i
                     ? "selected"
                     : "";
@@ -1181,7 +764,7 @@ function loadQuestion(){
 
             html+=
                 "<div class='option "+
-                isSelected+
+                selected+
                 " notranslate' "+
                 "translate='no' "+
                 "onclick='selectOption(this,"+
@@ -1222,7 +805,6 @@ function loadQuestion(){
         0,
         0
     );
-
 }
 
 
@@ -1262,7 +844,6 @@ function selectOption(
 
 
     updatePalette();
-
 }
 
 
@@ -1275,7 +856,6 @@ function saveNext(){
 
         status[current]=
             "notanswered";
-
     }
 
 
@@ -1287,9 +867,7 @@ function saveNext(){
         current++;
 
         loadQuestion();
-
     }
-
 }
 
 
@@ -1300,9 +878,7 @@ function previousQuestion(){
         current--;
 
         loadQuestion();
-
     }
-
 }
 
 
@@ -1326,9 +902,12 @@ function markReview(){
         updatePalette();
 
     }
-
 }
 
+
+/* ============================================================
+   PALETTE
+   ============================================================ */
 
 function togglePalette(){
 
@@ -1339,19 +918,18 @@ function togglePalette(){
         .classList.toggle(
             "active"
         );
-
 }
 
 
 function updatePalette(){
 
-    let p="";
+    let html="";
 
 
     questions.forEach(
         (q,i)=>{
 
-            p+=
+            html+=
                 "<button class='"+
                 status[i]+
                 "' onclick='goQ("+
@@ -1367,8 +945,7 @@ function updatePalette(){
     document.getElementById(
         "palette-buttons"
     ).innerHTML=
-        p;
-
+        html;
 }
 
 
@@ -1385,9 +962,12 @@ function goQ(i){
         .classList.remove(
             "active"
         );
-
 }
 
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
 
 function showSubmitConfirm(){
 
@@ -1400,7 +980,6 @@ function showSubmitConfirm(){
         "submit-confirm-modal"
     ).style.display=
         "flex";
-
 }
 
 
@@ -1410,7 +989,6 @@ function hideSubmitConfirm(){
         "submit-confirm-modal"
     ).style.display=
         "none";
-
 }
 
 
@@ -1421,7 +999,10 @@ function executeSubmit(
     hideSubmitConfirm();
 
 
-    if(submitted && !isFromHistory){
+    if(
+        submitted &&
+        !isFromHistory
+    ){
         return;
     }
 
@@ -1442,14 +1023,14 @@ function executeSubmit(
     questions.forEach(
         (q,i)=>{
 
-            let correctIndex=
+            const correctIndex=
                 Number.isInteger(
                     q.correctIndex
                 )
                     ? q.correctIndex
                     : q.options.indexOf(
                         q.answer
-                      );
+                    );
 
 
             if(
@@ -1480,7 +1061,7 @@ function executeSubmit(
     );
 
 
-    let score=
+    const score=
         (
             correct*
             positiveMark
@@ -1491,12 +1072,12 @@ function executeSubmit(
         );
 
 
-    let maxScore=
+    const maxScore=
         questions.length*
         positiveMark;
 
 
-    let accuracy=
+    const accuracy=
         (
             correct/
             (
@@ -1510,38 +1091,32 @@ function executeSubmit(
 
     if(!isReviewMode){
 
-        const urlParams=
+        const params=
             new URLSearchParams(
                 window.location.search
             );
 
 
         const uid=
-            urlParams.get(
-                "uid"
-            );
+            params.get("uid");
 
 
         const name=
-            urlParams.get(
-                "name"
-            );
+            params.get("name");
 
 
+        /*
+         * IMPORTANT:
+         * वही Test ID जो user ने click किया था.
+         */
         const testId=
-            urlParams.get(
-                "test_id"
-            ) ||
-            DEFAULT_TEST_ID;
-
-
-        const testName=
-            "Mock Test";
+            getCurrentTestId();
 
 
         if(
             uid &&
-            name
+            name &&
+            testId
         ){
 
             fetch(
@@ -1569,7 +1144,7 @@ function executeSubmit(
                                 testId,
 
                             test_name:
-                                testName,
+                                "Mock Test",
 
                             score:
                                 parseFloat(
@@ -1577,21 +1152,20 @@ function executeSubmit(
                                 ),
 
                             accuracy:
-                                accuracy
+                                parseFloat(
+                                    accuracy
+                                )
 
                         })
-
                 }
             ).catch(
-                err =>
+                error =>
                     console.error(
                         "Score save error:",
-                        err
+                        error
                     )
             );
-
         }
-
     }
 
 
@@ -1603,9 +1177,12 @@ function executeSubmit(
         unattempted,
         accuracy
     );
-
 }
 
+
+/* ============================================================
+   RESULT + FULL SOLUTION
+   ============================================================ */
 
 function generateResultScreen(
     score,
@@ -1671,7 +1248,7 @@ function generateResultScreen(
             "🎉 शाबाश! आपने कट-ऑफ ("+
             testCutoff+
             ") पार कर ली है! 🇮🇳"+
-            "</div><br>";
+            "</div>";
 
     }else{
 
@@ -1681,14 +1258,13 @@ function generateResultScreen(
             "⚠️ आपका स्कोर कट-ऑफ ("+
             testCutoff+
             ") से कम है। और अभ्यास करें! 💪"+
-            "</div><br>";
+            "</div>";
 
     }
 
 
     html+=
         "<div class='result-card'>"+
-
         "<b>Your Score: "+
         score.toFixed(2)+
         " / "+
@@ -1739,18 +1315,18 @@ function generateResultScreen(
     questions.forEach(
         (q,i)=>{
 
-            let userAns=
+            const userAns=
                 answers[i];
 
 
-            let correctIndex=
+            const correctIndex=
                 Number.isInteger(
                     q.correctIndex
                 )
                     ? q.correctIndex
                     : q.options.indexOf(
                         q.answer
-                      );
+                    );
 
 
             let boxClass=
@@ -1768,10 +1344,9 @@ function generateResultScreen(
                 boxClass+=
                     " unattempted-box";
 
-
                 statusText=
                     "<span style='color:#e65100;font-weight:bold;background:#ffe0b2;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
-                    "⚠️ Skipped ( 0 )"+
+                    "⚠️ Skipped (0)"+
                     "</span>";
 
             }else if(
@@ -1782,12 +1357,11 @@ function generateResultScreen(
                 boxClass+=
                     " correct-box";
 
-
                 statusText=
                     "<span style='color:#1b5e20;font-weight:bold;background:#c8e6c9;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
-                    "✅ Correct ( +"+
+                    "✅ Correct (+"+
                     positiveMark+
-                    " )"+
+                    ")"+
                     "</span>";
 
             }else{
@@ -1795,14 +1369,12 @@ function generateResultScreen(
                 boxClass+=
                     " wrong-box";
 
-
                 statusText=
                     "<span style='color:#b71c1c;font-weight:bold;background:#ffcdd2;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
-                    "❌ Wrong ( -"+
+                    "❌ Wrong (-"+
                     negativeMark+
-                    " )"+
+                    ")"+
                     "</span>";
-
             }
 
 
@@ -1839,8 +1411,7 @@ function generateResultScreen(
 
                 html+=
                     "<div style='text-align:center;padding:10px;'>"+
-                    "<img src='"+q.img+"' "+
-                    "style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
+                    "<img src='"+q.img+"' style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
                     "</div>";
 
             }
@@ -1853,9 +1424,8 @@ function generateResultScreen(
             q.options.forEach(
                 (opt,optIndex)=>{
 
-                    let optStyle=
+                    let style=
                         "padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#333;";
-
 
                     let icon="⚪";
 
@@ -1865,7 +1435,7 @@ function generateResultScreen(
                         Number(correctIndex)
                     ){
 
-                        optStyle=
+                        style=
                             "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #4CAF50;background:#e8f5e9;font-weight:bold;color:#2e7d32;";
 
                         icon="✅";
@@ -1877,17 +1447,16 @@ function generateResultScreen(
                         Number(userAns)
                     ){
 
-                        optStyle=
+                        style=
                             "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #e53935;background:#ffebee;font-weight:bold;color:#c62828;";
 
                         icon="❌";
-
                     }
 
 
                     html+=
                         "<div class='notranslate' translate='no' style='"+
-                        optStyle+
+                        style+
                         "'>"+
                         icon+
                         " "+
@@ -1904,37 +1473,31 @@ function generateResultScreen(
 
 
             html+=
-                "<hr style='border:0;border-top:1px dashed #ccc;margin:20px 0 15px 0;'>";
+                "<hr style='border:0;border-top:1px dashed #ccc;margin:20px 0 15px;'>";
 
 
             html+=
-                "<div style='background:#f4f9ff;padding:15px;border-radius:10px;border:1px solid #d0e3ff;box-shadow:inset 0 2px 4px rgba(0,0,0,0.02);'>";
+                "<div style='background:#f4f9ff;padding:15px;border-radius:10px;border:1px solid #d0e3ff;'>"+
 
-
-            html+=
-                "<div style='display:inline-block;background:linear-gradient(135deg,#00bfff,#007acc);color:white;padding:6px 14px;border-radius:6px;font-weight:bold;font-size:14px;margin-bottom:12px;box-shadow:0 3px 6px rgba(0,191,255,0.3);'>"+
+                "<div style='display:inline-block;background:linear-gradient(135deg,#00bfff,#007acc);color:white;padding:6px 14px;border-radius:6px;font-weight:bold;font-size:14px;margin-bottom:12px;'>"+
                 "💡 Explanation (व्याख्या)"+
-                "</div>";
+                "</div>"+
 
-
-            html+=
                 "<div class='notranslate' translate='no' style='white-space:pre-wrap;line-height:1.6;font-size:14px;color:#444;'>"+
 
                 (
                     q.explanation
                         ? renderSourceHTML(
                             q.explanation
-                          )
+                        )
                         : "इस प्रश्न के लिए कोई व्याख्या उपलब्ध नहीं है।"
                 )+
 
+                "</div>"+
+
+                "</div>"+
+
                 "</div>";
-
-
-            html+="</div>";
-
-
-            html+="</div>";
 
         }
     );
@@ -1942,8 +1505,7 @@ function generateResultScreen(
 
     html+=
         `
-        <div class="promo-banner notranslate"
-             translate="no">
+        <div class="promo-banner notranslate" translate="no">
 
             <h3>
                 🚀 और नए मॉक टेस्ट चाहिए?
@@ -2008,7 +1570,6 @@ function generateResultScreen(
         0,
         0
     );
-
 }
 
 </script>
