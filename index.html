@@ -5,66 +5,447 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google" content="notranslate">
 <title>Premium Practice Mock</title>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<style>
-body{margin:0;padding-bottom:90px;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f4f7f6}
-.notranslate{translate:none!important;}
-.topbar{background:linear-gradient(135deg, #00bfff, #008ccc);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;font-weight:bold;box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
-.timer-box{background:#fff;color:#e53935;padding:5px 12px;border-radius:20px;font-weight:900;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-.button-row{display:flex;justify-content:space-around;padding:12px;background:white;border-top:1px solid #ddd;position:fixed;left:0;right:0;bottom:0;z-index:1500;box-shadow:0 -3px 12px rgba(0,0,0,0.08);}
-.action-btn{background:#00bfff;color:white;border:none;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:bold;cursor:pointer;transition:0.3s;}
-.action-btn:active{transform:scale(0.95);}
-.submit-btn{background:#4CAF50;}
-.qheader{display:flex;justify-content:space-between;padding:15px;font-weight:bold;color:#333;}
-.last{color:#e53935;background:#ffebee;padding:4px 8px;border-radius:5px;font-size:12px;}
-.qcard{background:white;margin:10px 15px;border-radius:12px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.05);border-top:4px solid #00bfff;}
-.qtitle{padding:18px;background:#fafafa;font-size:17px;color:#333;font-weight:bold;border-bottom:1px solid #eee;}
-.qtitle p{margin-top:0!important;}
-.option{display:flex;align-items:center;padding:15px;background:white;border-bottom:1px solid #f1f1f1;cursor:pointer;transition:0.2s;}
-.option:last-child{border-bottom:none;}
-.option p{margin:0;}
-.circle{width:20px;height:20px;border:2px solid #00bfff;border-radius:50%;margin-right:15px;transition:0.2s;flex-shrink:0;}
-.option.selected{background:#e0faff;font-weight:bold;}
-.option.selected .circle{background:#00bfff;border:4px solid white;box-shadow:0 0 0 2px #00bfff;}
-.palette{position:fixed;right:-100%;top:0;width:75%;max-width:300px;height:100%;background:white;overflow:auto;transition:0.3s;box-shadow:-5px 0 15px rgba(0,0,0,0.1);padding:20px;z-index:1600;}
-.palette h3{margin-top:0;color:#333;border-bottom:2px solid #eee;padding-bottom:10px;}
-.palette.active{right:0}
-.palette button{width:45px;height:45px;margin:6px;border:none;border-radius:8px;font-weight:bold;font-size:16px;cursor:pointer;}
-.notvisited{background:#e0e0e0;color:#55;}
-.answered{background:#4CAF50;color:white;box-shadow:0 2px 5px rgba(76,175,80,0.4);}
-.notanswered{background:#e53935;color:white;box-shadow:0 2px 5px rgba(229,57,53,0.4);}
-.review{background:#ff9800;color:white;box-shadow:0 2px 5px rgba(255,152,0,0.4);}
-.result{display:none;padding:15px 15px 110px}
-.result-card{background:white;padding:20px;border-radius:12px;margin-bottom:15px;box-shadow:0 4px 10px rgba(0,0,0,0.05);text-align:center;font-size:16px;}
-.result-card b{font-size:20px;color:#008ccc;}
-.analysis-box{background:white;padding:15px;margin-bottom:12px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
-.analysis-box.correct-box{border-left:5px solid #4CAF50;}
-.analysis-box.wrong-box{border-left:5px solid #e53935;}
-.analysis-box.unattempted-box{border-left:5px solid #ff9800;}
-.correct{color:#4CAF50;font-weight:bold}
-.wrong{color:#e53935;font-weight:bold}
-.float-btn{position:fixed;bottom:105px;right:25px;width:60px;height:60px;background:#00bfff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:28px;box-shadow:0 4px 15px rgba(0,191,255,0.4);z-index:999;cursor:pointer;}
-.close-palette{position:absolute;right:20px;top:20px;background:red;color:white;border:none;border-radius:5px;padding:5px 10px;font-weight:bold;cursor:pointer;}
-.custom-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:2000;justify-content:center;align-items:center;}
-.custom-modal-box{background:white;padding:25px;border-radius:15px;text-align:center;width:85%;max-width:350px;box-shadow:0 10px 30px rgba(0,0,0,0.3);}
-.custom-modal-box h3{margin-top:0;color:#4CAF50;font-size:22px;margin-bottom:10px;}
-.custom-modal-box p{color:#555;margin-bottom:20px;font-size:15px;}
-.custom-modal-btns{display:flex;justify-content:space-around;gap:15px;}
-.btn-cancel{background:#e0e0e0;color:#333;padding:12px;border:none;border-radius:8px;flex:1;font-weight:bold;cursor:pointer;}
-.btn-submit{background:#4CAF50;color:white;padding:12px;border:none;border-radius:8px;flex:1;font-weight:bold;cursor:pointer;}
-.motivation-banner{background:#e8f5e9;border:2px solid #4CAF50;color:#2e7d32;padding:15px;border-radius:10px;margin-top:15px;font-weight:bold;text-align:center;font-size:18px;}
 
-/* 📢 Channel Promo Banner */
-.promo-banner{background:linear-gradient(135deg,#673ab7,#512da8);color:white;padding:20px;border-radius:12px;text-align:center;margin-top:25px;margin-bottom:30px;box-shadow:0 4px 15px rgba(103,58,183,0.4);}
-.promo-banner h3{margin-top:0;font-size:20px;}
-.promo-banner p{font-size:14px;margin-bottom:15px;color:#e1bee7;}
-.promo-btn{display:inline-block;background:#ff9800;color:white;text-decoration:none;padding:12px 25px;border-radius:25px;font-weight:bold;font-size:16px;box-shadow:0 4px 10px rgba(255,152,0,0.4);transition:0.3s;}
-.promo-btn:active{transform:scale(0.95);}
+<style>
+body{
+    margin:0;
+    padding-bottom:90px;
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+    background:#f4f7f6;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+.notranslate{
+    translate:none!important;
+}
+
+.topbar{
+    background:linear-gradient(135deg,#00bfff,#008ccc);
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:bold;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.timer-box{
+    background:#fff;
+    color:#e53935;
+    padding:5px 12px;
+    border-radius:20px;
+    font-weight:900;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Buttons permanently at bottom */
+.button-row{
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    gap:6px;
+    padding:10px 6px;
+    background:white;
+    border-top:1px solid #ddd;
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    width:100%;
+    z-index:1500;
+    box-shadow:0 -4px 15px rgba(0,0,0,0.10);
+}
+
+.action-btn{
+    background:#00bfff;
+    color:white;
+    border:none;
+    padding:12px 13px;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+    white-space:nowrap;
+}
+
+.action-btn:active{
+    transform:scale(0.95);
+}
+
+.submit-btn{
+    background:#4CAF50;
+}
+
+.qheader{
+    display:flex;
+    justify-content:space-between;
+    padding:15px;
+    font-weight:bold;
+    color:#333;
+}
+
+.last{
+    color:#e53935;
+    background:#ffebee;
+    padding:4px 8px;
+    border-radius:5px;
+    font-size:12px;
+}
+
+.qcard{
+    background:white;
+    margin:10px 15px;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    border-top:4px solid #00bfff;
+}
+
+.qtitle{
+    padding:18px;
+    background:#fafafa;
+    font-size:17px;
+    color:#333;
+    font-weight:bold;
+    border-bottom:1px solid #eee;
+    overflow-wrap:anywhere;
+}
+
+.qtitle p{
+    margin-top:0!important;
+}
+
+.qtitle img,
+.option img,
+.analysis-box img{
+    max-width:100%!important;
+    height:auto!important;
+}
+
+.option{
+    display:flex;
+    align-items:center;
+    padding:15px;
+    background:white;
+    border-bottom:1px solid #f1f1f1;
+    cursor:pointer;
+    transition:0.2s;
+    overflow-wrap:anywhere;
+}
+
+.option:last-child{
+    border-bottom:none;
+}
+
+.option p{
+    margin:0;
+}
+
+.circle{
+    width:20px;
+    height:20px;
+    border:2px solid #00bfff;
+    border-radius:50%;
+    margin-right:15px;
+    transition:0.2s;
+    flex-shrink:0;
+}
+
+.option.selected{
+    background:#e0faff;
+    font-weight:bold;
+}
+
+.option.selected .circle{
+    background:#00bfff;
+    border:4px solid white;
+    box-shadow:0 0 0 2px #00bfff;
+}
+
+.palette{
+    position:fixed;
+    right:-100%;
+    top:0;
+    width:75%;
+    max-width:300px;
+    height:100%;
+    background:white;
+    overflow:auto;
+    transition:0.3s;
+    box-shadow:-5px 0 15px rgba(0,0,0,0.1);
+    padding:20px;
+    z-index:1600;
+}
+
+.palette h3{
+    margin-top:0;
+    color:#333;
+    border-bottom:2px solid #eee;
+    padding-bottom:10px;
+}
+
+.palette.active{
+    right:0;
+}
+
+.palette button{
+    width:45px;
+    height:45px;
+    margin:6px;
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.notvisited{
+    background:#e0e0e0;
+    color:#555;
+}
+
+.answered{
+    background:#4CAF50;
+    color:white;
+    box-shadow:0 2px 5px rgba(76,175,80,0.4);
+}
+
+.notanswered{
+    background:#e53935;
+    color:white;
+    box-shadow:0 2px 5px rgba(229,57,53,0.4);
+}
+
+.review{
+    background:#ff9800;
+    color:white;
+    box-shadow:0 2px 5px rgba(255,152,0,0.4);
+}
+
+.result{
+    display:none;
+    padding:15px 15px 110px;
+}
+
+.result-card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    text-align:center;
+    font-size:16px;
+}
+
+.result-card b{
+    font-size:20px;
+    color:#008ccc;
+}
+
+.analysis-box{
+    background:white;
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:8px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    overflow-wrap:anywhere;
+}
+
+.analysis-box.correct-box{
+    border-left:5px solid #4CAF50;
+}
+
+.analysis-box.wrong-box{
+    border-left:5px solid #e53935;
+}
+
+.analysis-box.unattempted-box{
+    border-left:5px solid #ff9800;
+}
+
+.correct{
+    color:#4CAF50;
+    font-weight:bold;
+}
+
+.wrong{
+    color:#e53935;
+    font-weight:bold;
+}
+
+.float-btn{
+    position:fixed;
+    bottom:105px;
+    right:25px;
+    width:60px;
+    height:60px;
+    background:#00bfff;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:28px;
+    box-shadow:0 4px 15px rgba(0,191,255,0.4);
+    z-index:999;
+    cursor:pointer;
+}
+
+.close-palette{
+    position:absolute;
+    right:20px;
+    top:20px;
+    background:red;
+    color:white;
+    border:none;
+    border-radius:5px;
+    padding:5px 10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.custom-modal-overlay{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    z-index:2000;
+    justify-content:center;
+    align-items:center;
+}
+
+.custom-modal-box{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    width:85%;
+    max-width:350px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.custom-modal-box h3{
+    margin-top:0;
+    color:#4CAF50;
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.custom-modal-box p{
+    color:#555;
+    margin-bottom:20px;
+    font-size:15px;
+}
+
+.custom-modal-btns{
+    display:flex;
+    justify-content:space-around;
+    gap:15px;
+}
+
+.btn-cancel{
+    background:#e0e0e0;
+    color:#333;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    flex:1;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn-submit{
+    background:#4CAF50;
+    color:white;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    flex:1;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.motivation-banner{
+    background:#e8f5e9;
+    border:2px solid #4CAF50;
+    color:#2e7d32;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+    font-weight:bold;
+    text-align:center;
+    font-size:18px;
+}
+
+.promo-banner{
+    background:linear-gradient(135deg,#673ab7,#512da8);
+    color:white;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    margin-top:25px;
+    margin-bottom:30px;
+    box-shadow:0 4px 15px rgba(103,58,183,0.4);
+}
+
+.promo-banner h3{
+    margin-top:0;
+    font-size:20px;
+}
+
+.promo-banner p{
+    font-size:14px;
+    margin-bottom:15px;
+    color:#e1bee7;
+}
+
+.promo-btn{
+    display:inline-block;
+    background:#ff9800;
+    color:white;
+    text-decoration:none;
+    padding:12px 25px;
+    border-radius:25px;
+    font-weight:bold;
+    font-size:16px;
+    box-shadow:0 4px 10px rgba(255,152,0,0.4);
+    transition:0.3s;
+}
+
+.promo-btn:active{
+    transform:scale(0.95);
+}
 
 @media(max-width:420px){
-    .button-row{padding:10px 5px;gap:5px;}
-    .action-btn{padding:11px 9px;font-size:12px;}
+
+    .button-row{
+        padding:9px 4px;
+        gap:4px;
+    }
+
+    .action-btn{
+        padding:11px 8px;
+        font-size:12px;
+    }
+
+    .qcard{
+        margin:10px 10px;
+    }
+
+    .qtitle{
+        font-size:16px;
+    }
 }
 </style>
 </head>
@@ -72,48 +453,118 @@ body{margin:0;padding-bottom:90px;font-family:'Segoe UI', Tahoma, Geneva, Verdan
 <body>
 
 <div class="topbar">
-<span onclick="togglePalette()" style="cursor:pointer;" id="top-title">☰ Practice Mock</span>
-<div class="timer-box" id="timer">00:00</div>
+    <span onclick="togglePalette()" style="cursor:pointer;" id="top-title">
+        ☰ Practice Mock
+    </span>
+
+    <div class="timer-box" id="timer">
+        00:00
+    </div>
 </div>
 
 <div class="qheader" id="question-header">
-<div>Question : <span id="qno">1</span> / <span id="totalq">0</span></div>
-<div class="last" id="lastMin">--</div>
+    <div>
+        Question :
+        <span id="qno">1</span> /
+        <span id="totalq">0</span>
+    </div>
+
+    <div class="last" id="lastMin">
+        --
+    </div>
 </div>
 
 <div id="exam">
-<h3 style="text-align:center;padding:20px;">⏳ टेस्ट लोड हो रहा है...</h3>
+    <h3 style="text-align:center;padding:20px;">
+        ⏳ टेस्ट लोड हो रहा है...
+    </h3>
 </div>
 
+<!-- Bottom Buttons -->
 <div class="button-row" id="top-btn-row">
-<button class="action-btn" onclick="previousQuestion()">Back</button>
-<button class="action-btn" style="background:#ff9800;" onclick="markReview()">Review</button>
-<button class="action-btn" onclick="saveNext()">Save & Next</button>
-<button class="action-btn submit-btn" onclick="showSubmitConfirm()">Submit</button>
+
+    <button class="action-btn"
+            onclick="previousQuestion()">
+        Back
+    </button>
+
+    <button class="action-btn"
+            style="background:#ff9800;"
+            onclick="markReview()">
+        Review
+    </button>
+
+    <button class="action-btn"
+            onclick="saveNext()">
+        Save & Next
+    </button>
+
+    <button class="action-btn submit-btn"
+            onclick="showSubmitConfirm()">
+        Submit
+    </button>
+
 </div>
 
 <div class="palette" id="palette">
-<button class="close-palette" onclick="togglePalette()">X</button>
-<h3>Questions Palette</h3>
-<div id="palette-buttons"></div>
+
+    <button class="close-palette"
+            onclick="togglePalette()">
+        X
+    </button>
+
+    <h3>
+        Questions Palette
+    </h3>
+
+    <div id="palette-buttons"></div>
+
 </div>
 
-<div id="submit-confirm-modal" class="custom-modal-overlay">
-<div class="custom-modal-box">
-<h3>Submit Test?</h3>
-<p>क्या आप सच में टेस्ट सबमिट करना चाहते हैं?</p>
-<div class="custom-modal-btns">
-<button class="btn-cancel" onclick="hideSubmitConfirm()">रद्द करें</button>
-<button class="btn-submit" onclick="executeSubmit()">हाँ, सबमिट करें</button>
-</div>
-</div>
+<div id="submit-confirm-modal"
+     class="custom-modal-overlay">
+
+    <div class="custom-modal-box">
+
+        <h3>
+            Submit Test?
+        </h3>
+
+        <p>
+            क्या आप सच में टेस्ट सबमिट करना चाहते हैं?
+        </p>
+
+        <div class="custom-modal-btns">
+
+            <button class="btn-cancel"
+                    onclick="hideSubmitConfirm()">
+                रद्द करें
+            </button>
+
+            <button class="btn-submit"
+                    onclick="executeSubmit()">
+                हाँ, सबमिट करें
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="result notranslate" id="result" translate="no"></div>
+<div class="result notranslate"
+     id="result"
+     translate="no">
+</div>
 
-<div class="float-btn" id="menu-float-btn" onclick="togglePalette()">≡</div>
+<div class="float-btn"
+     id="menu-float-btn"
+     onclick="togglePalette()">
+    ≡
+</div>
 
 <script>
+
 let questions=[];
 let current=0;
 let answers=[];
@@ -129,381 +580,686 @@ let testCutoff=35.0;
 
 const API_BASE_URL="https://mock-bot-l091.onrender.com";
 
+/*
+ * MongoDB में saved test का default ID.
+ * Telegram/Test link में ?test_id=XXXX आने पर वही ID use होगी.
+ */
+const DEFAULT_TEST_ID="05";
+
+
 window.onload=async function(){
 
-    if(window.Telegram && window.Telegram.WebApp){
+    if(
+        window.Telegram &&
+        window.Telegram.WebApp
+    ){
         window.Telegram.WebApp.ready();
     }
 
-    const urlParams=new URLSearchParams(window.location.search);
-    const testId=urlParams.get('test_id');
-    const savedAnswers=urlParams.get('answers');
+    const urlParams=
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const testId=
+        urlParams.get("test_id") ||
+        DEFAULT_TEST_ID;
+
+    const savedAnswers=
+        urlParams.get("answers");
 
     try{
 
-        let testData;
-
         /*
-         * 05.json हमेशा पहले load होगा.
-         * अगर local 05.json उपलब्ध नहीं है तो test_id होने पर API fallback रहेगा.
+         * IMPORTANT:
+         * अब 05.json local file की जरूरत नहीं है.
+         * Test सीधे MongoDB backend से fetch होगा.
          */
-        try{
-
-            const response=await fetch("./05.json",{
-                cache:"no-store"
-            });
-
-            if(!response.ok){
-                throw new Error("05.json not found");
-            }
-
-            testData=await response.json();
-
-        }catch(localError){
-
-            if(!testId){
-                throw localError;
-            }
-
-            const response=await fetch(
-                `${API_BASE_URL}/get_test/${testId}`,
+        const response=
+            await fetch(
+                `${API_BASE_URL}/get_test/${encodeURIComponent(testId)}`,
                 {
-                    cache:"no-store"
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        "Accept":"application/json"
+                    }
                 }
             );
 
-            if(!response.ok){
-                throw new Error("Test not found");
-            }
+        if(!response.ok){
 
-            testData=await response.json();
+            throw new Error(
+                "MongoDB test fetch failed: "+
+                response.status
+            );
+
         }
+
+        const testData=
+            await response.json();
+
 
         /*
-         * 05.json में सभी sections के questions को एक ही test में merge किया जाएगा.
-         * वर्तमान 05.json में 5 sections × 20 questions = 100 questions हैं.
+         * MongoDB में test दो formats में हो सकता है:
+         *
+         * 1. { questions:[...] }
+         *
+         * 2. [
+         *      {section,questions:[...]},
+         *      {section,questions:[...]}
+         *    ]
+         *
+         * दोनों को automatically merge किया जाएगा.
          */
-        const rawQuestions=Array.isArray(testData)
-            ? testData.flatMap(section =>
-                Array.isArray(section.questions)
-                    ? section.questions
-                    : []
-              )
-            : (
-                Array.isArray(testData.questions)
+        const rawQuestions=
+            Array.isArray(testData)
+
+                ? testData.flatMap(
+                    section =>
+                        Array.isArray(
+                            section.questions
+                        )
+                            ? section.questions
+                            : []
+                  )
+
+                : Array.isArray(
+                    testData.questions
+                  )
+
                     ? testData.questions
-                    : []
-              );
 
-        questions=rawQuestions.map(q=>({
+                    : [];
 
-            ...q,
 
-            question:q.question ?? q.text ?? "",
+        /*
+         * हर question को normalize करें.
+         * correct index सीधे MongoDB के "correct" field से लिया जाएगा.
+         */
+        questions=
+            rawQuestions
+                .map(q=>({
 
-            options:Array.isArray(q.options)
-                ? q.options
-                : [],
+                    ...q,
 
-            correctIndex:Number.isInteger(q.correct)
-                ? q.correct
-                : (
+                    question:
+                        q.question ??
+                        q.text ??
+                        "",
+
+                    options:
+                        Array.isArray(q.options)
+                            ? q.options
+                            : [],
+
+                    correctIndex:
+                        Number.isInteger(
+                            q.correct
+                        )
+                            ? q.correct
+                            : (
+                                Array.isArray(
+                                    q.options
+                                ) &&
+                                q.answer!==undefined
+
+                                    ? q.options.indexOf(
+                                        q.answer
+                                      )
+
+                                    : -1
+                              ),
+
+                    answer:
+                        typeof q.correct==="number" &&
+                        Array.isArray(q.options)
+
+                            ? q.options[
+                                q.correct
+                              ]
+
+                            : (
+                                q.answer ??
+                                ""
+                              ),
+
+                    explanation:
+                        q.explanation ??
+                        q.exp ??
+                        ""
+
+                }))
+
+                .filter(q =>
+                    q.question &&
                     Array.isArray(q.options) &&
-                    q.answer!==undefined
-                        ? q.options.indexOf(q.answer)
-                        : -1
-                ),
+                    q.options.length>0
+                );
 
-            answer:
-                typeof q.correct==="number" &&
-                Array.isArray(q.options)
-                    ? q.options[q.correct]
-                    : (q.answer ?? ""),
-
-            explanation:q.explanation ?? q.exp ?? ""
-
-        })).filter(q =>
-            q.options.length>0 &&
-            q.question
-        );
 
         if(!questions.length){
-            throw new Error("No questions found");
+
+            throw new Error(
+                "MongoDB से कोई question नहीं मिला"
+            );
+
         }
+
 
         const firstSection=
             Array.isArray(testData)
                 ? testData[0]
                 : testData;
 
-        positiveMark=Number(
-            testData.positive_mark ??
-            firstSection?.positive_mark ??
-            2.0
-        );
 
-        negativeMark=Number(
-            testData.negative_mark ??
-            firstSection?.negative_mark ??
-            0.25
-        );
+        positiveMark=
+            Number(
+                testData.positive_mark ??
+                firstSection?.positive_mark ??
+                2
+            );
 
-        testCutoff=Number(
-            testData.cutoff ??
-            firstSection?.cutoff ??
-            35.0
-        );
 
-        const timeLimit=Number(
-            testData.time_limit ??
-            firstSection?.time_limit ??
-            firstSection?.time ??
-            15
-        );
+        negativeMark=
+            Number(
+                testData.negative_mark ??
+                firstSection?.negative_mark ??
+                0.25
+            );
 
-        time=timeLimit*60;
 
-        document.getElementById("totalq").innerText=questions.length;
+        testCutoff=
+            Number(
+                testData.cutoff ??
+                firstSection?.cutoff ??
+                35
+            );
 
-        answers=new Array(questions.length).fill(null);
 
-        status=new Array(questions.length).fill("notvisited");
+        /*
+         * 05.json structure में "time" field है,
+         * इसलिए time_limit के साथ "time" भी support किया गया है.
+         */
+        const timeLimit=
+            Number(
+                testData.time_limit ??
+                testData.time ??
+                firstSection?.time_limit ??
+                firstSection?.time ??
+                60
+            );
 
+
+        time=
+            timeLimit*60;
+
+
+        document.getElementById(
+            "totalq"
+        ).innerText=
+            questions.length;
+
+
+        answers=
+            new Array(
+                questions.length
+            ).fill(null);
+
+
+        status=
+            new Array(
+                questions.length
+            ).fill("notvisited");
+
+
+        /*
+         * Existing submitted attempt खोलने के लिए.
+         */
         if(savedAnswers){
 
             isReviewMode=true;
             submitted=true;
 
-            const parsedAnswers=JSON.parse(savedAnswers);
+            try{
 
-            answers=questions.map((q,i)=>
-                parsedAnswers[i]===null ||
-                parsedAnswers[i]===undefined
-                    ? null
-                    : Number(parsedAnswers[i])
-            );
+                const parsedAnswers=
+                    JSON.parse(
+                        savedAnswers
+                    );
 
-            document.getElementById("top-title").innerText=
+                answers=
+                    questions.map(
+                        (q,i)=>
+                            parsedAnswers[i]===
+                            null ||
+                            parsedAnswers[i]===
+                            undefined
+
+                                ? null
+
+                                : Number(
+                                    parsedAnswers[i]
+                                  )
+                    );
+
+            }catch(e){
+
+                answers=
+                    new Array(
+                        questions.length
+                    ).fill(null);
+
+            }
+
+
+            document.getElementById(
+                "top-title"
+            ).innerText=
                 "📊 Test Analysis";
+
 
             executeSubmit(true);
 
         }else{
 
+            /*
+             * Test automatically start होगा.
+             */
             startTimer();
+
             loadQuestion();
 
         }
 
+
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "TEST LOAD ERROR:",
+            error
+        );
 
-        document.getElementById("exam").innerHTML=
-            "<h3 style='text-align:center;color:red;padding:20px;'>⚠️ टेस्ट लोड करने में त्रुटि। कृपया सुनिश्चित करें कि 05.json फाइल इसी फोल्डर में मौजूद है।</h3>";
+
+        document.getElementById(
+            "timer"
+        ).innerText=
+            "ERR";
+
+
+        document.getElementById(
+            "totalq"
+        ).innerText=
+            "0";
+
+
+        document.getElementById(
+            "exam"
+        ).innerHTML=
+            `
+            <div style="
+                margin:25px 15px;
+                background:#fff;
+                border-radius:14px;
+                padding:25px 18px;
+                text-align:center;
+                box-shadow:0 4px 15px rgba(0,0,0,.08);
+            ">
+
+                <div style="
+                    font-size:45px;
+                    margin-bottom:15px;
+                ">
+                    ⚠️
+                </div>
+
+                <h3 style="
+                    color:#e53935;
+                    margin:0 0 10px;
+                ">
+                    टेस्ट लोड नहीं हो सका
+                </h3>
+
+                <p style="
+                    color:#555;
+                    line-height:1.6;
+                    margin:0;
+                ">
+                    MongoDB से टेस्ट डेटा प्राप्त नहीं हुआ।
+                </p>
+
+                <button
+                    onclick="location.reload()"
+                    style="
+                        margin-top:18px;
+                        background:#00bfff;
+                        color:#fff;
+                        border:0;
+                        padding:12px 22px;
+                        border-radius:8px;
+                        font-weight:bold;
+                    "
+                >
+                    🔄 Retry
+                </button>
+
+            </div>
+            `;
 
     }
 
 };
 
+
 function startTimer(){
 
-    clearInterval(timerInterval);
+    clearInterval(
+        timerInterval
+    );
 
-    timerInterval=setInterval(()=>{
 
-        let m=Math.floor(time/60);
-        let s=time%60;
+    timerInterval=
+        setInterval(()=>{
 
-        document.getElementById("timer").innerText=
-            (m<10?"0"+m:m)+":"+
-            (s<10?"0"+s:s);
+            if(time<0){
 
-        document.getElementById("lastMin").innerText=
-            "Last "+
-            (m<10?"0"+m:m)+
-            " Mins";
+                clearInterval(
+                    timerInterval
+                );
 
-        time--;
+                executeSubmit();
 
-        if(time<0){
-            executeSubmit();
-        }
+                return;
 
-    },1000);
+            }
+
+
+            let m=
+                Math.floor(
+                    time/60
+                );
+
+
+            let s=
+                time%60;
+
+
+            document.getElementById(
+                "timer"
+            ).innerText=
+                (m<10?"0"+m:m)+
+                ":"+
+                (s<10?"0"+s:s);
+
+
+            document.getElementById(
+                "lastMin"
+            ).innerText=
+                "Last "+
+                (m<10?"0"+m:m)+
+                " Mins";
+
+
+            time--;
+
+        },1000);
+
 }
 
 
 /*
- * JSON में question/option/explanation HTML के रूप में stored हैं.
- * <html>, <head>, <body> को nested HTML में डालने से content blank
- * हो सकता था. अब DOMParser से सिर्फ body content safely render होगा.
+ * MongoDB question HTML में <html><head><body>
+ * मौजूद होने पर nested HTML problem को रोकता है.
  */
 function renderSourceHTML(value){
 
-    if(value===null || value===undefined){
+    if(
+        value===null ||
+        value===undefined
+    ){
         return "";
     }
 
-    const source=String(value);
 
-    const parser=new DOMParser();
+    const source=
+        String(value);
 
-    const doc=parser.parseFromString(
-        source,
-        "text/html"
-    );
+
+    const parser=
+        new DOMParser();
+
+
+    const doc=
+        parser.parseFromString(
+            source,
+            "text/html"
+        );
+
 
     /*
-     * JSON के अंदर मौजूद font/style को page में एक बार add करें.
+     * JSON के अंदर मौजूद styles को page head में load करें.
      */
-    doc.querySelectorAll("style").forEach(style=>{
+    doc
+        .querySelectorAll("style")
+        .forEach(style=>{
 
-        const css=style.textContent || "";
+            const css=
+                style.textContent ||
+                "";
 
-        if(
-            css.trim() &&
-            !Array.from(
-                document.head.querySelectorAll(
-                    "style[data-source-json-style]"
+
+            if(
+                css.trim() &&
+                !Array.from(
+                    document.head.querySelectorAll(
+                        "style[data-json-source-style]"
+                    )
+                ).some(
+                    existing =>
+                        existing.textContent===
+                        css
                 )
-            ).some(
-                existing =>
-                    existing.textContent===css
-            )
-        ){
+            ){
 
-            const styleCopy=
-                document.createElement("style");
+                const styleCopy=
+                    document.createElement(
+                        "style"
+                    );
 
-            styleCopy.setAttribute(
-                "data-source-json-style",
-                "true"
-            );
 
-            styleCopy.textContent=css;
+                styleCopy.setAttribute(
+                    "data-json-source-style",
+                    "true"
+                );
 
-            document.head.appendChild(styleCopy);
-        }
 
-    });
+                styleCopy.textContent=
+                    css;
+
+
+                document.head.appendChild(
+                    styleCopy
+                );
+
+            }
+
+        });
+
 
     const content=
         doc.body
             ? doc.body.innerHTML
             : source;
 
-    const wrapper=
-        document.createElement("div");
 
-    wrapper.className="notranslate";
+    const wrapper=
+        document.createElement(
+            "div"
+        );
+
+
+    wrapper.className=
+        "notranslate";
+
 
     wrapper.setAttribute(
         "translate",
         "no"
     );
 
-    wrapper.innerHTML=content;
 
-    wrapper.querySelectorAll("*").forEach(el=>{
+    wrapper.innerHTML=
+        content;
 
-        el.setAttribute(
-            "translate",
-            "no"
-        );
 
-        el.classList.add(
-            "notranslate"
-        );
+    wrapper
+        .querySelectorAll("*")
+        .forEach(el=>{
 
-    });
+            el.setAttribute(
+                "translate",
+                "no"
+            );
+
+            el.classList.add(
+                "notranslate"
+            );
+
+        });
+
 
     return wrapper.innerHTML;
+
 }
 
 
 function loadQuestion(){
 
-    if(questions.length===0){
+    if(!questions.length){
         return;
     }
 
-    let q=questions[current];
+
+    let q=
+        questions[current];
+
 
     let html=
         "<div class='qcard notranslate' translate='no'>"+
         "<div class='qtitle'>"+
-        "Q"+(current+1)+". "+
-        renderSourceHTML(q.question)+
+        "Q"+
+        (current+1)+
+        ". "+
+        renderSourceHTML(
+            q.question
+        )+
         "</div>";
 
-    if(q.img && q.img!==""){
+
+    if(
+        q.img &&
+        q.img!==""
+    ){
 
         html+=
             "<div style='text-align:center;padding:10px;'>"+
             "<img src='"+q.img+"' "+
-            "style='max-width:100%;border-radius:8px;border:1px solid #ddd;'>"+
+            "style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
             "</div>";
 
     }
 
-    q.options.forEach((opt,i)=>{
 
-        let isSelected=
-            answers[current]===i
-                ? "selected"
-                : "";
+    q.options.forEach(
+        (opt,i)=>{
 
-        html+=
-            "<div class='option "+
-            isSelected+
-            " notranslate' "+
-            "translate='no' "+
-            "onclick='selectOption(this,"+
-            i+
-            ")'>"+
-            "<div class='circle'></div>"+
-            renderSourceHTML(opt)+
-            "</div>";
+            let isSelected=
+                answers[current]===i
+                    ? "selected"
+                    : "";
 
-    });
+
+            html+=
+                "<div class='option "+
+                isSelected+
+                " notranslate' "+
+                "translate='no' "+
+                "onclick='selectOption(this,"+
+                i+
+                ")'>"+
+
+                "<div class='circle'></div>"+
+
+                renderSourceHTML(
+                    opt
+                )+
+
+                "</div>";
+
+        }
+    );
+
 
     html+="</div>";
 
+
     document.getElementById(
         "exam"
-    ).innerHTML=html;
+    ).innerHTML=
+        html;
+
 
     document.getElementById(
         "qno"
-    ).innerText=current+1;
+    ).innerText=
+        current+1;
+
 
     updatePalette();
+
+
+    window.scrollTo(
+        0,
+        0
+    );
 
 }
 
 
-function selectOption(el,i){
+function selectOption(
+    el,
+    i
+){
 
     if(submitted){
         return;
     }
 
+
     document
-        .querySelectorAll(".option")
-        .forEach(o =>
-            o.classList.remove(
-                "selected"
-            )
+        .querySelectorAll(
+            ".option"
+        )
+        .forEach(
+            o =>
+                o.classList.remove(
+                    "selected"
+                )
         );
+
 
     el.classList.add(
         "selected"
     );
 
-    answers[current]=i;
 
-    status[current]="answered";
+    answers[current]=
+        i;
+
+
+    status[current]=
+        "answered";
+
 
     updatePalette();
 
@@ -513,11 +1269,15 @@ function selectOption(el,i){
 function saveNext(){
 
     if(
-        answers[current]==null &&
+        answers[current]===null &&
         status[current]!=="review"
     ){
-        status[current]="notanswered";
+
+        status[current]=
+            "notanswered";
+
     }
+
 
     if(
         current<
@@ -548,9 +1308,24 @@ function previousQuestion(){
 
 function markReview(){
 
-    status[current]="review";
+    status[current]=
+        "review";
 
-    saveNext();
+
+    if(
+        current<
+        questions.length-1
+    ){
+
+        current++;
+
+        loadQuestion();
+
+    }else{
+
+        updatePalette();
+
+    }
 
 }
 
@@ -558,7 +1333,9 @@ function markReview(){
 function togglePalette(){
 
     document
-        .getElementById("palette")
+        .getElementById(
+            "palette"
+        )
         .classList.toggle(
             "active"
         );
@@ -570,22 +1347,27 @@ function updatePalette(){
 
     let p="";
 
-    questions.forEach((q,i)=>{
 
-        p+=
-            "<button class='"+
-            status[i]+
-            "' onclick='goQ("+
-            i+
-            ")'>"+
-            (i+1)+
-            "</button>";
+    questions.forEach(
+        (q,i)=>{
 
-    });
+            p+=
+                "<button class='"+
+                status[i]+
+                "' onclick='goQ("+
+                i+
+                ")'>"+
+                (i+1)+
+                "</button>";
+
+        }
+    );
+
 
     document.getElementById(
         "palette-buttons"
-    ).innerHTML=p;
+    ).innerHTML=
+        p;
 
 }
 
@@ -596,7 +1378,13 @@ function goQ(i){
 
     loadQuestion();
 
-    togglePalette();
+    document
+        .getElementById(
+            "palette"
+        )
+        .classList.remove(
+            "active"
+        );
 
 }
 
@@ -607,9 +1395,11 @@ function showSubmitConfirm(){
         return;
     }
 
+
     document.getElementById(
         "submit-confirm-modal"
-    ).style.display="flex";
+    ).style.display=
+        "flex";
 
 }
 
@@ -618,7 +1408,8 @@ function hideSubmitConfirm(){
 
     document.getElementById(
         "submit-confirm-modal"
-    ).style.display="none";
+    ).style.display=
+        "none";
 
 }
 
@@ -629,61 +1420,93 @@ function executeSubmit(
 
     hideSubmitConfirm();
 
+
+    if(submitted && !isFromHistory){
+        return;
+    }
+
+
     submitted=true;
+
 
     clearInterval(
         timerInterval
     );
 
+
     let correct=0;
     let incorrect=0;
     let unattempted=0;
 
-    questions.forEach((q,i)=>{
 
-        let correctIndex=
-            Number.isInteger(
-                q.correctIndex
-            )
-                ? q.correctIndex
-                : q.options.indexOf(
-                    q.answer
-                );
+    questions.forEach(
+        (q,i)=>{
 
-        if(
-            answers[i]==null
-        ){
+            let correctIndex=
+                Number.isInteger(
+                    q.correctIndex
+                )
+                    ? q.correctIndex
+                    : q.options.indexOf(
+                        q.answer
+                      );
 
-            unattempted++;
 
-        }else if(
-            answers[i]===correctIndex
-        ){
+            if(
+                answers[i]===null ||
+                answers[i]===undefined
+            ){
 
-            correct++;
+                unattempted++;
 
-        }else{
+            }else if(
+                Number(
+                    answers[i]
+                )===
+                Number(
+                    correctIndex
+                )
+            ){
 
-            incorrect++;
+                correct++;
+
+            }else{
+
+                incorrect++;
+
+            }
 
         }
+    );
 
-    });
 
     let score=
-        (correct*positiveMark)-
-        (incorrect*negativeMark);
+        (
+            correct*
+            positiveMark
+        )-
+        (
+            incorrect*
+            negativeMark
+        );
+
 
     let maxScore=
         questions.length*
         positiveMark;
 
+
     let accuracy=
         (
             correct/
-            (correct+incorrect||1)*
+            (
+                correct+
+                incorrect||
+                1
+            )*
             100
         ).toFixed(2);
+
 
     if(!isReviewMode){
 
@@ -692,23 +1515,34 @@ function executeSubmit(
                 window.location.search
             );
 
+
         const uid=
-            urlParams.get("uid");
+            urlParams.get(
+                "uid"
+            );
+
 
         const name=
-            urlParams.get("name");
+            urlParams.get(
+                "name"
+            );
+
 
         const testId=
-            urlParams.get("test_id");
+            urlParams.get(
+                "test_id"
+            ) ||
+            DEFAULT_TEST_ID;
+
 
         const testName=
-            document.querySelector(
-                ".qtitle"
-            )
-                ? "Mock Test"
-                : "Test";
+            "Mock Test";
 
-        if(uid && name){
+
+        if(
+            uid &&
+            name
+        ){
 
             fetch(
                 `${API_BASE_URL}/submit_score`,
@@ -720,36 +1554,46 @@ function executeSubmit(
                             "application/json"
                     },
 
-                    body:JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        user_id:
-                            parseInt(uid),
+                            user_id:
+                                parseInt(
+                                    uid
+                                ),
 
-                        first_name:
-                            name,
+                            first_name:
+                                name,
 
-                        test_id:
-                            testId,
+                            test_id:
+                                testId,
 
-                        test_name:
-                            testName,
+                            test_name:
+                                testName,
 
-                        score:
-                            parseFloat(score),
+                            score:
+                                parseFloat(
+                                    score
+                                ),
 
-                        accuracy:
-                            accuracy
+                            accuracy:
+                                accuracy
 
-                    })
+                        })
+
                 }
             ).catch(
                 err =>
-                    console.log(err)
+                    console.error(
+                        "Score save error:",
+                        err
+                    )
             );
 
         }
 
     }
+
 
     generateResultScreen(
         score,
@@ -774,35 +1618,53 @@ function generateResultScreen(
 
     document.getElementById(
         "timer"
-    ).style.display="none";
+    ).style.display=
+        "none";
+
 
     document.getElementById(
         "question-header"
-    ).style.display="none";
+    ).style.display=
+        "none";
+
 
     document.getElementById(
         "top-btn-row"
-    ).style.display="none";
+    ).style.display=
+        "none";
+
 
     document.getElementById(
         "menu-float-btn"
-    ).style.display="none";
+    ).style.display=
+        "none";
+
 
     document.getElementById(
         "exam"
-    ).style.display="none";
+    ).style.display=
+        "none";
+
 
     document.getElementById(
         "palette"
-    ).style.display="none";
+    ).style.display=
+        "none";
+
 
     document.getElementById(
         "result"
-    ).style.display="block";
+    ).style.display=
+        "block";
+
 
     let html="";
 
-    if(score>=testCutoff){
+
+    if(
+        score>=
+        testCutoff
+    ){
 
         html+=
             "<div class='motivation-banner'>"+
@@ -815,9 +1677,7 @@ function generateResultScreen(
 
         html+=
             "<div class='motivation-banner' "+
-            "style='background:#ffebee;"+
-            "border-color:#e53935;"+
-            "color:#c62828;'>"+
+            "style='background:#ffebee;border-color:#e53935;color:#c62828;'>"+
             "⚠️ आपका स्कोर कट-ऑफ ("+
             testCutoff+
             ") से कम है। और अभ्यास करें! 💪"+
@@ -825,14 +1685,18 @@ function generateResultScreen(
 
     }
 
+
     html+=
         "<div class='result-card'>"+
+
         "<b>Your Score: "+
         score.toFixed(2)+
         " / "+
         maxScore+
         "</b>"+
+
         "<hr style='border:0;border-top:1px solid #eee;margin:15px 0;'>"+
+
         "<div style='display:flex;justify-content:space-around;text-align:center;'>"+
 
         "<div>"+
@@ -853,10 +1717,14 @@ function generateResultScreen(
         "</span><br><small>Skipped</small>"+
         "</div>"+
 
-        "</div><br>"+
+        "</div>"+
+
+        "<br>"+
+
         "<b>Accuracy: "+
         accuracy+
         "%</b>"+
+
         "</div>"+
 
         "<div style='max-width:300px;margin:0 auto;'>"+
@@ -868,199 +1736,238 @@ function generateResultScreen(
         "</h3>";
 
 
-    questions.forEach((q,i)=>{
+    questions.forEach(
+        (q,i)=>{
 
-        let userAns=
-            answers[i];
-
-        let correctIndex=
-            Number.isInteger(
-                q.correctIndex
-            )
-                ? q.correctIndex
-                : q.options.indexOf(
-                    q.answer
-                );
-
-        let boxClass=
-            "analysis-box";
-
-        let statusText="";
+            let userAns=
+                answers[i];
 
 
-        if(userAns==null){
-
-            boxClass+=
-                " unattempted-box";
-
-            statusText=
-                "<span style='color:#e65100;font-weight:bold;background:#ffe0b2;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
-                "⚠️ Skipped ( 0 )"+
-                "</span>";
-
-        }else if(
-            userAns===correctIndex
-        ){
-
-            boxClass+=
-                " correct-box";
-
-            statusText=
-                "<span style='color:#1b5e20;font-weight:bold;background:#c8e6c9;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
-                "✅ Correct ( +"+
-                positiveMark+
-                " )"+
-                "</span>";
-
-        }else{
-
-            boxClass+=
-                " wrong-box";
-
-            statusText=
-                "<span style='color:#b71c1c;font-weight:bold;background:#ffcdd2;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
-                "❌ Wrong ( -"+
-                negativeMark+
-                " )"+
-                "</span>";
-
-        }
+            let correctIndex=
+                Number.isInteger(
+                    q.correctIndex
+                )
+                    ? q.correctIndex
+                    : q.options.indexOf(
+                        q.answer
+                      );
 
 
-        html+=
-            "<div class='"+
-            boxClass+
-            " notranslate' "+
-            "translate='no'>";
+            let boxClass=
+                "analysis-box";
 
 
-        html+=
-            "<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:15px;font-size:16px;'>"+
-            "<b>Q"+
-            (i+1)+
-            ". "+
-            renderSourceHTML(
-                q.question
-            )+
-            "</b>"+
-            "<div style='text-align:right;min-width:100px;margin-left:10px;'>"+
-            statusText+
-            "</div>"+
-            "</div>";
+            let statusText="";
 
 
-        if(q.img && q.img!==""){
+            if(
+                userAns===null ||
+                userAns===undefined
+            ){
+
+                boxClass+=
+                    " unattempted-box";
+
+
+                statusText=
+                    "<span style='color:#e65100;font-weight:bold;background:#ffe0b2;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
+                    "⚠️ Skipped ( 0 )"+
+                    "</span>";
+
+            }else if(
+                Number(userAns)===
+                Number(correctIndex)
+            ){
+
+                boxClass+=
+                    " correct-box";
+
+
+                statusText=
+                    "<span style='color:#1b5e20;font-weight:bold;background:#c8e6c9;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
+                    "✅ Correct ( +"+
+                    positiveMark+
+                    " )"+
+                    "</span>";
+
+            }else{
+
+                boxClass+=
+                    " wrong-box";
+
+
+                statusText=
+                    "<span style='color:#b71c1c;font-weight:bold;background:#ffcdd2;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
+                    "❌ Wrong ( -"+
+                    negativeMark+
+                    " )"+
+                    "</span>";
+
+            }
+
 
             html+=
-                "<div style='text-align:center;padding:10px;'>"+
-                "<img src='"+q.img+"' "+
-                "style='max-width:100%;border-radius:8px;border:1px solid #ddd;'>"+
+                "<div class='"+
+                boxClass+
+                " notranslate' translate='no'>";
+
+
+            html+=
+                "<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:15px;font-size:16px;'>"+
+
+                "<div style='flex:1;min-width:0;'>"+
+                "<b>Q"+
+                (i+1)+
+                ". "+
+                renderSourceHTML(
+                    q.question
+                )+
+                "</b>"+
+                "</div>"+
+
+                "<div style='text-align:right;min-width:100px;margin-left:10px;'>"+
+                statusText+
+                "</div>"+
+
                 "</div>";
 
-        }
 
-
-        html+=
-            "<div style='margin-top:10px;'>";
-
-
-        q.options.forEach(
-            (opt,optIndex)=>{
-
-                let optStyle=
-                    "padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#333;";
-
-                let icon="⚪";
-
-
-                if(
-                    optIndex===
-                    correctIndex
-                ){
-
-                    optStyle=
-                        "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #4CAF50;background:#e8f5e9;font-weight:bold;color:#2e7d32;";
-
-                    icon="✅";
-
-                }else if(
-                    optIndex===
-                    userAns &&
-                    userAns!==
-                    correctIndex
-                ){
-
-                    optStyle=
-                        "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #e53935;background:#ffebee;font-weight:bold;color:#c62828;";
-
-                    icon="❌";
-
-                }
-
+            if(
+                q.img &&
+                q.img!==""
+            ){
 
                 html+=
-                    "<div style='"+
-                    optStyle+
-                    "'>"+
-                    icon+
-                    " "+
-                    renderSourceHTML(
-                        opt
-                    )+
+                    "<div style='text-align:center;padding:10px;'>"+
+                    "<img src='"+q.img+"' "+
+                    "style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
                     "</div>";
 
             }
-        );
 
 
-        html+="</div>";
+            html+=
+                "<div style='margin-top:10px;'>";
 
 
-        html+=
-            "<hr style='border:0;border-top:1px dashed #ccc;margin:20px 0 15px 0;'>";
+            q.options.forEach(
+                (opt,optIndex)=>{
+
+                    let optStyle=
+                        "padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#333;";
 
 
-        html+=
-            "<div style='background:#f4f9ff;padding:15px;border-radius:10px;border:1px solid #d0e3ff;box-shadow:inset 0 2px 4px rgba(0,0,0,0.02);'>";
+                    let icon="⚪";
 
 
-        html+=
-            "<div style='display:inline-block;background:linear-gradient(135deg,#00bfff,#007acc);color:white;padding:6px 14px;border-radius:6px;font-weight:bold;font-size:14px;margin-bottom:12px;box-shadow:0 3px 6px rgba(0,191,255,0.3);'>"+
-            "💡 Explanation (व्याख्या)"+
-            "</div>";
+                    if(
+                        Number(optIndex)===
+                        Number(correctIndex)
+                    ){
+
+                        optStyle=
+                            "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #4CAF50;background:#e8f5e9;font-weight:bold;color:#2e7d32;";
+
+                        icon="✅";
+
+                    }else if(
+                        userAns!==null &&
+                        userAns!==undefined &&
+                        Number(optIndex)===
+                        Number(userAns)
+                    ){
+
+                        optStyle=
+                            "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #e53935;background:#ffebee;font-weight:bold;color:#c62828;";
+
+                        icon="❌";
+
+                    }
 
 
-        html+=
-            "<div class='notranslate' translate='no' style='white-space:pre-wrap;line-height:1.6;font-size:14px;color:#444;'>"+
-            (
-                q.explanation
-                    ? renderSourceHTML(
-                        q.explanation
-                    )
-                    : "इस प्रश्न के लिए कोई व्याख्या उपलब्ध नहीं है।"
-            )+
-            "</div>";
+                    html+=
+                        "<div class='notranslate' translate='no' style='"+
+                        optStyle+
+                        "'>"+
+                        icon+
+                        " "+
+                        renderSourceHTML(
+                            opt
+                        )+
+                        "</div>";
+
+                }
+            );
 
 
-        html+="</div>";
-
-        html+="</div>";
-
-    });
+            html+="</div>";
 
 
-    html+=`
-        <div class="promo-banner notranslate" translate="no">
-            <h3>🚀 और नए मॉक टेस्ट चाहिए?</h3>
-            <p>हमारे आधिकारिक टेलीग्राम चैनल से जुड़ें और हर दिन नए टेस्ट, स्टडी मटेरियल और अपडेट्स पाएं!</p>
-            <a href="https://t.me/+bmzuj2Y68nFmYTc9" class="promo-btn">📢 अभी चैनल ज्वाइन करें</a>
+            html+=
+                "<hr style='border:0;border-top:1px dashed #ccc;margin:20px 0 15px 0;'>";
+
+
+            html+=
+                "<div style='background:#f4f9ff;padding:15px;border-radius:10px;border:1px solid #d0e3ff;box-shadow:inset 0 2px 4px rgba(0,0,0,0.02);'>";
+
+
+            html+=
+                "<div style='display:inline-block;background:linear-gradient(135deg,#00bfff,#007acc);color:white;padding:6px 14px;border-radius:6px;font-weight:bold;font-size:14px;margin-bottom:12px;box-shadow:0 3px 6px rgba(0,191,255,0.3);'>"+
+                "💡 Explanation (व्याख्या)"+
+                "</div>";
+
+
+            html+=
+                "<div class='notranslate' translate='no' style='white-space:pre-wrap;line-height:1.6;font-size:14px;color:#444;'>"+
+
+                (
+                    q.explanation
+                        ? renderSourceHTML(
+                            q.explanation
+                          )
+                        : "इस प्रश्न के लिए कोई व्याख्या उपलब्ध नहीं है।"
+                )+
+
+                "</div>";
+
+
+            html+="</div>";
+
+
+            html+="</div>";
+
+        }
+    );
+
+
+    html+=
+        `
+        <div class="promo-banner notranslate"
+             translate="no">
+
+            <h3>
+                🚀 और नए मॉक टेस्ट चाहिए?
+            </h3>
+
+            <p>
+                हमारे आधिकारिक टेलीग्राम चैनल से जुड़ें और हर दिन नए टेस्ट, स्टडी मटेरियल और अपडेट्स पाएं!
+            </p>
+
+            <a
+                href="https://t.me/+bmzuj2Y68nFmYTc9"
+                class="promo-btn"
+            >
+                📢 अभी चैनल ज्वाइन करें
+            </a>
+
         </div>
-    `;
+        `;
 
 
     document.getElementById(
         "result"
-    ).innerHTML=html;
+    ).innerHTML=
+        html;
 
 
     new Chart(
@@ -1096,14 +2003,15 @@ function generateResultScreen(
         }
     );
 
+
     window.scrollTo(
         0,
         0
     );
 
 }
+
 </script>
 
 </body>
 </html>
-``` [❶](code://python)
