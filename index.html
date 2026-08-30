@@ -2,7 +2,7 @@
 <html lang="hi" translate="no">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="google" content="notranslate">
 <title>Premium Practice Mock</title>
 
@@ -11,453 +11,795 @@
 
 <style>
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     margin:0;
-    padding:0 0 85px;
-    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-    background:#f4f7f6;
-    color:#333;
+    padding:0 0 90px;
+    font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+    background:#f4f7f9;
+    color:#252525;
 }
-.notranslate{translate:none!important}
+
+.notranslate{
+    translate:none!important;
+}
+
 .topbar{
-    background:linear-gradient(135deg,#00bfff,#008ccc);
-    color:white;
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-weight:bold;
-    box-shadow:0 4px 10px rgba(0,0,0,.1);
     position:sticky;
     top:0;
-    z-index:900;
+    z-index:1000;
+    min-height:64px;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:linear-gradient(135deg,#00bff3,#008fd1);
+    color:#fff;
+    box-shadow:0 4px 18px rgba(0,0,0,.14);
 }
+
+.top-title{
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:.2px;
+}
+
 .timer-box{
+    min-width:74px;
+    text-align:center;
+    padding:7px 12px;
+    border-radius:25px;
     background:#fff;
     color:#e53935;
-    padding:5px 12px;
-    border-radius:20px;
+    font-size:17px;
     font-weight:900;
-    box-shadow:0 2px 5px rgba(0,0,0,.1);
+    box-shadow:0 3px 12px rgba(0,0,0,.12);
 }
+
 .qheader{
     display:flex;
     justify-content:space-between;
-    padding:15px;
-    font-weight:bold;
-    color:#333;
-}
-.last{
-    color:#e53935;
-    background:#ffebee;
-    padding:4px 8px;
-    border-radius:5px;
-    font-size:12px;
-}
-.qcard{
-    background:white;
-    margin:10px 15px;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 4px 10px rgba(0,0,0,.05);
-    border-top:4px solid #00bfff;
-}
-.section-name{
-    padding:10px 18px;
-    background:#eefaff;
-    color:#008ccc;
-    font-size:13px;
-    font-weight:bold;
-    border-bottom:1px solid #d8f3ff;
-}
-.qtitle{
-    padding:18px;
-    background:#fafafa;
+    align-items:center;
+    padding:16px 18px 10px;
     font-size:17px;
-    color:#333;
-    font-weight:bold;
-    border-bottom:1px solid #eee;
-    line-height:1.6;
+    font-weight:800;
+}
+
+.last{
+    background:#ffebee;
+    color:#e53935;
+    border-radius:8px;
+    padding:5px 9px;
+    font-size:11px;
+}
+
+.qcard{
+    margin:10px 16px 20px;
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.07);
+    border:1px solid #edf1f4;
+}
+
+.section-name{
+    padding:12px 18px;
+    background:linear-gradient(135deg,#e9faff,#f5fcff);
+    color:#0088c8;
+    font-size:14px;
+    font-weight:800;
+    border-bottom:1px solid #d7f2fb;
+}
+
+.qtitle{
+    padding:20px 18px;
+    font-size:18px;
+    line-height:1.75;
+    font-weight:700;
+    color:#292929;
+    background:#fff;
     overflow-wrap:anywhere;
     word-break:break-word;
 }
-.qtitle p,
-.option p,
-.analysis-box p{
-    margin-top:0;
+
+.qnumber{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:38px;
+    height:30px;
+    padding:0 9px;
+    margin-bottom:12px;
+    border-radius:8px;
+    background:linear-gradient(135deg,#00bff3,#008fd1);
+    color:#fff;
+    font-size:13px;
+    font-weight:900;
 }
-.qtitle img,
-.option img,
-.analysis-box img,
-.source-content img{
+
+.question-text{
+    display:block;
+}
+
+.question-text img,
+.option-content img,
+.explanation-content img,
+.answer-value img{
     max-width:100%!important;
     height:auto!important;
     display:block;
+    margin:8px auto;
+    border-radius:8px;
 }
-.qtitle table,
-.option table,
-.analysis-box table{
+
+.question-text table,
+.option-content table,
+.explanation-content table{
     max-width:100%;
-    width:auto;
     overflow:auto;
 }
-.qtitle svg,
-.option svg,
-.analysis-box svg{
+
+.question-text svg,
+.option-content svg,
+.explanation-content svg{
     max-width:100%;
     height:auto;
 }
+
 .option{
     display:flex;
     align-items:flex-start;
-    padding:15px;
-    background:white;
-    border-bottom:1px solid #f1f1f1;
+    gap:13px;
+    padding:17px 16px;
+    background:#fff;
+    border-top:1px solid #f0f2f4;
     cursor:pointer;
-    transition:.2s;
+    transition:.18s ease;
     overflow-wrap:anywhere;
     word-break:break-word;
-    line-height:1.55;
 }
-.option:last-child{
-    border-bottom:none;
+
+.option:active{
+    transform:scale(.995);
 }
-.option>div:last-child{
+
+.option-content{
     flex:1;
     min-width:0;
+    font-size:16px;
+    line-height:1.6;
 }
-.circle{
-    width:20px;
-    height:20px;
-    border:2px solid #00bfff;
+
+.option-radio{
+    width:22px;
+    height:22px;
+    min-width:22px;
+    border:2px solid #11b5e4;
     border-radius:50%;
-    margin-right:15px;
-    transition:.2s;
-    flex-shrink:0;
+    position:relative;
     margin-top:2px;
+    transition:.18s;
 }
+
 .option.selected{
-    background:#e0faff;
-    font-weight:bold;
+    background:linear-gradient(90deg,#e1f8ff,#f8fdff);
 }
-.option.selected .circle{
-    background:#00bfff;
-    border:4px solid white;
-    box-shadow:0 0 0 2px #00bfff;
+
+.option.selected .option-radio{
+    border:6px solid #11b5e4;
+    box-shadow:0 0 0 2px rgba(17,181,228,.15);
 }
+
+.question-image{
+    padding:0 18px 18px;
+    text-align:center;
+}
+
+.question-image img{
+    max-width:100%;
+    height:auto;
+    border-radius:12px;
+    border:1px solid #e1e7eb;
+}
+
+/* =========================
+   BOTTOM NAVIGATION
+========================= */
+
 .button-row{
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    gap:5px;
-    padding:10px 5px;
-    background:white;
-    border-top:1px solid #ddd;
     position:fixed;
     left:0;
     right:0;
     bottom:0;
     z-index:1500;
-    box-shadow:0 -3px 12px rgba(0,0,0,.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    gap:6px;
+    padding:10px 6px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.97);
+    border-top:1px solid #e0e5e8;
+    box-shadow:0 -6px 22px rgba(0,0,0,.08);
+    backdrop-filter:blur(12px);
 }
+
 .action-btn{
-    background:#00bfff;
-    color:white;
-    border:none;
-    padding:11px 12px;
-    border-radius:8px;
+    border:0;
+    border-radius:11px;
+    padding:12px 11px;
+    color:#fff;
+    background:#08b6e6;
     font-size:13px;
-    font-weight:bold;
+    font-weight:800;
     cursor:pointer;
-    transition:.3s;
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+    transition:.18s;
 }
+
 .action-btn:active{
     transform:scale(.95);
 }
-.submit-btn{
-    background:#4CAF50;
-}
-.palette{
-    position:fixed;
-    right:-100%;
-    top:0;
-    width:75%;
-    max-width:300px;
-    height:100%;
-    background:white;
-    overflow:auto;
-    transition:.3s;
-    box-shadow:-5px 0 15px rgba(0,0,0,.1);
-    padding:20px;
-    z-index:1600;
-}
-.palette h3{
-    margin-top:0;
-    color:#333;
-    border-bottom:2px solid #eee;
-    padding-bottom:10px;
-}
-.palette.active{
-    right:0;
-}
-.palette button{
-    width:45px;
-    height:45px;
-    margin:6px;
-    border:none;
-    border-radius:8px;
-    font-weight:bold;
-    font-size:16px;
-    cursor:pointer;
-}
-.notvisited{
-    background:#e0e0e0;
-    color:#555;
-}
-.answered{
-    background:#4CAF50;
-    color:white;
-    box-shadow:0 2px 5px rgba(76,175,80,.4);
-}
-.notanswered{
-    background:#e53935;
-    color:white;
-    box-shadow:0 2px 5px rgba(229,57,53,.4);
-}
-.review{
+
+.review-btn{
     background:#ff9800;
-    color:white;
-    box-shadow:0 2px 5px rgba(255,152,0,.4);
 }
-.close-palette{
-    position:absolute!important;
-    right:20px;
-    top:20px;
-    background:red!important;
-    color:white!important;
-    border:none!important;
-    border-radius:5px!important;
-    padding:5px 10px!important;
-    font-weight:bold!important;
-    cursor:pointer;
+
+.submit-btn{
+    background:#4caf50;
 }
-.result{
-    display:none;
-    padding:15px;
-}
-.result-card{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    margin-bottom:15px;
-    box-shadow:0 4px 10px rgba(0,0,0,.05);
-    text-align:center;
-    font-size:16px;
-}
-.result-card b{
-    font-size:20px;
-    color:#008ccc;
-}
-.analysis-box{
-    background:white;
-    padding:15px;
-    margin-bottom:12px;
-    border-radius:8px;
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
-    overflow-wrap:anywhere;
-    word-break:break-word;
-    line-height:1.55;
-}
-.analysis-box.correct-box{
-    border-left:5px solid #4CAF50;
-}
-.analysis-box.wrong-box{
-    border-left:5px solid #e53935;
-}
-.analysis-box.unattempted-box{
-    border-left:5px solid #ff9800;
-}
+
 .float-btn{
     position:fixed;
+    right:24px;
     bottom:105px;
-    right:25px;
+    z-index:1200;
     width:60px;
     height:60px;
-    background:#00bfff;
     border-radius:50%;
     display:flex;
     align-items:center;
     justify-content:center;
-    color:white;
-    font-size:28px;
-    box-shadow:0 4px 15px rgba(0,191,255,.4);
-    z-index:999;
+    background:linear-gradient(135deg,#00c3f3,#009bd4);
+    color:#fff;
+    font-size:29px;
+    font-weight:900;
+    box-shadow:0 8px 25px rgba(0,168,222,.35);
     cursor:pointer;
 }
-.custom-modal-overlay{
-    display:none;
+
+/* =========================
+   PALETTE
+========================= */
+
+.palette{
     position:fixed;
     top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,.7);
+    right:-100%;
     z-index:2000;
-    justify-content:center;
-    align-items:center;
+    width:80%;
+    max-width:340px;
+    height:100%;
+    padding:22px 15px;
+    background:#fff;
+    overflow:auto;
+    box-shadow:-10px 0 35px rgba(0,0,0,.18);
+    transition:.3s ease;
 }
-.custom-modal-box{
-    background:white;
-    padding:25px;
-    border-radius:15px;
+
+.palette.active{
+    right:0;
+}
+
+.palette h3{
+    margin:0 45px 18px 0;
+    padding-bottom:13px;
+    border-bottom:2px solid #edf0f2;
+}
+
+.close-palette{
+    position:absolute;
+    top:17px;
+    right:16px;
+    border:0;
+    border-radius:8px;
+    padding:7px 11px;
+    background:#e53935;
+    color:#fff;
+    font-weight:900;
+}
+
+.palette button.question-btn{
+    width:43px;
+    height:43px;
+    margin:5px;
+    border:0;
+    border-radius:9px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.notvisited{
+    background:#e4e7e9;
+    color:#555;
+}
+
+.answered{
+    background:#4caf50;
+    color:#fff;
+}
+
+.notanswered{
+    background:#e53935;
+    color:#fff;
+}
+
+.review{
+    background:#ff9800;
+    color:#fff;
+}
+
+/* =========================
+   LOADING / ERROR
+========================= */
+
+.loading-card,
+.error-card{
+    margin:25px 16px;
+    padding:35px 20px;
+    border-radius:20px;
+    background:#fff;
     text-align:center;
-    width:85%;
-    max-width:350px;
-    box-shadow:0 10px 30px rgba(0,0,0,.3);
+    box-shadow:0 8px 25px rgba(0,0,0,.07);
 }
-.custom-modal-box h3{
-    margin-top:0;
-    color:#4CAF50;
-    font-size:22px;
+
+.error-icon{
+    font-size:55px;
     margin-bottom:10px;
 }
-.custom-modal-box p{
-    color:#555;
-    margin-bottom:20px;
-    font-size:15px;
-}
-.custom-modal-btns{
-    display:flex;
-    justify-content:space-around;
-    gap:15px;
-}
-.btn-cancel{
-    background:#e0e0e0;
-    color:#333;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    flex:1;
-    font-weight:bold;
-    cursor:pointer;
-}
-.btn-submit{
-    background:#4CAF50;
-    color:white;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    flex:1;
-    font-weight:bold;
-    cursor:pointer;
-}
-.motivation-banner{
-    background:#e8f5e9;
-    border:2px solid #4CAF50;
-    color:#2e7d32;
-    padding:15px;
-    border-radius:10px;
-    margin-top:15px;
-    font-weight:bold;
-    text-align:center;
-    font-size:18px;
-}
-.promo-banner{
-    background:linear-gradient(135deg,#673ab7,#512da8);
-    color:white;
-    padding:20px;
-    border-radius:12px;
-    text-align:center;
-    margin-top:25px;
-    margin-bottom:30px;
-    box-shadow:0 4px 15px rgba(103,58,183,.4);
-}
-.promo-banner h3{
-    margin-top:0;
-    font-size:20px;
-}
-.promo-banner p{
-    font-size:14px;
-    margin-bottom:15px;
-    color:#e1bee7;
-}
-.promo-btn{
-    display:inline-block;
-    background:#ff9800;
-    color:white;
-    text-decoration:none;
-    padding:12px 25px;
-    border-radius:25px;
-    font-weight:bold;
-    font-size:16px;
-    box-shadow:0 4px 10px rgba(255,152,0,.4);
-}
-.error-card{
-    margin:25px 15px;
-    background:white;
-    border-radius:14px;
-    padding:25px 18px;
-    text-align:center;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
-.error-card .icon{
-    font-size:50px;
-    margin-bottom:12px;
-}
+
 .error-card h3{
-    color:#e53935;
     margin:0 0 12px;
+    color:#e53935;
 }
+
 .error-card p{
+    color:#555;
+    line-height:1.7;
+}
+
+.retry-btn{
+    border:0;
+    border-radius:11px;
+    padding:13px 28px;
+    background:#08b6e6;
+    color:#fff;
+    font-size:15px;
+    font-weight:800;
+}
+
+/* =========================
+   SUBMIT MODAL
+========================= */
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.68);
+}
+
+.modal-box{
+    width:100%;
+    max-width:360px;
+    padding:25px;
+    border-radius:20px;
+    background:#fff;
+    text-align:center;
+    box-shadow:0 15px 50px rgba(0,0,0,.3);
+}
+
+.modal-box h3{
+    margin:0 0 10px;
+    color:#4caf50;
+    font-size:23px;
+}
+
+.modal-box p{
     color:#555;
     line-height:1.6;
 }
-.retry-btn{
-    background:#00bfff;
-    color:white;
-    border:0;
-    padding:12px 25px;
-    border-radius:8px;
-    font-weight:bold;
+
+.modal-buttons{
+    display:flex;
+    gap:12px;
 }
-.source-content{
-    width:100%;
+
+.modal-buttons button{
+    flex:1;
+    border:0;
+    border-radius:10px;
+    padding:12px;
+    font-weight:800;
+}
+
+.cancel-btn{
+    background:#e8eaec;
+    color:#333;
+}
+
+.confirm-btn{
+    background:#4caf50;
+    color:#fff;
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result{
+    display:none;
+    padding:15px 15px 35px;
+}
+
+.result-summary{
+    background:#fff;
+    border-radius:22px;
+    padding:22px 16px;
+    box-shadow:0 8px 28px rgba(0,0,0,.07);
+    text-align:center;
+    margin-bottom:18px;
+}
+
+.score-title{
+    font-size:14px;
+    color:#777;
+    font-weight:700;
+}
+
+.score-value{
+    margin:5px 0 15px;
+    font-size:34px;
+    color:#008dcc;
+    font-weight:900;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.stat{
+    padding:12px 5px;
+    border-radius:12px;
+    background:#f7f9fa;
+}
+
+.stat-number{
+    display:block;
+    font-size:22px;
+    font-weight:900;
+}
+
+.stat-label{
+    font-size:11px;
+    color:#777;
+    font-weight:700;
+}
+
+.correct-stat .stat-number{
+    color:#4caf50;
+}
+
+.wrong-stat .stat-number{
+    color:#e53935;
+}
+
+.skip-stat .stat-number{
+    color:#ff9800;
+}
+
+.chart-wrap{
+    width:210px;
+    margin:15px auto 5px;
+}
+
+.pass-banner{
+    margin:15px 0;
+    padding:14px;
+    border-radius:14px;
+    background:#e8f5e9;
+    border:1px solid #a5d6a7;
+    color:#2e7d32;
+    text-align:center;
+    font-weight:800;
+}
+
+.fail-banner{
+    margin:15px 0;
+    padding:14px;
+    border-radius:14px;
+    background:#ffebee;
+    border:1px solid #ef9a9a;
+    color:#c62828;
+    text-align:center;
+    font-weight:800;
+}
+
+/* =========================
+   SOLUTION NAVIGATOR
+========================= */
+
+.solution-section{
+    margin-top:20px;
+}
+
+.solution-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+
+.solution-heading h3{
+    margin:0;
+    font-size:19px;
+}
+
+.solution-counter{
+    padding:6px 10px;
+    border-radius:8px;
+    background:#e9f8fd;
+    color:#008dcc;
+    font-size:12px;
+    font-weight:900;
+}
+
+.solution-card{
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 8px 28px rgba(0,0,0,.07);
+    border:1px solid #e9edef;
+}
+
+.solution-top{
+    padding:14px 16px;
+    background:linear-gradient(135deg,#00bff3,#008fd1);
+    color:#fff;
+}
+
+.solution-top-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.solution-question-number{
+    font-size:16px;
+    font-weight:900;
+}
+
+.solution-status{
+    padding:5px 9px;
+    border-radius:7px;
+    background:rgba(255,255,255,.2);
+    font-size:11px;
+    font-weight:900;
+}
+
+.solution-body{
+    padding:18px 16px;
+}
+
+.solution-question{
+    font-size:17px;
+    line-height:1.7;
+    font-weight:750;
     overflow-wrap:anywhere;
     word-break:break-word;
 }
-.source-content *{
-    max-width:100%;
+
+.solution-option{
+    padding:13px;
+    margin:9px 0;
+    border-radius:11px;
+    border:1px solid #e8ebed;
+    background:#fafbfc;
+    line-height:1.55;
+    overflow-wrap:anywhere;
+    word-break:break-word;
 }
-.source-content pre{
-    white-space:pre-wrap;
-    overflow:auto;
+
+.solution-option.correct{
+    background:#e8f5e9;
+    border:2px solid #4caf50;
+    color:#1b5e20;
 }
-.source-content iframe{
-    max-width:100%;
+
+.solution-option.wrong{
+    background:#ffebee;
+    border:2px solid #e53935;
+    color:#b71c1c;
 }
-.loading-card{
+
+.solution-option-prefix{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:27px;
+    height:27px;
+    margin-right:7px;
+    border-radius:50%;
+    background:#edf0f2;
+    font-size:12px;
+    font-weight:900;
+}
+
+.solution-option.correct .solution-option-prefix{
+    background:#4caf50;
+    color:#fff;
+}
+
+.solution-option.wrong .solution-option-prefix{
+    background:#e53935;
+    color:#fff;
+}
+
+.answer-box{
+    margin-top:17px;
+    padding:14px;
+    border-radius:12px;
+    background:#f7fbff;
+    border:1px solid #d7ebf7;
+}
+
+.answer-label{
+    color:#008dcc;
+    font-size:12px;
+    font-weight:900;
+    margin-bottom:7px;
+}
+
+.answer-value{
+    line-height:1.6;
+    font-weight:750;
+}
+
+.explanation-box{
+    margin-top:14px;
+    padding:15px;
+    border-radius:13px;
+    background:linear-gradient(135deg,#fffdf4,#fff8df);
+    border:1px solid #ffe39a;
+}
+
+.explanation-title{
+    display:inline-block;
+    margin-bottom:10px;
+    padding:6px 10px;
+    border-radius:7px;
+    background:#ffb300;
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+}
+
+.explanation-content{
+    color:#444;
+    font-size:14px;
+    line-height:1.7;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+}
+
+/* =========================
+   SOLUTION PREVIOUS / NEXT
+========================= */
+
+.solution-navigation{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:14px;
+}
+
+.solution-nav-btn{
+    flex:1;
+    border:0;
+    border-radius:12px;
+    padding:13px 10px;
+    color:#fff;
+    background:#08b6e6;
+    font-size:14px;
+    font-weight:900;
+    box-shadow:0 5px 12px rgba(0,0,0,.08);
+}
+
+.solution-nav-btn:disabled{
+    opacity:.4;
+}
+
+.solution-middle{
+    min-width:65px;
     text-align:center;
-    padding:40px 20px;
-    color:#555;
+    color:#777;
+    font-size:12px;
+    font-weight:800;
 }
+
+.promo-banner{
+    margin-top:22px;
+    padding:20px 16px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#673ab7,#512da8);
+    color:#fff;
+    text-align:center;
+    box-shadow:0 8px 25px rgba(81,45,168,.22);
+}
+
+.promo-banner h3{
+    margin:0 0 8px;
+}
+
+.promo-banner p{
+    margin:0 0 15px;
+    color:#e8ddff;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.promo-btn{
+    display:inline-block;
+    padding:12px 22px;
+    border-radius:25px;
+    background:#ff9800;
+    color:#fff;
+    text-decoration:none;
+    font-weight:900;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:420px){
-    .button-row{
-        padding:9px 4px;
-        gap:4px;
+
+    .top-title{
+        font-size:18px;
     }
+
+    .qcard{
+        margin-left:10px;
+        margin-right:10px;
+    }
+
+    .qtitle{
+        font-size:17px;
+        padding:18px 15px;
+    }
+
+    .option{
+        padding:15px 12px;
+    }
+
+    .option-content{
+        font-size:15px;
+    }
+
     .action-btn{
         padding:11px 8px;
         font-size:12px;
-    }
-    .qcard{
-        margin:10px;
-    }
-    .qtitle{
-        font-size:16px;
-    }
-    .option{
-        padding:14px 12px;
     }
 }
 </style>
@@ -466,92 +808,212 @@ body{
 <body>
 
 <div class="topbar">
-    <span onclick="togglePalette()" style="cursor:pointer;" id="top-title">☰ Practice Mock</span>
-    <div class="timer-box" id="timer">00:00</div>
+    <div
+        class="top-title"
+        id="top-title"
+        onclick="togglePalette()"
+    >
+        ☰ Practice Mock
+    </div>
+
+    <div
+        class="timer-box"
+        id="timer"
+    >
+        00:00
+    </div>
 </div>
 
-<div class="qheader" id="question-header">
+<div
+    class="qheader"
+    id="question-header"
+>
     <div>
-        Question : <span id="qno">1</span> / <span id="totalq">0</span>
+        Question :
+        <span id="qno">1</span>
+        /
+        <span id="totalq">0</span>
     </div>
-    <div class="last" id="lastMin">--</div>
+
+    <div
+        class="last"
+        id="lastMin"
+    >
+        --
+    </div>
 </div>
 
 <div id="exam">
-    <div class="loading-card">⏳ टेस्ट लोड हो रहा है...</div>
+    <div class="loading-card">
+        ⏳ टेस्ट लोड हो रहा है...
+    </div>
 </div>
 
-<div class="button-row" id="top-btn-row">
-    <button class="action-btn" onclick="previousQuestion()">Back</button>
-    <button class="action-btn" style="background:#ff9800;" onclick="markReview()">Review</button>
-    <button class="action-btn" onclick="saveNext()">Save & Next</button>
-    <button class="action-btn submit-btn" onclick="showSubmitConfirm()">Submit</button>
+<div
+    class="button-row"
+    id="top-btn-row"
+>
+    <button
+        class="action-btn"
+        onclick="previousQuestion()"
+    >
+        Back
+    </button>
+
+    <button
+        class="action-btn review-btn"
+        onclick="markReview()"
+    >
+        Review
+    </button>
+
+    <button
+        class="action-btn"
+        onclick="saveNext()"
+    >
+        Save & Next
+    </button>
+
+    <button
+        class="action-btn submit-btn"
+        onclick="showSubmitConfirm()"
+    >
+        Submit
+    </button>
 </div>
 
-<div class="palette" id="palette">
-    <button class="close-palette" onclick="togglePalette()">X</button>
-    <h3>Questions Palette</h3>
+<div
+    class="float-btn"
+    id="menu-float-btn"
+    onclick="togglePalette()"
+>
+    ≡
+</div>
+
+<div
+    class="palette"
+    id="palette"
+>
+    <button
+        class="close-palette"
+        onclick="togglePalette()"
+    >
+        X
+    </button>
+
+    <h3>
+        Questions Palette
+    </h3>
+
     <div id="palette-buttons"></div>
 </div>
 
-<div id="submit-confirm-modal" class="custom-modal-overlay">
-    <div class="custom-modal-box">
-        <h3>Submit Test?</h3>
-        <p>क्या आप सच में टेस्ट सबमिट करना चाहते हैं?</p>
-        <div class="custom-modal-btns">
-            <button class="btn-cancel" onclick="hideSubmitConfirm()">रद्द करें</button>
-            <button class="btn-submit" onclick="executeSubmit()">हाँ, सबमिट करें</button>
+<div
+    class="modal-overlay"
+    id="submit-confirm-modal"
+>
+    <div class="modal-box">
+
+        <h3>
+            Submit Test?
+        </h3>
+
+        <p>
+            क्या आप सच में टेस्ट सबमिट करना चाहते हैं?
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel-btn"
+                onclick="hideSubmitConfirm()"
+            >
+                रद्द करें
+            </button>
+
+            <button
+                class="confirm-btn"
+                onclick="executeSubmit()"
+            >
+                हाँ, Submit
+            </button>
+
         </div>
     </div>
 </div>
 
-<div class="result notranslate" id="result" translate="no"></div>
+<div
+    class="result"
+    id="result"
+></div>
 
-<div class="float-btn" id="menu-float-btn" onclick="togglePalette()">≡</div>
 
 <script>
 "use strict";
 
-let questions=[];
-let current=0;
-let answers=[];
-let status=[];
-let submitted=false;
-let time=0;
-let timerInterval=null;
-let isReviewMode=false;
 
-let positiveMark=2.0;
-let negativeMark=0.25;
-let testCutoff=35.0;
+/* ============================================================
+   GLOBAL STATE
+============================================================ */
 
-let currentTestData=null;
-let currentTestId="";
-let sourceStylesLoaded=new Set();
+let questions = [];
+let current = 0;
 
-const API_BASE_URL="https://mock-bot-l091.onrender.com";
+let answers = [];
+let status = [];
+
+let submitted = false;
+let isReviewMode = false;
+
+let time = 0;
+let timerInterval = null;
+
+let positiveMark = 2;
+let negativeMark = .25;
+let testCutoff = 35;
+
+let currentTestData = null;
+let currentTestId = "";
+
+let solutionCurrent = 0;
+
+let sourceStylesLoaded = new Set();
+
+
+const API_BASE_URL =
+    "https://mock-bot-l091.onrender.com";
 
 
 /* ============================================================
-   BASIC HELPERS
-   ============================================================ */
+   HELPERS
+============================================================ */
 
 function $(id){
     return document.getElementById(id);
 }
 
 
-function firstValue(obj,keys){
-    if(!obj || typeof obj!=="object"){
+function firstValue(obj, keys){
+
+    if(
+        !obj ||
+        typeof obj !== "object"
+    ){
         return "";
     }
 
-    for(const key of keys){
+    for(
+        const key of keys
+    ){
+
         if(
-            Object.prototype.hasOwnProperty.call(obj,key) &&
-            obj[key]!==null &&
-            obj[key]!==undefined &&
-            String(obj[key]).trim()!==""
+            Object.prototype.hasOwnProperty.call(
+                obj,
+                key
+            ) &&
+            obj[key] !== null &&
+            obj[key] !== undefined &&
+            String(obj[key]).trim() !== ""
         ){
             return obj[key];
         }
@@ -562,14 +1024,20 @@ function firstValue(obj,keys){
 
 
 function escapeHTML(value){
-    const div=document.createElement("div");
-    div.textContent=String(value??"");
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        String(value ?? "");
+
     return div.innerHTML;
 }
 
 
 function escapeAttribute(value){
-    return String(value??"")
+
+    return String(value ?? "")
         .replace(/&/g,"&amp;")
         .replace(/"/g,"&quot;")
         .replace(/</g,"&lt;")
@@ -578,29 +1046,32 @@ function escapeAttribute(value){
 
 
 /* ============================================================
-   TEST ID
-   ============================================================ */
+   CURRENT TEST ID
+============================================================ */
 
 function getCurrentTestId(){
 
-    const params=new URLSearchParams(
-        window.location.search
-    );
-
-    const urlTestId=(
-        params.get("test_id") ||
-        params.get("testId") ||
-        params.get("id") ||
-        ""
-    ).trim();
-
-    if(urlTestId){
-        sessionStorage.setItem(
-            "currentTestId",
-            urlTestId
+    const params =
+        new URLSearchParams(
+            window.location.search
         );
 
-        return urlTestId;
+    const id =
+        (
+            params.get("test_id") ||
+            params.get("testId") ||
+            params.get("id") ||
+            ""
+        ).trim();
+
+    if(id){
+
+        sessionStorage.setItem(
+            "currentTestId",
+            id
+        );
+
+        return id;
     }
 
     return (
@@ -612,8 +1083,8 @@ function getCurrentTestId(){
 
 
 /* ============================================================
-   QUESTION FIELD HELPERS
-   ============================================================ */
+   QUESTION TEXT
+============================================================ */
 
 function getQuestionText(q){
 
@@ -634,6 +1105,10 @@ function getQuestionText(q){
 }
 
 
+/* ============================================================
+   EXPLANATION
+============================================================ */
+
 function getExplanation(q){
 
     return firstValue(
@@ -651,6 +1126,10 @@ function getExplanation(q){
     );
 }
 
+
+/* ============================================================
+   IMAGE
+============================================================ */
 
 function getQuestionImage(q){
 
@@ -670,7 +1149,14 @@ function getQuestionImage(q){
 }
 
 
-function getSectionName(q,parentSection=""){
+/* ============================================================
+   SECTION
+============================================================ */
+
+function getSectionName(
+    q,
+    parentSection = ""
+){
 
     return firstValue(
         q,
@@ -686,22 +1172,27 @@ function getSectionName(q,parentSection=""){
 
 
 /* ============================================================
-   OPTIONS NORMALIZER
-   ============================================================ */
+   OPTIONS
+============================================================ */
 
 function getOptions(q){
 
-    if(!q || typeof q!=="object"){
+    if(
+        !q ||
+        typeof q !== "object"
+    ){
         return [];
     }
 
 
-    if(Array.isArray(q.options)){
+    if(
+        Array.isArray(q.options)
+    ){
         return q.options;
     }
 
 
-    const arrayKeys=[
+    const arrayKeys = [
         "choices",
         "answers",
         "option",
@@ -710,23 +1201,45 @@ function getOptions(q){
     ];
 
 
-    for(const key of arrayKeys){
-        if(Array.isArray(q[key])){
+    for(
+        const key of arrayKeys
+    ){
+
+        if(
+            Array.isArray(q[key])
+        ){
             return q[key];
         }
     }
 
 
-    const keySets=[
+    const keySets = [
         ["A","B","C","D"],
         ["a","b","c","d"],
-        ["optionA","optionB","optionC","optionD"],
-        ["option_a","option_b","option_c","option_d"],
-        ["option1","option2","option3","option4"]
+        [
+            "optionA",
+            "optionB",
+            "optionC",
+            "optionD"
+        ],
+        [
+            "option_a",
+            "option_b",
+            "option_c",
+            "option_d"
+        ],
+        [
+            "option1",
+            "option2",
+            "option3",
+            "option4"
+        ]
     ];
 
 
-    for(const keys of keySets){
+    for(
+        const keys of keySets
+    ){
 
         if(
             keys.every(
@@ -737,8 +1250,9 @@ function getOptions(q){
                     )
             )
         ){
+
             return keys.map(
-                key=>q[key]
+                key => q[key]
             );
         }
     }
@@ -746,14 +1260,14 @@ function getOptions(q){
 
     if(
         q.options &&
-        typeof q.options==="object" &&
+        typeof q.options === "object" &&
         !Array.isArray(q.options)
     ){
 
         return Object.keys(q.options)
             .sort()
             .map(
-                key=>q.options[key]
+                key => q.options[key]
             );
     }
 
@@ -763,11 +1277,13 @@ function getOptions(q){
 
 
 /* ============================================================
-   ANSWER NORMALIZER
-   JSON में correct = 0/1/2/3 है
-   ============================================================ */
+   CORRECT ANSWER INDEX
+============================================================ */
 
-function normalizeCorrectIndex(q,options){
+function normalizeCorrectIndex(
+    q,
+    options
+){
 
     if(
         !q ||
@@ -777,154 +1293,142 @@ function normalizeCorrectIndex(q,options){
     }
 
 
-    const raw=firstValue(
-        q,
-        [
-            "correct",
-            "correctIndex",
-            "answerIndex",
-            "correct_answer",
-            "correctAnswer",
-            "rightAnswer",
-            "right_answer"
-        ]
-    );
+    const raw =
+        firstValue(
+            q,
+            [
+                "correct",
+                "correctIndex",
+                "answerIndex",
+                "correct_answer",
+                "correctAnswer",
+                "rightAnswer",
+                "right_answer"
+            ]
+        );
 
 
     if(
-        typeof raw==="number" &&
+        typeof raw === "number" &&
         Number.isFinite(raw)
     ){
 
-        const n=Math.trunc(raw);
+        const n =
+            Math.trunc(raw);
+
 
         if(
-            n>=0 &&
-            n<options.length
+            n >= 0 &&
+            n < options.length
         ){
             return n;
         }
 
+
         if(
-            n>=1 &&
-            n<=options.length &&
-            !options.some(
-                (_,i)=>i===n
-            )
+            n >= 1 &&
+            n <= options.length
         ){
-            return n-1;
+            return n - 1;
         }
     }
 
 
     if(
-        typeof raw==="string"
+        typeof raw === "string"
     ){
 
-        const value=raw.trim();
+        const value =
+            raw.trim();
 
 
-        const letter=value
-            .toUpperCase()
-            .match(/^[A-Z]$/);
+        const letter =
+            value
+                .toUpperCase()
+                .match(/^[A-Z]$/);
 
 
         if(letter){
 
-            const idx=
+            const index =
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                .indexOf(
-                    letter[0]
-                );
+                    .indexOf(
+                        letter[0]
+                    );
+
 
             if(
-                idx>=0 &&
-                idx<options.length
+                index >= 0 &&
+                index < options.length
             ){
-                return idx;
+                return index;
             }
         }
 
 
-        const numeric=Number(value);
+        const numeric =
+            Number(value);
+
 
         if(
             Number.isInteger(numeric)
         ){
 
             if(
-                numeric>=0 &&
-                numeric<options.length
+                numeric >= 0 &&
+                numeric < options.length
             ){
                 return numeric;
             }
 
+
             if(
-                numeric>=1 &&
-                numeric<=options.length
+                numeric >= 1 &&
+                numeric <= options.length
             ){
-                return numeric-1;
+                return numeric - 1;
             }
         }
     }
 
 
-    const answerRaw=firstValue(
-        q,
-        [
-            "answer",
-            "correctAnswerText",
-            "correct_option",
-            "correctOption",
-            "right_answer_text"
-        ]
-    );
-
-
-    if(
-        typeof answerRaw==="number" &&
-        Number.isFinite(answerRaw)
-    ){
-
-        const n=Math.trunc(answerRaw);
-
-        if(
-            n>=0 &&
-            n<options.length
-        ){
-            return n;
-        }
-
-        if(
-            n>=1 &&
-            n<=options.length
-        ){
-            return n-1;
-        }
-    }
-
-
-    if(
-        answerRaw!==null &&
-        answerRaw!==undefined &&
-        String(answerRaw).trim()!==""
-    ){
-
-        const target=plainText(answerRaw)
-            .trim()
-            .toLowerCase();
-
-
-        const idx=options.findIndex(
-            option =>
-                plainText(option)
-                    .trim()
-                    .toLowerCase()===target
+    const answerRaw =
+        firstValue(
+            q,
+            [
+                "answer",
+                "correctAnswerText",
+                "correct_option",
+                "correctOption",
+                "right_answer_text"
+            ]
         );
 
 
-        if(idx>=0){
-            return idx;
+    if(
+        answerRaw !== null &&
+        answerRaw !== undefined &&
+        String(answerRaw).trim() !== ""
+    ){
+
+        const target =
+            plainText(answerRaw)
+                .trim()
+                .toLowerCase();
+
+
+        const index =
+            options.findIndex(
+                option =>
+                    plainText(option)
+                        .trim()
+                        .toLowerCase() ===
+                    target
+            );
+
+
+        if(index >= 0){
+            return index;
         }
     }
 
@@ -934,44 +1438,42 @@ function normalizeCorrectIndex(q,options){
 
 
 /* ============================================================
-   QUESTION DETECTION
-   ============================================================ */
+   QUESTION RECORD
+============================================================ */
 
 function isQuestionRecord(obj){
 
     if(
         !obj ||
-        typeof obj!=="object" ||
+        typeof obj !== "object" ||
         Array.isArray(obj)
     ){
         return false;
     }
 
 
-    const text=getQuestionText(obj);
-    const options=getOptions(obj);
-
-
     return (
-        String(text).trim()!=="" &&
-        options.length>0
+        String(
+            getQuestionText(obj)
+        ).trim() !== "" &&
+        getOptions(obj).length > 0
     );
 }
 
 
 /* ============================================================
-   RECURSIVE ALL-PART QUESTION LOADER
-   ============================================================ */
+   RECURSIVE QUESTION COLLECTOR
+============================================================ */
 
 function collectQuestions(
     node,
-    output=[],
-    parentSection=""
+    output = [],
+    parentSection = ""
 ){
 
     if(
-        node===null ||
-        node===undefined
+        node === null ||
+        node === undefined
     ){
         return output;
     }
@@ -992,115 +1494,43 @@ function collectQuestions(
     }
 
 
-    if(typeof node!=="object"){
+    if(typeof node !== "object"){
         return output;
     }
 
 
-    /*
-     * Actual question record.
-     */
     if(isQuestionRecord(node)){
 
         output.push({
-            raw:node,
-            sectionName:getSectionName(
-                node,
-                parentSection
-            )
+            raw: node,
+            sectionName:
+                getSectionName(
+                    node,
+                    parentSection
+                )
         });
 
         return output;
     }
 
 
-    const currentSection=
+    const currentSection =
         getSectionName(
             node,
             parentSection
         );
 
 
-    /*
-     * IMPORTANT:
-     * 05.json में 5 sections हैं:
-     *
-     * English - 20
-     * Hindi - 20
-     * Mathematics - 20
-     * General Intelligence and Reasoning - 20
-     * General Knowledge - 20
-     *
-     * इसलिए केवल testData.questions पढ़ना पर्याप्त नहीं है.
-     * यहाँ सभी nested sections/questions recursively पढ़े जाते हैं.
-     */
-
-    const preferredKeys=[
-        "questions",
-        "questionList",
-        "allQuestions",
-        "questionsData",
-        "items",
-        "data",
-        "sections",
-        "subjects",
-        "tests"
-    ];
-
-
-    const processed=new Set();
-
-
-    for(const key of preferredKeys){
-
-        if(
-            !Object.prototype.hasOwnProperty.call(
-                node,
-                key
-            )
-        ){
-            continue;
-        }
-
-
-        const value=node[key];
-
-
-        if(
-            value &&
-            typeof value==="object"
-        ){
-
-            processed.add(key);
-
-
-            collectQuestions(
-                value,
-                output,
-                currentSection
-            );
-        }
-    }
-
-
-    /*
-     * अगर object में custom keys हैं,
-     * तब भी nested question sections को खोने नहीं देंगे.
-     */
     Object.keys(node).forEach(
-        key=>{
+        key => {
 
-            if(processed.has(key)){
-                return;
-            }
-
-
-            const value=node[key];
+            const value =
+                node[key];
 
 
             if(
                 value &&
-                typeof value==="object"
+                typeof value === "object"
             ){
 
                 collectQuestions(
@@ -1109,7 +1539,6 @@ function collectQuestions(
                     currentSection
                 );
             }
-
         }
     );
 
@@ -1119,29 +1548,32 @@ function collectQuestions(
 
 
 /* ============================================================
-   NORMALIZE COMPLETE TEST
-   ============================================================ */
+   NORMALIZE QUESTIONS
+============================================================ */
 
-function normalizeQuestions(testData){
+function normalizeQuestions(
+    testData
+){
 
-    const collected=
+    const collected =
         collectQuestions(
             testData
         );
 
 
-    const normalized=
-        collected.map(
-            (entry,index)=>{
+    return collected
+        .map(
+            (entry,index) => {
 
-                const q=entry.raw;
+                const q =
+                    entry.raw;
 
 
-                const options=
+                const options =
                     getOptions(q);
 
 
-                const correctIndex=
+                const correctIndex =
                     normalizeCorrectIndex(
                         q,
                         options
@@ -1162,19 +1594,17 @@ function normalizeQuestions(testData){
                                 "number"
                             ]
                         ) ||
-                        index+1,
+                        index + 1,
 
                     question:
                         getQuestionText(q),
 
-                    options:
-                        options,
+                    options,
 
-                    correctIndex:
-                        correctIndex,
+                    correctIndex,
 
                     answer:
-                        correctIndex>=0
+                        correctIndex >= 0
                             ? options[
                                 correctIndex
                               ]
@@ -1201,31 +1631,28 @@ function normalizeQuestions(testData){
             q =>
                 String(
                     q.question
-                ).trim()!=="" &&
-                Array.isArray(q.options) &&
-                q.options.length>0
+                ).trim() !== "" &&
+                q.options.length > 0
         );
-
-
-    return normalized;
 }
 
 
 /* ============================================================
-   PLAIN TEXT FROM HTML
-   ============================================================ */
+   PLAIN TEXT
+============================================================ */
 
 function plainText(value){
 
     if(
-        value===null ||
-        value===undefined
+        value === null ||
+        value === undefined
     ){
         return "";
     }
 
 
-    const source=String(value);
+    const source =
+        String(value);
 
 
     if(!source.trim()){
@@ -1233,11 +1660,11 @@ function plainText(value){
     }
 
 
-    const parser=
+    const parser =
         new DOMParser();
 
 
-    const doc=
+    const doc =
         parser.parseFromString(
             source,
             "text/html"
@@ -1249,7 +1676,7 @@ function plainText(value){
             "script,style,noscript,template"
         )
         .forEach(
-            el=>el.remove()
+            el => el.remove()
         );
 
 
@@ -1271,22 +1698,21 @@ function plainText(value){
 
 
 /* ============================================================
-   RICH HTML RENDERER
-   05.json में text/options/exp पूरा HTML है.
-   इसे plain text में convert नहीं किया जाएगा.
-   ============================================================ */
+   RICH HTML
+============================================================ */
 
 function rich(value){
 
     if(
-        value===null ||
-        value===undefined
+        value === null ||
+        value === undefined
     ){
         return "";
     }
 
 
-    const source=String(value);
+    const source =
+        String(value);
 
 
     if(!source.trim()){
@@ -1294,34 +1720,27 @@ function rich(value){
     }
 
 
-    const parser=
+    const parser =
         new DOMParser();
 
 
-    const doc=
+    const doc =
         parser.parseFromString(
             source,
             "text/html"
         );
 
 
-    /*
-     * JSON के अंदर मौजूद <style> को page head में load करो.
-     * इससे KOKILA/MANGAL fonts और formatting काम करेगी.
-     */
     doc
-        .querySelectorAll(
-            "style"
-        )
+        .querySelectorAll("style")
         .forEach(
-            style=>{
+            style => {
 
-                const css=
-                    style.textContent ||
-                    "";
+                const css =
+                    style.textContent || "";
 
 
-                const key=
+                const key =
                     css.trim();
 
 
@@ -1337,19 +1756,17 @@ function rich(value){
                     );
 
 
-                    const newStyle=
+                    const newStyle =
                         document.createElement(
                             "style"
                         );
 
 
-                    newStyle.setAttribute(
-                        "data-json-style",
-                        "true"
-                    );
+                    newStyle.dataset.jsonStyle =
+                        "true";
 
 
-                    newStyle.textContent=
+                    newStyle.textContent =
                         css;
 
 
@@ -1361,133 +1778,110 @@ function rich(value){
         );
 
 
-    /*
-     * Head की चीजें body content में नहीं डालनी हैं.
-     */
     doc
         .querySelectorAll(
             "script,noscript,template,head,meta,link,title"
         )
         .forEach(
-            el=>el.remove()
+            el => el.remove()
         );
 
 
-    /*
-     * Unsafe event handlers हटाओ,
-     * लेकिन original inline formatting style preserve रहे.
-     */
     doc
-        .querySelectorAll(
-            "*"
-        )
+        .querySelectorAll("*")
         .forEach(
-            el=>{
+            el => {
 
-                [...el.attributes]
-                    .forEach(
-                        attr=>{
+                [
+                    ...el.attributes
+                ].forEach(
+                    attr => {
 
-                            const name=
+                        const name =
+                            attr.name.toLowerCase();
+
+
+                        if(
+                            name.startsWith("on") ||
+                            name === "srcdoc"
+                        ){
+
+                            el.removeAttribute(
                                 attr.name
-                                    .toLowerCase();
+                            );
+                        }
+
+
+                        if(
+                            name === "href" ||
+                            name === "src"
+                        ){
+
+                            const val =
+                                String(
+                                    attr.value
+                                )
+                                .trim()
+                                .toLowerCase();
 
 
                             if(
-                                name.startsWith("on") ||
-                                name==="srcdoc"
+                                val.startsWith(
+                                    "javascript:"
+                                )
                             ){
 
                                 el.removeAttribute(
                                     attr.name
                                 );
                             }
-
-
-                            if(
-                                name==="href" ||
-                                name==="src"
-                            ){
-
-                                const val=
-                                    String(
-                                        attr.value
-                                    )
-                                    .trim()
-                                    .toLowerCase();
-
-
-                                if(
-                                    val.startsWith(
-                                        "javascript:"
-                                    )
-                                ){
-
-                                    el.removeAttribute(
-                                        attr.name
-                                    );
-                                }
-                            }
-
                         }
-                    );
-
+                    }
+                );
             }
         );
 
 
-    const bodyHTML=
+    const bodyHTML =
         doc.body
             ? doc.body.innerHTML
             : source;
 
 
-    const wrapper=
-        document.createElement(
-            "div"
-        );
-
-
-    wrapper.className=
-        "source-content notranslate";
-
-
-    wrapper.setAttribute(
-        "translate",
-        "no"
-    );
-
-
-    wrapper.innerHTML=
-        bodyHTML;
-
-
-    return wrapper.outerHTML;
+    return `
+        <div
+            class="source-content notranslate"
+            translate="no"
+        >
+            ${bodyHTML}
+        </div>
+    `;
 }
 
 
 /* ============================================================
-   LOAD JSON
-   ============================================================ */
+   JSON LOAD
+============================================================ */
 
 async function loadJSONFile(){
 
-    const response=
+    const response =
         await fetch(
             "./05.json?cache="+Date.now(),
             {
                 method:"GET",
                 cache:"no-store",
                 headers:{
-                    "Accept":"application/json"
+                    Accept:"application/json"
                 }
             }
         );
 
 
     if(!response.ok){
+
         throw new Error(
-            "05.json not found: "+
+            "05.json HTTP "+
             response.status
         );
     }
@@ -1498,54 +1892,45 @@ async function loadJSONFile(){
 
 
 /* ============================================================
-   LOAD TEST FROM API + LOCAL FALLBACK
-   ============================================================ */
+   TEST LOAD
+============================================================ */
 
 async function loadTestData(){
 
-    const errors=[];
+    const errors = [];
 
 
-    /*
-     * पहले clicked Test ID वाला MongoDB test.
-     */
     if(currentTestId){
 
         try{
 
-            const response=
+            const response =
                 await fetch(
                     `${API_BASE_URL}/get_test/${encodeURIComponent(currentTestId)}?t=${Date.now()}`,
                     {
                         method:"GET",
                         cache:"no-store",
                         headers:{
-                            "Accept":"application/json"
+                            Accept:"application/json"
                         }
                     }
                 );
 
 
-            if(
-                response.ok
-            ){
+            if(response.ok){
 
-                const data=
+                const data =
                     await response.json();
 
 
-                /*
-                 * API ने empty/invalid data दिया
-                 * तो local 05.json try होगा.
-                 */
-                const testQuestions=
+                const apiQuestions =
                     normalizeQuestions(
                         data
                     );
 
 
                 if(
-                    testQuestions.length
+                    apiQuestions.length
                 ){
 
                     return data;
@@ -1553,13 +1938,14 @@ async function loadTestData(){
 
 
                 errors.push(
-                    "API returned no readable questions"
+                    "MongoDB data में questions नहीं मिले"
                 );
 
             }else{
 
                 errors.push(
-                    "API HTTP "+response.status
+                    "MongoDB HTTP "+
+                    response.status
                 );
             }
 
@@ -1567,34 +1953,24 @@ async function loadTestData(){
         }catch(error){
 
             console.error(
-                "API test load failed:",
                 error
             );
 
-
             errors.push(
-                "API "+error.message
+                "MongoDB: "+
+                error.message
             );
         }
     }
 
 
-    /*
-     * IMPORTANT FALLBACK:
-     *
-     * अगर API unavailable है,
-     * तो उसी folder की 05.json पढ़ो.
-     *
-     * इससे index.html + 05.json
-     * साथ में रखने पर test directly चलेगा.
-     */
     try{
 
-        const localData=
+        const localData =
             await loadJSONFile();
 
 
-        const localQuestions=
+        const localQuestions =
             normalizeQuestions(
                 localData
             );
@@ -1609,19 +1985,18 @@ async function loadTestData(){
 
 
         errors.push(
-            "05.json में readable questions नहीं मिले"
+            "05.json में questions नहीं मिले"
         );
 
 
     }catch(error){
 
         console.error(
-            "Local JSON load failed:",
             error
         );
 
-
         errors.push(
+            "05.json: "+
             error.message
         );
     }
@@ -1634,238 +2009,8 @@ async function loadTestData(){
 
 
 /* ============================================================
-   WINDOW LOAD
-   ============================================================ */
-
-window.onload=async function(){
-
-    if(
-        window.Telegram &&
-        window.Telegram.WebApp
-    ){
-
-        window.Telegram.WebApp.ready();
-    }
-
-
-    currentTestId=
-        getCurrentTestId();
-
-
-    const params=
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const savedAnswers=
-        params.get("answers");
-
-
-    try{
-
-        currentTestData=
-            await loadTestData();
-
-
-        /*
-         * ALL PARTS / ALL SECTIONS / ALL QUESTIONS.
-         */
-        questions=
-            normalizeQuestions(
-                currentTestData
-            );
-
-
-        if(
-            !questions.length
-        ){
-
-            throw new Error(
-                "No questions found in test data"
-            );
-        }
-
-
-        /*
-         * Test settings.
-         */
-        positiveMark=
-            getNumberSetting(
-                currentTestData,
-                [
-                    "positive_mark",
-                    "positiveMark",
-                    "positive",
-                    "marks",
-                    "mark",
-                    "pos"
-                ],
-                2
-            );
-
-
-        negativeMark=
-            getNumberSetting(
-                currentTestData,
-                [
-                    "negative_mark",
-                    "negativeMark",
-                    "negative",
-                    "neg"
-                ],
-                .25
-            );
-
-
-        testCutoff=
-            getNumberSetting(
-                currentTestData,
-                [
-                    "cutoff",
-                    "pass_mark",
-                    "passing_score"
-                ],
-                35
-            );
-
-
-        /*
-         * 05.json:
-         * test_mode = overall
-         * section time = 60
-         *
-         * Overall test में पहला section का time
-         * fallback के रूप में use होगा.
-         */
-        const testTime=
-            getTestTime(
-                currentTestData
-            );
-
-
-        time=
-            Math.max(
-                1,
-                testTime
-            )*60;
-
-
-        $("totalq").innerText=
-            questions.length;
-
-
-        answers=
-            new Array(
-                questions.length
-            ).fill(null);
-
-
-        status=
-            new Array(
-                questions.length
-            ).fill("notvisited");
-
-
-        /*
-         * Saved answers review mode.
-         */
-        if(savedAnswers){
-
-            isReviewMode=true;
-            submitted=true;
-
-
-            try{
-
-                const parsed=
-                    JSON.parse(
-                        savedAnswers
-                    );
-
-
-                if(
-                    Array.isArray(parsed)
-                ){
-
-                    answers=
-                        questions.map(
-                            (_,i)=>{
-
-                                const value=
-                                    parsed[i];
-
-
-                                if(
-                                    value===null ||
-                                    value===undefined ||
-                                    value===""
-                                ){
-
-                                    return null;
-                                }
-
-
-                                const n=
-                                    Number(
-                                        value
-                                    );
-
-
-                                return Number.isFinite(
-                                    n
-                                )
-                                    ? n
-                                    : null;
-                            }
-                        );
-                }
-
-            }catch(error){
-
-                console.error(
-                    "Saved answers parse error:",
-                    error
-                );
-            }
-
-
-            $("top-title").innerText=
-                "📊 Test Analysis";
-
-
-            executeSubmit(
-                true
-            );
-
-
-        }else{
-
-            startTimer();
-
-            loadQuestion();
-        }
-
-
-    }catch(error){
-
-        console.error(
-            "FINAL TEST LOAD ERROR:",
-            error
-        );
-
-
-        showError(
-            "⚠️ टेस्ट लोड नहीं हो सका",
-            "05.json या MongoDB से question data पढ़ने में समस्या हुई।"
-        );
-    }
-};
-
-
-/* ============================================================
-   NUMBER SETTINGS
-   ============================================================ */
+   NUMBER SETTING
+============================================================ */
 
 function getNumberSetting(
     data,
@@ -1873,7 +2018,7 @@ function getNumberSetting(
     fallback
 ){
 
-    const direct=
+    const direct =
         firstValue(
             data,
             keys
@@ -1881,76 +2026,37 @@ function getNumberSetting(
 
 
     if(
-        direct!=="" &&
+        direct !== "" &&
         Number.isFinite(
             Number(direct)
         )
     ){
 
-        return Number(
-            direct
-        );
+        return Number(direct);
     }
 
 
-    if(
-        Array.isArray(data)
-    ){
+    if(Array.isArray(data)){
 
         for(
-            const section of data
+            const item of data
         ){
 
-            const value=
+            const value =
                 firstValue(
-                    section,
+                    item,
                     keys
                 );
 
 
             if(
-                value!=="" &&
+                value !== "" &&
                 Number.isFinite(
                     Number(value)
                 )
             ){
 
-                return Number(
-                    value
-                );
-            }
-        }
-    }
-
-
-    if(
-        data &&
-        Array.isArray(
-            data.sections
-        )
-    ){
-
-        for(
-            const section of data.sections
-        ){
-
-            const value=
-                firstValue(
-                    section,
-                    keys
-                );
-
-
-            if(
-                value!=="" &&
-                Number.isFinite(
-                    Number(value)
-                )
-            ){
-
-                return Number(
-                    value
-                );
+                return Number(value);
             }
         }
     }
@@ -1962,14 +2068,11 @@ function getNumberSetting(
 
 /* ============================================================
    TEST TIME
-   ============================================================ */
+============================================================ */
 
 function getTestTime(data){
 
-    /*
-     * Explicit overall time.
-     */
-    const direct=
+    const direct =
         firstValue(
             data,
             [
@@ -1984,75 +2087,30 @@ function getTestTime(data){
 
 
     if(
-        direct!=="" &&
-        Number(direct)>0
+        direct !== "" &&
+        Number(direct) > 0
     ){
 
-        return Number(
-            direct
-        );
+        return Number(direct);
     }
 
 
-    /*
-     * Top-level array:
-     * 05.json में हर section में time = 60 है.
-     *
-     * test_mode = overall है,
-     * इसलिए overall test को 60 minutes रखा गया है.
-     */
     if(
         Array.isArray(data) &&
         data.length
     ){
 
-        const first=
+        const section =
             data.find(
                 x =>
                     x &&
-                    typeof x==="object"
+                    typeof x === "object"
             );
 
 
-        if(first){
-
-            const sectionTime=
-                Number(
-                    first.time
-                );
-
-
-            if(
-                Number.isFinite(
-                    sectionTime
-                ) &&
-                sectionTime>0
-            ){
-
-                return sectionTime;
-            }
-        }
-    }
-
-
-    /*
-     * Object containing sections.
-     */
-    if(
-        data &&
-        Array.isArray(
-            data.sections
-        ) &&
-        data.sections.length
-    ){
-
-        const first=
-            data.sections[0];
-
-
-        const sectionTime=
+        const sectionTime =
             Number(
-                first?.time
+                section?.time
             );
 
 
@@ -2060,7 +2118,7 @@ function getTestTime(data){
             Number.isFinite(
                 sectionTime
             ) &&
-            sectionTime>0
+            sectionTime > 0
         ){
 
             return sectionTime;
@@ -2073,27 +2131,28 @@ function getTestTime(data){
 
 
 /* ============================================================
-   ERROR SCREEN
-   ============================================================ */
+   ERROR
+============================================================ */
 
 function showError(
     title,
     message
 ){
 
-    $("timer").innerText=
+    $("timer").innerText =
         "ERR";
 
 
-    $("totalq").innerText=
+    $("totalq").innerText =
         "0";
 
 
-    $("exam").innerHTML=
-        `
+    $("exam").innerHTML = `
         <div class="error-card notranslate" translate="no">
 
-            <div class="icon">⚠️</div>
+            <div class="error-icon">
+                ⚠️
+            </div>
 
             <h3>
                 ${escapeHTML(title)}
@@ -2111,13 +2170,138 @@ function showError(
             </button>
 
         </div>
-        `;
+    `;
 }
 
 
 /* ============================================================
+   PAGE LOAD
+============================================================ */
+
+window.onload =
+async function(){
+
+    if(
+        window.Telegram &&
+        window.Telegram.WebApp
+    ){
+
+        window.Telegram.WebApp.ready();
+    }
+
+
+    currentTestId =
+        getCurrentTestId();
+
+
+    try{
+
+        currentTestData =
+            await loadTestData();
+
+
+        questions =
+            normalizeQuestions(
+                currentTestData
+            );
+
+
+        if(!questions.length){
+
+            throw new Error(
+                "No readable questions found"
+            );
+        }
+
+
+        positiveMark =
+            getNumberSetting(
+                currentTestData,
+                [
+                    "positive_mark",
+                    "positiveMark",
+                    "positive",
+                    "marks",
+                    "mark",
+                    "pos"
+                ],
+                2
+            );
+
+
+        negativeMark =
+            getNumberSetting(
+                currentTestData,
+                [
+                    "negative_mark",
+                    "negativeMark",
+                    "negative",
+                    "neg"
+                ],
+                .25
+            );
+
+
+        testCutoff =
+            getNumberSetting(
+                currentTestData,
+                [
+                    "cutoff",
+                    "pass_mark",
+                    "passing_score"
+                ],
+                35
+            );
+
+
+        time =
+            Math.max(
+                1,
+                getTestTime(
+                    currentTestData
+                )
+            ) * 60;
+
+
+        $("totalq").innerText =
+            questions.length;
+
+
+        answers =
+            new Array(
+                questions.length
+            ).fill(null);
+
+
+        status =
+            new Array(
+                questions.length
+            ).fill("notvisited");
+
+
+        startTimer();
+
+        loadQuestion();
+
+    }catch(error){
+
+        console.error(
+            "LOAD ERROR:",
+            error
+        );
+
+
+        showError(
+            "⚠️ टेस्ट लोड नहीं हो सका",
+            "MongoDB/05.json से पूरा question data पढ़ने में समस्या हुई।"
+        );
+    }
+};
+
+
+/* ============================================================
    TIMER
-   ============================================================ */
+============================================================ */
 
 function startTimer(){
 
@@ -2129,24 +2313,22 @@ function startTimer(){
     updateTimerUI();
 
 
-    timerInterval=
+    timerInterval =
         setInterval(
-            ()=>{
+            function(){
 
                 time--;
-
 
                 updateTimerUI();
 
 
                 if(
-                    time<=0
+                    time <= 0
                 ){
 
                     clearInterval(
                         timerInterval
                     );
-
 
                     executeSubmit();
                 }
@@ -2159,198 +2341,197 @@ function startTimer(){
 
 function updateTimerUI(){
 
-    const safeTime=
+    const safeTime =
         Math.max(
             0,
             time
         );
 
 
-    const m=
+    const minutes =
         Math.floor(
-            safeTime/60
+            safeTime / 60
         );
 
 
-    const s=
-        safeTime%60;
+    const seconds =
+        safeTime % 60;
 
 
-    $("timer").innerText=
-        String(m).padStart(
-            2,
-            "0"
-        )+
+    $("timer").innerText =
+        String(minutes)
+            .padStart(2,"0")+
         ":"+
-        String(s).padStart(
-            2,
-            "0"
-        );
+        String(seconds)
+            .padStart(2,"0");
 
 
-    $("lastMin").innerText=
+    $("lastMin").innerText =
         "Last "+
-        String(m).padStart(
-            2,
-            "0"
-        )+
+        String(minutes)
+            .padStart(2,"0")+
         " Mins";
 
 
     if(
-        safeTime<=60
+        safeTime <= 60
     ){
 
-        $("timer").style.color=
+        $("timer").style.color =
             "#e53935";
     }
 }
 
 
 /* ============================================================
-   QUESTION SCREEN
-   ============================================================ */
+   LOAD QUESTION
+   IMPORTANT:
+   null को Number(null)=0 नहीं किया गया है.
+   इसलिए पहला option automatically SELECT नहीं होगा.
+============================================================ */
 
 function loadQuestion(){
 
-    if(
-        !questions.length
-    ){
+    if(!questions.length){
         return;
     }
 
 
-    if(
-        current<0
-    ){
-        current=0;
-    }
+    current =
+        Math.max(
+            0,
+            Math.min(
+                current,
+                questions.length-1
+            )
+        );
 
 
-    if(
-        current>=questions.length
-    ){
-
-        current=
-            questions.length-1;
-    }
-
-
-    const q=
+    const q =
         questions[current];
 
 
-    let html=
-        "<div class='qcard notranslate' translate='no'>";
+    let html = `
+        <div class="qcard notranslate" translate="no">
+    `;
 
 
     if(
         q.sectionName &&
         String(
             q.sectionName
-        ).trim()!==""
+        ).trim()
     ){
 
-        html+=
-            "<div class='section-name notranslate' translate='no'>"+
-            "📚 "+
-            rich(
-                q.sectionName
-            )+
-            "</div>";
+        html += `
+            <div class="section-name">
+                📚 ${rich(q.sectionName)}
+            </div>
+        `;
     }
 
 
-    html+=
-        "<div class='qtitle notranslate' translate='no'>"+
-        "Q"+
-        (current+1)+
-        ". "+
-        rich(
-            q.question
-        )+
-        "</div>";
+    html += `
+        <div class="qtitle">
+
+            <span class="qnumber">
+                Q${current+1}
+            </span>
+
+            <span class="question-text">
+                ${rich(q.question)}
+            </span>
+
+        </div>
+    `;
 
 
     if(
         q.img &&
-        String(
-            q.img
-        ).trim()!==""
+        String(q.img).trim()
     ){
 
-        html+=
-            "<div style='text-align:center;padding:10px;'>"+
-            "<img src='"+
-            escapeAttribute(
-                q.img
-            )+
-            "' style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
-            "</div>";
+        html += `
+            <div class="question-image">
+                <img
+                    src="${escapeAttribute(q.img)}"
+                    alt="Question Image"
+                >
+            </div>
+        `;
     }
 
 
     q.options.forEach(
-        (opt,i)=>{
+        (option,index) => {
 
-            const selected=
+            /*
+             * FIX:
+             * पहले code में Number(null) === 0
+             * होने के कारण Q1 का पहला option
+             * automatic selected दिख रहा था.
+             *
+             * अब explicit null/undefined check है.
+             */
+
+            const isSelected =
+                answers[current] !== null &&
+                answers[current] !== undefined &&
+                answers[current] !== "" &&
                 Number(
                     answers[current]
-                )===
-                Number(i)
-                    ? " selected"
-                    : "";
+                ) === index;
 
 
-            html+=
-                "<div class='option notranslate"+
-                selected+
-                "' translate='no' onclick='selectOption(this,"+
-                i+
-                ")'>"+
+            html += `
+                <div
+                    class="option notranslate ${isSelected ? "selected" : ""}"
+                    translate="no"
+                    onclick="selectOption(this,${index})"
+                >
 
-                "<div class='circle'></div>"+
+                    <div class="option-radio"></div>
 
-                "<div>"+
-                rich(
-                    opt
-                )+
-                "</div>"+
+                    <div class="option-content">
+                        ${rich(option)}
+                    </div>
 
-                "</div>";
+                </div>
+            `;
         }
     );
 
 
-    html+=
-        "</div>";
+    html += `
+        </div>
+    `;
 
 
-    $("exam").innerHTML=
+    $("exam").innerHTML =
         html;
 
 
-    $("qno").innerText=
+    $("qno").innerText =
         current+1;
 
 
     updatePalette();
 
 
-    window.scrollTo(
-        0,
-        0
-    );
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 }
 
 
 /* ============================================================
-   OPTION SELECT
-   ============================================================ */
+   SELECT OPTION
+============================================================ */
 
 function selectOption(
-    el,
-    i
+    element,
+    index
 ){
 
     if(submitted){
@@ -2370,16 +2551,16 @@ function selectOption(
         );
 
 
-    el.classList.add(
+    element.classList.add(
         "selected"
     );
 
 
-    answers[current]=
-        Number(i);
+    answers[current] =
+        Number(index);
 
 
-    status[current]=
+    status[current] =
         "answered";
 
 
@@ -2389,32 +2570,31 @@ function selectOption(
 
 /* ============================================================
    NAVIGATION
-   ============================================================ */
+============================================================ */
 
 function saveNext(){
 
     if(
-        answers[current]===null ||
-        answers[current]===undefined
+        answers[current] === null ||
+        answers[current] === undefined
     ){
 
         if(
-            status[current]!=="review"
+            status[current] !== "review"
         ){
 
-            status[current]=
+            status[current] =
                 "notanswered";
         }
     }
 
 
     if(
-        current<
+        current <
         questions.length-1
     ){
 
         current++;
-
 
         loadQuestion();
 
@@ -2428,7 +2608,7 @@ function saveNext(){
 function previousQuestion(){
 
     if(
-        current>0
+        current > 0
     ){
 
         current--;
@@ -2440,12 +2620,12 @@ function previousQuestion(){
 
 function markReview(){
 
-    status[current]=
+    status[current] =
         "review";
 
 
     if(
-        current<
+        current <
         questions.length-1
     ){
 
@@ -2462,7 +2642,7 @@ function markReview(){
 
 /* ============================================================
    PALETTE
-   ============================================================ */
+============================================================ */
 
 function togglePalette(){
 
@@ -2475,45 +2655,46 @@ function togglePalette(){
 
 function updatePalette(){
 
-    let html="";
+    let html = "";
 
 
     questions.forEach(
-        (_,i)=>{
+        (_,index) => {
 
-            html+=
-                "<button class='"+
-                status[i]+
-                "' onclick='goQ("+
-                i+
-                ")'>"+
-                (i+1)+
-                "</button>";
+            html += `
+                <button
+                    class="question-btn ${status[index]}"
+                    onclick="goQuestion(${index})"
+                >
+                    ${index+1}
+                </button>
+            `;
         }
     );
 
 
-    $("palette-buttons").innerHTML=
+    $("palette-buttons").innerHTML =
         html;
 }
 
 
-function goQ(i){
+function goQuestion(index){
 
-    const index=
-        Number(i);
+    index =
+        Number(index);
 
 
     if(
         !Number.isInteger(index) ||
-        index<0 ||
-        index>=questions.length
+        index < 0 ||
+        index >= questions.length
     ){
         return;
     }
 
 
-    current=index;
+    current =
+        index;
 
 
     loadQuestion();
@@ -2528,7 +2709,7 @@ function goQ(i){
 
 /* ============================================================
    SUBMIT MODAL
-   ============================================================ */
+============================================================ */
 
 function showSubmitConfirm(){
 
@@ -2538,7 +2719,7 @@ function showSubmitConfirm(){
 
 
     $("submit-confirm-modal")
-        .style.display=
+        .style.display =
         "flex";
 }
 
@@ -2546,31 +2727,26 @@ function showSubmitConfirm(){
 function hideSubmitConfirm(){
 
     $("submit-confirm-modal")
-        .style.display=
+        .style.display =
         "none";
 }
 
 
 /* ============================================================
    SUBMIT
-   ============================================================ */
+============================================================ */
 
-function executeSubmit(
-    isFromHistory=false
-){
+function executeSubmit(){
 
-    hideSubmitConfirm();
-
-
-    if(
-        submitted &&
-        !isFromHistory
-    ){
+    if(submitted){
         return;
     }
 
 
-    submitted=true;
+    hideSubmitConfirm();
+
+
+    submitted = true;
 
 
     clearInterval(
@@ -2578,35 +2754,29 @@ function executeSubmit(
     );
 
 
-    let correct=0;
-    let incorrect=0;
-    let unattempted=0;
+    let correct = 0;
+    let incorrect = 0;
+    let unattempted = 0;
 
 
     questions.forEach(
-        (q,i)=>{
+        (q,index) => {
 
-            const userAns=
-                answers[i];
-
-
-            const correctIndex=
-                Number(
-                    q.correctIndex
-                );
+            const userAnswer =
+                answers[index];
 
 
             if(
-                userAns===null ||
-                userAns===undefined ||
-                userAns===""
+                userAnswer === null ||
+                userAnswer === undefined ||
+                userAnswer === ""
             ){
 
                 unattempted++;
 
             }else if(
-                Number(userAns)===
-                correctIndex
+                Number(userAnswer) ===
+                Number(q.correctIndex)
             ){
 
                 correct++;
@@ -2619,46 +2789,39 @@ function executeSubmit(
     );
 
 
-    const score=
+    const score =
         (
-            correct*
+            correct *
             positiveMark
-        )-
+        ) -
         (
-            incorrect*
+            incorrect *
             negativeMark
         );
 
 
-    const maxScore=
-        questions.length*
+    const maxScore =
+        questions.length *
         positiveMark;
 
 
-    const accuracy=
+    const accuracy =
         (
-            correct/
+            correct /
             (
-                correct+
+                correct +
                 incorrect ||
                 1
-            )*
+            )
+            *
             100
         ).toFixed(2);
 
 
-    /*
-     * Score backend में भेजो.
-     */
-    if(
-        !isFromHistory
-    ){
-
-        submitScoreToBackend(
-            score,
-            accuracy
-        );
-    }
+    submitScoreToBackend(
+        score,
+        accuracy
+    );
 
 
     generateResultScreen(
@@ -2673,29 +2836,29 @@ function executeSubmit(
 
 
 /* ============================================================
-   SCORE BACKEND
-   ============================================================ */
+   BACKEND SCORE
+============================================================ */
 
 async function submitScoreToBackend(
     score,
     accuracy
 ){
 
-    const params=
+    const params =
         new URLSearchParams(
             window.location.search
         );
 
 
-    const uid=
+    const uid =
         params.get("uid");
 
 
-    const name=
+    const name =
         params.get("name");
 
 
-    const testId=
+    const testId =
         currentTestId ||
         params.get("test_id");
 
@@ -2705,12 +2868,11 @@ async function submitScoreToBackend(
         !name ||
         !testId
     ){
-
         return;
     }
 
 
-    let testName=
+    let testName =
         firstValue(
             currentTestData,
             [
@@ -2729,7 +2891,7 @@ async function submitScoreToBackend(
         )
     ){
 
-        testName=
+        testName =
             firstValue(
                 currentTestData[0],
                 [
@@ -2743,7 +2905,8 @@ async function submitScoreToBackend(
 
 
     if(!testName){
-        testName="Mock Test";
+        testName =
+            "Mock Test";
     }
 
 
@@ -2800,7 +2963,7 @@ async function submitScoreToBackend(
 
 /* ============================================================
    RESULT SCREEN
-   ============================================================ */
+============================================================ */
 
 function generateResultScreen(
     score,
@@ -2811,364 +2974,215 @@ function generateResultScreen(
     accuracy
 ){
 
-    $("timer").style.display=
+    $("timer").style.display =
         "none";
 
 
-    $("question-header").style.display=
+    $("question-header").style.display =
         "none";
 
 
-    $("top-btn-row").style.display=
+    $("top-btn-row").style.display =
         "none";
 
 
-    $("menu-float-btn").style.display=
+    $("menu-float-btn").style.display =
         "none";
 
 
-    $("exam").style.display=
+    $("exam").style.display =
         "none";
 
 
-    $("palette").style.display=
+    $("palette").style.display =
         "none";
 
 
-    $("result").style.display=
+    $("result").style.display =
         "block";
 
 
-    let html="";
+    const passed =
+        score >= testCutoff;
 
 
-    if(
-        score>=
-        testCutoff
-    ){
+    $("result").innerHTML = `
 
-        html+=
-            "<div class='motivation-banner'>"+
-            "🎉 शाबाश! आपने कट-ऑफ ("+
-            testCutoff+
-            ") पार कर ली है! 🇮🇳"+
-            "</div><br>";
+        <div class="result-summary">
 
-    }else{
+            <div class="score-title">
+                YOUR FINAL SCORE
+            </div>
 
-        html+=
-            "<div class='motivation-banner' style='background:#ffebee;border-color:#e53935;color:#c62828;'>"+
-            "⚠️ आपका स्कोर कट-ऑफ ("+
-            testCutoff+
-            ") से कम है। और अभ्यास करें! 💪"+
-            "</div><br>";
-    }
+            <div class="score-value">
+                ${score.toFixed(2)}
+                /
+                ${maxScore}
+            </div>
 
+            <div class="stats-grid">
 
-    html+=
-        "<div class='result-card'>"+
+                <div class="stat correct-stat">
+                    <span class="stat-number">
+                        ${correct}
+                    </span>
+                    <span class="stat-label">
+                        Correct
+                    </span>
+                </div>
 
-        "<b>Your Score: "+
-        score.toFixed(2)+
-        " / "+
-        maxScore+
-        "</b>"+
+                <div class="stat wrong-stat">
+                    <span class="stat-number">
+                        ${incorrect}
+                    </span>
+                    <span class="stat-label">
+                        Wrong
+                    </span>
+                </div>
 
-        "<hr style='border:0;border-top:1px solid #eee;margin:15px 0;'>"+
+                <div class="stat skip-stat">
+                    <span class="stat-number">
+                        ${unattempted}
+                    </span>
+                    <span class="stat-label">
+                        Skipped
+                    </span>
+                </div>
 
-        "<div style='display:flex;justify-content:space-around;text-align:center;'>"+
+            </div>
 
-        "<div>"+
-        "<span style='color:#4CAF50;font-size:24px;font-weight:bold;'>"+
-        correct+
-        "</span><br><small>Correct</small>"+
-        "</div>"+
+            <div class="chart-wrap">
+                <canvas id="resultChart"></canvas>
+            </div>
 
-        "<div>"+
-        "<span style='color:#e53935;font-size:24px;font-weight:bold;'>"+
-        incorrect+
-        "</span><br><small>Wrong</small>"+
-        "</div>"+
-
-        "<div>"+
-        "<span style='color:#ff9800;font-size:24px;font-weight:bold;'>"+
-        unattempted+
-        "</span><br><small>Skipped</small>"+
-        "</div>"+
-
-        "</div>"+
-
-        "<br>"+
-
-        "<b>Accuracy: "+
-        accuracy+
-        "%</b>"+
-
-        "</div>"+
-
-        "<div style='max-width:300px;margin:0 auto;'>"+
-        "<canvas id='chart'></canvas>"+
-        "</div>"+
-
-        "<h3 style='margin-top:30px;border-bottom:2px solid #ccc;padding-bottom:5px;'>"+
-        "Full Analysis"+
-        "</h3>";
-
-
-    /*
-     * FULL 100 QUESTIONS / ALL 5 PARTS.
-     */
-    questions.forEach(
-        (q,i)=>{
-
-            const userAns=
-                answers[i];
-
-
-            const correctIndex=
-                Number(
-                    q.correctIndex
-                );
-
-
-            let boxClass=
-                "analysis-box";
-
-
-            let statusText="";
-
-
-            if(
-                userAns===null ||
-                userAns===undefined
-            ){
-
-                boxClass+=
-                    " unattempted-box";
-
-
-                statusText=
-                    "<span style='color:#e65100;font-weight:bold;background:#ffe0b2;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
-                    "⚠️ Skipped ( 0 )"+
-                    "</span>";
-
-            }else if(
-                Number(userAns)===
-                correctIndex
-            ){
-
-                boxClass+=
-                    " correct-box";
-
-
-                statusText=
-                    "<span style='color:#1b5e20;font-weight:bold;background:#c8e6c9;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
-                    "✅ Correct ( +"+
-                    positiveMark+
-                    " )"+
-                    "</span>";
-
-            }else{
-
-                boxClass+=
-                    " wrong-box";
-
-
-                statusText=
-                    "<span style='color:#b71c1c;font-weight:bold;background:#ffcdd2;padding:5px 10px;border-radius:6px;font-size:12px;'>"+
-                    "❌ Wrong ( -"+
-                    negativeMark+
-                    " )"+
-                    "</span>";
+            ${
+                passed
+                    ? `
+                        <div class="pass-banner">
+                            🎉 शानदार! आपने ${testCutoff} की कट-ऑफ पार कर ली।
+                        </div>
+                    `
+                    : `
+                        <div class="fail-banner">
+                            ⚠️ स्कोर ${testCutoff} की कट-ऑफ से कम है।
+                            फिर से अभ्यास करें।
+                        </div>
+                    `
             }
 
+            <div
+                style="
+                    color:#777;
+                    font-size:13px;
+                    font-weight:700;
+                "
+            >
+                Accuracy :
+                <strong style="color:#008dcc">
+                    ${accuracy}%
+                </strong>
+            </div>
 
-            html+=
-                "<div class='"+
-                boxClass+
-                " notranslate' translate='no'>";
-
-
-            if(
-                q.sectionName &&
-                String(
-                    q.sectionName
-                ).trim()!==""
-            ){
-
-                html+=
-                    "<div style='display:inline-block;background:#eaf9ff;color:#008ccc;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:bold;margin-bottom:10px;'>"+
-                    "📚 "+
-                    rich(
-                        q.sectionName
-                    )+
-                    "</div>";
-            }
+        </div>
 
 
-            html+=
-                "<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:15px;font-size:16px;'>"+
+        <div class="solution-section">
 
-                "<div style='flex:1;min-width:0;line-height:1.55;'>"+
-                "<b>Q"+
-                (i+1)+
-                ". "+
-                rich(
-                    q.question
-                )+
-                "</b>"+
-                "</div>"+
+            <div class="solution-heading">
 
-                "<div style='text-align:right;min-width:100px;margin-left:10px;'>"+
-                statusText+
-                "</div>"+
+                <h3>
+                    📖 Complete Solution
+                </h3>
 
-                "</div>";
+                <div
+                    class="solution-counter"
+                    id="solution-counter"
+                >
+                    1 / ${questions.length}
+                </div>
+
+            </div>
 
 
-            if(
-                q.img &&
-                String(
-                    q.img
-                ).trim()!==""
-            ){
-
-                html+=
-                    "<div style='text-align:center;padding:10px;'>"+
-                    "<img src='"+
-                    escapeAttribute(
-                        q.img
-                    )+
-                    "' style='max-width:100%;height:auto;border-radius:8px;border:1px solid #ddd;'>"+
-                    "</div>";
-            }
+            <div
+                id="solution-container"
+            ></div>
 
 
-            html+=
-                "<div style='margin-top:10px;'>";
+            <div
+                class="solution-navigation"
+            >
+
+                <button
+                    class="solution-nav-btn"
+                    id="solution-prev"
+                    onclick="previousSolution()"
+                >
+                    ← Previous
+                </button>
+
+                <div
+                    class="solution-middle"
+                    id="solution-middle"
+                >
+                    1 / ${questions.length}
+                </div>
+
+                <button
+                    class="solution-nav-btn"
+                    id="solution-next"
+                    onclick="nextSolution()"
+                >
+                    Next →
+                </button>
+
+            </div>
+
+        </div>
 
 
-            q.options.forEach(
-                (opt,optIndex)=>{
+        <div class="promo-banner">
 
-                    let optStyle=
-                        "padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#333;line-height:1.55;";
-
-
-                    let icon="⚪";
-
-
-                    if(
-                        Number(optIndex)===
-                        correctIndex
-                    ){
-
-                        optStyle=
-                            "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #4CAF50;background:#e8f5e9;font-weight:bold;color:#2e7d32;line-height:1.55;";
-
-                        icon="✅";
-
-                    }else if(
-                        userAns!==null &&
-                        userAns!==undefined &&
-                        Number(optIndex)===
-                        Number(userAns)
-                    ){
-
-                        optStyle=
-                            "padding:12px;margin-bottom:8px;border-radius:8px;border:2px solid #e53935;background:#ffebee;font-weight:bold;color:#c62828;line-height:1.55;";
-
-                        icon="❌";
-                    }
-
-
-                    html+=
-                        "<div class='notranslate' translate='no' style='"+
-                        optStyle+
-                        "'>"+
-                        icon+
-                        " "+
-                        rich(
-                            opt
-                        )+
-                        "</div>";
-                }
-            );
-
-
-            html+=
-                "</div>"+
-
-                "<hr style='border:0;border-top:1px dashed #ccc;margin:20px 0 15px;'>"+
-
-                "<div style='background:#f4f9ff;padding:15px;border-radius:10px;border:1px solid #d0e3ff;box-shadow:inset 0 2px 4px rgba(0,0,0,.02);'>"+
-
-                "<div style='display:inline-block;background:linear-gradient(135deg,#00bfff,#007acc);color:white;padding:6px 14px;border-radius:6px;font-weight:bold;font-size:14px;margin-bottom:12px;'>"+
-                "💡 Explanation (व्याख्या)"+
-                "</div>"+
-
-                "<div class='notranslate' translate='no' style='line-height:1.6;font-size:14px;color:#444;overflow-wrap:anywhere;'>"+
-                (
-                    q.explanation &&
-                    String(
-                        q.explanation
-                    ).trim()!==""
-                        ? rich(
-                            q.explanation
-                          )
-                        : "इस प्रश्न के लिए कोई व्याख्या उपलब्ध नहीं है।"
-                )+
-                "</div>"+
-
-                "</div>"+
-
-                "</div>";
-        }
-    );
-
-
-    html+=
-        `
-        <div class="promo-banner notranslate" translate="no">
-
-            <h3>🚀 और नए मॉक टेस्ट चाहिए?</h3>
+            <h3>
+                🚀 और नए Mock Tests चाहिए?
+            </h3>
 
             <p>
-                हमारे आधिकारिक टेलीग्राम चैनल से जुड़ें और हर दिन नए टेस्ट, स्टडी मटेरियल और अपडेट्स पाएं!
+                नए टेस्ट, स्टडी मटेरियल और अपडेट्स के लिए हमारे Telegram Channel से जुड़ें।
             </p>
 
             <a
                 href="https://t.me/+bmzuj2Y68nFmYTc9"
                 class="promo-btn"
             >
-                📢 अभी चैनल ज्वाइन करें
+                📢 अभी Channel Join करें
             </a>
 
         </div>
-        `;
+    `;
 
 
-    $("result").innerHTML=
-        html;
+    solutionCurrent = 0;
 
 
-    const chartCanvas=
-        $("chart");
+    renderSolution();
 
 
-    if(
-        chartCanvas
-    ){
+    const canvas =
+        $("resultChart");
+
+
+    if(canvas){
 
         new Chart(
-            chartCanvas,
+            canvas,
             {
                 type:"doughnut",
 
                 data:{
                     labels:[
                         "Correct",
-                        "Incorrect",
+                        "Wrong",
                         "Skipped"
                     ],
 
@@ -3178,12 +3192,6 @@ function generateResultScreen(
                                 correct,
                                 incorrect,
                                 unattempted
-                            ],
-
-                            backgroundColor:[
-                                "#4CAF50",
-                                "#e53935",
-                                "#ff9800"
                             ]
                         }
                     ]
@@ -3191,19 +3199,423 @@ function generateResultScreen(
 
                 options:{
                     responsive:true,
-                    maintainAspectRatio:true
+                    plugins:{
+                        legend:{
+                            position:"bottom"
+                        }
+                    }
                 }
             }
         );
     }
 
 
-    window.scrollTo(
-        0,
-        0
-    );
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 }
 
+
+/* ============================================================
+   SOLUTION RENDERER
+   ONE QUESTION AT A TIME
+============================================================ */
+
+function renderSolution(){
+
+    if(
+        !questions.length
+    ){
+        return;
+    }
+
+
+    solutionCurrent =
+        Math.max(
+            0,
+            Math.min(
+                solutionCurrent,
+                questions.length-1
+            )
+        );
+
+
+    const q =
+        questions[
+            solutionCurrent
+        ];
+
+
+    const userAnswer =
+        answers[
+            solutionCurrent
+        ];
+
+
+    const correctIndex =
+        Number(
+            q.correctIndex
+        );
+
+
+    const isSkipped =
+        userAnswer === null ||
+        userAnswer === undefined ||
+        userAnswer === "";
+
+
+    const isCorrect =
+        !isSkipped &&
+        Number(userAnswer) ===
+        correctIndex;
+
+
+    let statusText =
+        "⚠️ Skipped";
+
+
+    if(isCorrect){
+        statusText =
+            "✅ Correct";
+    }else if(!isSkipped){
+        statusText =
+            "❌ Wrong";
+    }
+
+
+    let optionsHTML = "";
+
+
+    q.options.forEach(
+        (option,index) => {
+
+            const isAnswer =
+                index ===
+                correctIndex;
+
+
+            const isUserWrong =
+                !isSkipped &&
+                Number(userAnswer) ===
+                index &&
+                !isAnswer;
+
+
+            let className =
+                "solution-option";
+
+
+            let icon =
+                "○";
+
+
+            if(isAnswer){
+
+                className +=
+                    " correct";
+
+                icon =
+                    "✓";
+
+            }else if(isUserWrong){
+
+                className +=
+                    " wrong";
+
+                icon =
+                    "✕";
+            }
+
+
+            optionsHTML += `
+
+                <div
+                    class="${className} notranslate"
+                    translate="no"
+                >
+
+                    <span
+                        class="solution-option-prefix"
+                    >
+                        ${icon}
+                    </span>
+
+                    ${rich(option)}
+
+                </div>
+            `;
+        }
+    );
+
+
+    let answerHTML;
+
+
+    if(
+        correctIndex >= 0 &&
+        q.options[correctIndex] !== undefined
+    ){
+
+        answerHTML = `
+            <div class="answer-label">
+                ✅ सही उत्तर
+            </div>
+
+            <div class="answer-value notranslate" translate="no">
+                ${rich(
+                    q.options[correctIndex]
+                )}
+            </div>
+        `;
+
+    }else{
+
+        answerHTML = `
+            <div class="answer-label">
+                ⚠️ सही उत्तर
+            </div>
+
+            <div class="answer-value">
+                सही उत्तर उपलब्ध नहीं है।
+            </div>
+        `;
+    }
+
+
+    const explanation =
+        q.explanation &&
+        String(
+            q.explanation
+        ).trim()
+            ? rich(
+                q.explanation
+              )
+            : `
+                <span style="color:#888">
+                    इस प्रश्न की explanation JSON में उपलब्ध नहीं है।
+                </span>
+            `;
+
+
+    $("solution-container").innerHTML = `
+
+        <div class="solution-card notranslate" translate="no">
+
+            <div class="solution-top">
+
+                <div class="solution-top-row">
+
+                    <div class="solution-question-number">
+                        Q${solutionCurrent+1}
+                    </div>
+
+                    <div class="solution-status">
+                        ${statusText}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="solution-body">
+
+                ${
+                    q.sectionName &&
+                    String(
+                        q.sectionName
+                    ).trim()
+                    ? `
+                        <div
+                            style="
+                                display:inline-block;
+                                margin-bottom:12px;
+                                padding:6px 10px;
+                                border-radius:7px;
+                                background:#e9f8fd;
+                                color:#008dcc;
+                                font-size:11px;
+                                font-weight:900;
+                            "
+                        >
+                            📚 ${rich(q.sectionName)}
+                        </div>
+                    `
+                    : ""
+                }
+
+
+                <div class="solution-question">
+
+                    ${rich(q.question)}
+
+                </div>
+
+
+                ${
+                    q.img &&
+                    String(q.img).trim()
+                    ? `
+                        <div
+                            style="
+                                text-align:center;
+                                margin:15px 0;
+                            "
+                        >
+                            <img
+                                src="${escapeAttribute(q.img)}"
+                                style="
+                                    max-width:100%;
+                                    height:auto;
+                                    border-radius:12px;
+                                    border:1px solid #ddd;
+                                "
+                            >
+                        </div>
+                    `
+                    : ""
+                }
+
+
+                <div
+                    style="
+                        margin-top:17px;
+                        font-size:13px;
+                        color:#777;
+                        font-weight:800;
+                    "
+                >
+                    Options
+                </div>
+
+
+                ${optionsHTML}
+
+
+                <div class="answer-box">
+
+                    ${answerHTML}
+
+                </div>
+
+
+                <div class="explanation-box">
+
+                    <div class="explanation-title">
+                        💡 Explanation / Solution
+                    </div>
+
+                    <div
+                        class="explanation-content notranslate"
+                        translate="no"
+                    >
+                        ${explanation}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+
+    $("solution-counter").innerText =
+        `${solutionCurrent+1} / ${questions.length}`;
+
+
+    $("solution-middle").innerText =
+        `${solutionCurrent+1} / ${questions.length}`;
+
+
+    $("solution-prev").disabled =
+        solutionCurrent === 0;
+
+
+    $("solution-next").disabled =
+        solutionCurrent ===
+        questions.length-1;
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* ============================================================
+   SOLUTION PREVIOUS
+============================================================ */
+
+function previousSolution(){
+
+    if(
+        solutionCurrent <= 0
+    ){
+        return;
+    }
+
+
+    solutionCurrent--;
+
+
+    renderSolution();
+}
+
+
+/* ============================================================
+   SOLUTION NEXT
+============================================================ */
+
+function nextSolution(){
+
+    if(
+        solutionCurrent >=
+        questions.length-1
+    ){
+        return;
+    }
+
+
+    solutionCurrent++;
+
+
+    renderSolution();
+}
+
+
+/* ============================================================
+   KEYBOARD SUPPORT
+============================================================ */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            $("result").style.display ===
+            "block"
+        ){
+
+            if(
+                event.key === "ArrowLeft"
+            ){
+
+                previousSolution();
+            }
+
+
+            if(
+                event.key === "ArrowRight"
+            ){
+
+                nextSolution();
+            }
+        }
+    }
+);
 </script>
 
 </body>
